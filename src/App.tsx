@@ -1,23 +1,15 @@
 import React, { FC } from "react";
 import "./App.css";
-import {
-  PlayerInfo,
-  PlayerInfoProvider,
-  usePlayerInfo,
-} from "./hooks/useTeamsInfo";
+import { PlayerInfoProvider, usePlayerInfo } from "./hooks/useTeamsInfo";
 
 const Sample: FC = () => {
-  const { player, updatePlayer } = usePlayerInfo();
+  const { gameInfo, action } = usePlayerInfo();
   const handleClick = () => {
-    const newPlayerInfo: PlayerInfo = {
-      ...player,
-      victoryPoint: player.victoryPoint + 1,
-    };
-    updatePlayer(newPlayerInfo);
+    action({ type: "ADD_VICTORY_POINT", payload: { team: "A" } });
   };
   return (
     <>
-      <div>victoryPoint: {player.victoryPoint}</div>
+      <div>victoryPoint: {gameInfo.players[0].victoryPoint}</div>
       <button onClick={handleClick}>+1</button>
     </>
   );
