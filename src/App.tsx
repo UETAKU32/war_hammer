@@ -1,14 +1,12 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import "./App.css";
 import { GameInfoProvider, useGameInfo } from "./hooks/useTeamsInfo";
 
 import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import { Box } from "@mui/system";
-import FighterCard from "./FighterCard";
-import { ThemeProvider } from '@mui/material/styles';
-import theme from './themes';
-import backgroundImage from './/images/background.jpg';
+import FighterCard from "./components/FighterCard";
+import { GameThemeProvider } from "./components/GameThemeProvider";
 
 
 
@@ -29,41 +27,35 @@ const Sample: FC = () => {
 
 function App() {
 
-  const containerStyle = {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  };
+
+
 
 
   return (
-    <div style={containerStyle}>
-      <ThemeProvider theme={theme}>
-        <GameInfoProvider>
-
-          <Grid container direction="row" spacing={1}>
-            <Grid direction="row" xs={12}>
-              <Sample />
-            </Grid>
+    <GameThemeProvider>
+      <GameInfoProvider>
+        <Grid container direction="row" spacing={1}>
+          <Grid direction="row" xs={12}>
+            <Sample />
           </Grid>
-          <Grid container direction="row" spacing={1}>
-            <Grid direction="column" xs={2}>
-              <FighterCard />
-              <FighterCard />
-              <FighterCard />
-            </Grid>
-            <Grid direction="column" xs={8}>
-              <Box></Box>
-            </Grid>
-            <Grid direction="column" xs={2} spacing={2}>
-              <FighterCard />
-              <FighterCard />
-              <FighterCard />
-            </Grid>
+        </Grid>
+        <Grid container direction="row" spacing={1}>
+          <Grid direction="column" xs={2}>
+            <FighterCard />
+            <FighterCard />
+            <FighterCard />
           </Grid>
-        </GameInfoProvider>
-      </ThemeProvider>
-    </div>
+          <Grid direction="column" xs={8}>
+            <Box></Box>
+          </Grid>
+          <Grid direction="column" xs={2} spacing={2}>
+            <FighterCard />
+            <FighterCard />
+            <FighterCard />
+          </Grid>
+        </Grid>
+      </GameInfoProvider>
+    </GameThemeProvider>
   );
 }
 
