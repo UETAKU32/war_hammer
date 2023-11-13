@@ -6,7 +6,6 @@ import {
   createContext,
   useContext,
   useReducer,
-  useState,
 } from "react";
 
 type Fighter = {
@@ -16,19 +15,19 @@ type Fighter = {
 };
 
 type GameInfo = {
-  players: PlayerInfo[];
+  players: Team[];
 };
 
-type Team = "A" | "B";
+type TeamName = "A" | "B";
 
-export type PlayerInfo = {
-  team: Team;
+export type Team = {
+  name: TeamName;
   victoryPoint: number;
   fighters: Fighter[];
 };
 
-const player1: PlayerInfo = {
-  team: "A",
+const player1: Team = {
+  name: "A",
   victoryPoint: 10,
   fighters: [
     {
@@ -44,8 +43,8 @@ const player1: PlayerInfo = {
   ],
 };
 
-const player2: PlayerInfo = {
-  team: "B",
+const player2: Team = {
+  name: "B",
   victoryPoint: 0,
   fighters: [
     {
@@ -65,12 +64,12 @@ const initialGameInfo: GameInfo = {
   players: [player1, player2],
 };
 
-type GameAction =
+type TeamAction =
   | { type: "ATTACK"; payload: { attacker: Fighter; receiver: Fighter } }
   | { type: "HEAL"; payload: { healHP: number; receiver: Fighter } }
-  | { type: "ADD_VICTORY_POINT"; payload: { team: Team } };
+  | { type: "ADD_VICTORY_POINT"; payload: { team: TeamName } };
 
-const reducer = produce((gameInfo: GameInfo, action: GameAction) => {
+const reducer = produce((gameInfo: GameInfo, action: TeamAction) => {
   switch (action.type) {
     case "ATTACK":
       break;
@@ -79,7 +78,7 @@ const reducer = produce((gameInfo: GameInfo, action: GameAction) => {
     case "ADD_VICTORY_POINT":
       const selectedTeam = action.payload.team;
       const updatedTeam = gameInfo.players.find(
-        (player) => player.team === selectedTeam
+        (player) => player.name === selectedTeam
       );
       if (!updatedTeam) throw new Error(`Team${selectedTeam} was not found.`);
       updatedTeam.victoryPoint++;
@@ -89,24 +88,24 @@ const reducer = produce((gameInfo: GameInfo, action: GameAction) => {
   }
 });
 
-type PlayerInfoProviderProps = {
+type GameInfoProviderProps = {
   gameInfo: GameInfo;
-  action: Dispatch<GameAction>;
+  action: Dispatch<TeamAction>;
 };
 
-const PlayerInfoContext = createContext<PlayerInfoProviderProps | null>(null);
+const GameInfoContext = createContext<GameInfoProviderProps | null>(null);
 
-export const PlayerInfoProvider: FC<PropsWithChildren> = ({ children }) => {
+export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [gameInfo, action] = useReducer(reducer, initialGameInfo);
   return (
-    <PlayerInfoContext.Provider value={{ gameInfo, action }}>
+    <GameInfoContext.Provider value={{ gameInfo, action }}>
       {children}
-    </PlayerInfoContext.Provider>
+    </GameInfoContext.Provider>
   );
 };
 
-export const usePlayerInfo = () => {
-  const value = useContext(PlayerInfoContext);
+export const useGameInfo = () => {
+  const value = useContext(GameInfoContext);
   if (!value)
     throw new Error(
       "usePlayerInfoはPlayerInfoProviderの子でしか呼び出せません！"

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import "./App.css";
-import { PlayerInfoProvider, usePlayerInfo } from "./hooks/useTeamsInfo";
+import { GameInfoProvider, useGameInfo } from "./hooks/useTeamsInfo";
 
 import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
@@ -14,7 +14,7 @@ import backgroundImage from './/images/background.jpg';
 
 
 const Sample: FC = () => {
-  const { gameInfo, action } = usePlayerInfo();
+  const { gameInfo, action } = useGameInfo();
   const handleClick = () => {
     action({ type: "ADD_VICTORY_POINT", payload: { team: "A" } });
   };
@@ -39,7 +39,7 @@ function App() {
   return (
     <div style={containerStyle}>
       <ThemeProvider theme={theme}>
-        <PlayerInfoProvider>
+        <GameInfoProvider>
 
           <Grid container direction="row" spacing={1}>
             <Grid direction="row" xs={12}>
@@ -61,7 +61,7 @@ function App() {
               <FighterCard />
             </Grid>
           </Grid>
-        </PlayerInfoProvider>
+        </GameInfoProvider>
       </ThemeProvider>
     </div>
   );
