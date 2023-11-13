@@ -2,6 +2,17 @@ import React, { FC } from "react";
 import "./App.css";
 import { PlayerInfoProvider, usePlayerInfo } from "./hooks/useTeamsInfo";
 
+import { Button } from "@mui/material";
+import Grid from '@mui/material/Grid';
+import { Box } from "@mui/system";
+import FighterCard from "./FighterCard";
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './themes';
+import backgroundImage from './/images/background.jpg';
+
+
+
+
 const Sample: FC = () => {
   const { gameInfo, action } = usePlayerInfo();
   const handleClick = () => {
@@ -9,6 +20,7 @@ const Sample: FC = () => {
   };
   return (
     <>
+      <Button>aaaaa</Button>
       <div>victoryPoint: {gameInfo.players[0].victoryPoint}</div>
       <button onClick={handleClick}>+1</button>
     </>
@@ -16,10 +28,42 @@ const Sample: FC = () => {
 };
 
 function App() {
+
+  const containerStyle = {
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  };
+
+
   return (
-    <PlayerInfoProvider>
-      <Sample />
-    </PlayerInfoProvider>
+    <div style={containerStyle}>
+      <ThemeProvider theme={theme}>
+        <PlayerInfoProvider>
+
+          <Grid container direction="row" spacing={1}>
+            <Grid direction="row" xs={12}>
+              <Sample />
+            </Grid>
+          </Grid>
+          <Grid container direction="row" spacing={1}>
+            <Grid direction="column" xs={2}>
+              <FighterCard />
+              <FighterCard />
+              <FighterCard />
+            </Grid>
+            <Grid direction="column" xs={8}>
+              <Box></Box>
+            </Grid>
+            <Grid direction="column" xs={2} spacing={2}>
+              <FighterCard />
+              <FighterCard />
+              <FighterCard />
+            </Grid>
+          </Grid>
+        </PlayerInfoProvider>
+      </ThemeProvider>
+    </div>
   );
 }
 
