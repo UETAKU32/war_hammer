@@ -7,18 +7,13 @@ import {
   useContext,
   useReducer,
 } from "react";
-
-type Fighter = {
-  id: number;
-  name: string;
-  hp: number;
-};
+import { Fighter } from "../types/fighter";
 
 type GameInfo = {
-  players: Team[];
+  teams: Team[];
 };
 
-type TeamName = "A" | "B";
+export type TeamName = "A" | "B";
 
 export type Team = {
   name: TeamName;
@@ -26,42 +21,52 @@ export type Team = {
   fighters: Fighter[];
 };
 
-const player1: Team = {
+const team1: Team = {
   name: "A",
   victoryPoint: 10,
   fighters: [
     {
       id: 1,
-      name: "pikachu",
+      name: "ピカチュウ",
       hp: 100,
     },
     {
       id: 2,
-      name: "koratta",
+      name: "コラった",
+      hp: 20,
+    },
+    {
+      id: 3,
+      name: "ぽっぽ",
       hp: 20,
     },
   ],
 };
 
-const player2: Team = {
+const team2: Team = {
   name: "B",
   victoryPoint: 0,
   fighters: [
     {
-      id: 3,
-      name: "hitokage",
+      id: 4,
+      name: "ヒトカゲ",
       hp: 100,
     },
     {
-      id: 4,
-      name: "kyatapi",
+      id: 5,
+      name: "キャタピ",
+      hp: 20,
+    },
+    {
+      id: 5,
+      name: "ゼニガメ",
       hp: 20,
     },
   ],
 };
 
 const initialGameInfo: GameInfo = {
-  players: [player1, player2],
+  teams: [team1, team2],
 };
 
 type TeamAction =
@@ -77,7 +82,7 @@ const reducer = produce((gameInfo: GameInfo, action: TeamAction) => {
       break;
     case "ADD_VICTORY_POINT":
       const selectedTeam = action.payload.team;
-      const updatedTeam = gameInfo.players.find(
+      const updatedTeam = gameInfo.teams.find(
         (player) => player.name === selectedTeam
       );
       if (!updatedTeam) throw new Error(`Team${selectedTeam} was not found.`);

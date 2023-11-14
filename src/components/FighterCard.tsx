@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 import { Card, CardContent, Typography, Avatar, LinearProgress, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import ShieldIcon from '@mui/icons-material/Shield';
-import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
-import ColorizeIcon from '@mui/icons-material/Colorize';
-import RssFeedIcon from '@mui/icons-material/RssFeed';
-import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
+import { Fighter } from '../types/fighter';
+import GameIcons from './GameIcons';
+
+type FighterCardProps = {
+    fighter: Fighter
+}
 
 
-function FighterCard({ }) {
+export const FighterCard: FC<FighterCardProps> = ({ fighter: { name } }) => {
 
 
     const imageUrl: string = `${process.env.PUBLIC_URL}/characterImages/Dullahan.png`;
@@ -28,7 +28,7 @@ function FighterCard({ }) {
                 <Box display="flex" alignItems="center" margin={1}>
                     <Avatar alt="アイコン" src={imageUrl} />
                     <Box marginRight={1}></Box>
-                    <Typography variant="h6">デュラハン</Typography>
+                    <Typography variant="h6">{name}</Typography>
                 </Box>
                 <Box display="flex" alignItems="center" margin={1}>
                     <FavoriteIcon sx={{ color: 'DeepPink' }} />
@@ -41,26 +41,26 @@ function FighterCard({ }) {
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
                 <Box display="flex" alignItems="center" margin={1}>
-                    <DirectionsRunIcon sx={{ color: 'blue' }} />
+                    <GameIcons iconName='agl' />
                     <Typography variant="body2">5</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <ShieldIcon sx={{ color: 'green' }} />
+                    <GameIcons iconName='def' />
                     <Typography variant="body2">5</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <ElectricBoltIcon sx={{ color: 'Gold' }} />
+                    <GameIcons iconName='sleep' />
                     <Typography variant="body2">2</Typography>
                 </Box>
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
                 <Typography variant="body2">攻撃技:剣戟</Typography>
                 <Box display="flex" alignItems="center" margin={1}>
-                    <ColorizeIcon sx={{ color: 'red' }} />
+                    <GameIcons iconName='atk' />
                     <Typography variant="body2">7</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <RssFeedIcon sx={{ color: 'Aqua' }} />
+                    <GameIcons iconName='range' />
                     <Typography variant="body2">1</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <HeartBrokenIcon sx={{ color: 'black' }} />
+                    <GameIcons iconName='dmg' />
                     <Typography variant="body2">3</Typography>
                 </Box>
             </CardContent>
@@ -68,4 +68,3 @@ function FighterCard({ }) {
     );
 }
 
-export default FighterCard;

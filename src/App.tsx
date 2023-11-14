@@ -1,12 +1,11 @@
 import { FC } from "react";
 import "./App.css";
-import { GameInfoProvider, useGameInfo } from "./hooks/useTeamsInfo";
+import { GameInfoProvider, useGameInfo } from "./hooks/useGameInfo";
 
 import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
-import { Box } from "@mui/system";
-import FighterCard from "./components/FighterCard";
 import { GameThemeProvider } from "./components/GameThemeProvider";
+import { GameContainer } from "./components/GameContainer";
 
 
 
@@ -19,41 +18,22 @@ const Sample: FC = () => {
   return (
     <>
       <Button>aaaaa</Button>
-      <div>victoryPoint: {gameInfo.players[0].victoryPoint}</div>
+      <div>victoryPoint: {gameInfo.teams[0].victoryPoint}</div>
       <button onClick={handleClick}>+1</button>
     </>
   );
 };
 
 function App() {
-
-
-
-
-
   return (
     <GameThemeProvider>
       <GameInfoProvider>
-        <Grid container direction="row" spacing={1}>
+        <Grid container direction="row" spacing={1} mb={5}>
           <Grid direction="row" xs={12}>
             <Sample />
           </Grid>
         </Grid>
-        <Grid container direction="row" spacing={1}>
-          <Grid direction="column" xs={2}>
-            <FighterCard />
-            <FighterCard />
-            <FighterCard />
-          </Grid>
-          <Grid direction="column" xs={8}>
-            <Box></Box>
-          </Grid>
-          <Grid direction="column" xs={2} spacing={2}>
-            <FighterCard />
-            <FighterCard />
-            <FighterCard />
-          </Grid>
-        </Grid>
+        <GameContainer />
       </GameInfoProvider>
     </GameThemeProvider>
   );
