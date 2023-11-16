@@ -4,14 +4,30 @@ import { Card, CardContent, Typography, Avatar, LinearProgress, Box } from '@mui
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Fighter } from '../types/fighter';
 import GameIcons from './GameIcons';
+import { TeamName } from '../hooks/useGameInfo';
+
 
 type FighterCardProps = {
+    teamName: TeamName
     fighter: Fighter
 }
 
 
-export const FighterCard: FC<FighterCardProps> = ({ fighter: { name } }) => {
+export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter: { name } }) => {
 
+    let teamColor: string = ""
+
+    switch (teamName) {
+        case 'A':
+            teamColor = 'linear-gradient(135deg, #FF0000, #8B0000)';
+            break;
+        case 'B':
+            teamColor = 'linear-gradient(135deg, #4287f5, #0a2f6c)';
+            break;
+        default:
+            teamColor = '/icons/default-icon.png';
+
+    }
 
     const imageUrl: string = `${process.env.PUBLIC_URL}/characterImages/Dullahan.png`;
 
@@ -21,10 +37,10 @@ export const FighterCard: FC<FighterCardProps> = ({ fighter: { name } }) => {
                 border: '4px solid transparent', // 境界線スタイル
                 borderRadius: '12px', // 角丸
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // 影
-                background: 'linear-gradient(135deg, #f06, #9f6)',
+                background: teamColor,
             }}
         >
-            <CardContent sx={{ backgroundColor: 'lightblue' }}>
+            <CardContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3);' }}>
                 <Box display="flex" alignItems="center" margin={1}>
                     <Avatar alt="アイコン" src={imageUrl} />
                     <Box marginRight={1}></Box>

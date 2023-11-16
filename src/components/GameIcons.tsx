@@ -5,7 +5,11 @@ interface GameIconsProps {
 }
 
 const GameIcons: React.FC<GameIconsProps> = ({ iconName }) => {
-    let iconPath = '';
+    let iconPath: string = '';
+
+    const divStyle = {
+        marginRight: '10px',
+    };
 
     // iconNameに基づいて表示するアイコンを切り替える
     switch (iconName) {
@@ -29,10 +33,11 @@ const GameIcons: React.FC<GameIconsProps> = ({ iconName }) => {
             break;
         default:
             iconPath = '/icons/default-icon.png';
+
     }
 
     return (
-        <div>
+        <div style={divStyle}>
             <img src={iconPath} alt={`Icon for ${iconName}`} />
         </div>
     );

@@ -13,7 +13,7 @@ export const TeamInfoPanel: FC<TeamInfoPanelProps> = ({ teamName }) => {
   if (!team) throw new Error(`Team ${teamName} was not found.`)
   return (
     <Grid direction="column" xs={2}>
-      {team.fighters.map((fighter) => <FighterCard fighter={fighter} />)}
+      {team.fighters.map((fighter) => <FighterCard teamName={teamName} fighter={fighter} />)}
     </Grid>
   )
 }
