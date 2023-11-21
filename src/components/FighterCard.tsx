@@ -1,10 +1,11 @@
 import React, { FC } from 'react'
 
-import { Card, CardContent, Typography, Avatar, LinearProgress, Box } from '@mui/material';
+import { Card, CardContent, Typography, Avatar, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Fighter } from '../types/fighter';
 import GameIcons from './GameIcons';
 import { TeamName } from '../hooks/useGameInfo';
+import PokemonHPBar from './PokemonHPBar';
 
 
 type FighterCardProps = {
@@ -25,7 +26,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter: { name } 
             teamColor = 'linear-gradient(135deg, #4287f5, #0a2f6c)';
             break;
         default:
-            teamColor = '/icons/default-icon.png';
+            throw new Error('FighterCardにチームデータが渡されていません');
 
     }
 
@@ -40,7 +41,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter: { name } 
                 background: teamColor,
             }}
         >
-            <CardContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.3);' }}>
+            <CardContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.2);' }}>
                 <Box display="flex" alignItems="center" margin={1}>
                     <Avatar alt="アイコン" src={imageUrl} />
                     <Box marginRight={1}></Box>
@@ -50,10 +51,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter: { name } 
                     <FavoriteIcon sx={{ color: 'DeepPink' }} />
                     <Typography variant="body2">5/10</Typography>
                 </Box>
-                <LinearProgress
-                    variant="determinate"
-                    value={50}
-                />
+                <PokemonHPBar value={2} max={10} />
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
                 <Box display="flex" alignItems="center" margin={1}>

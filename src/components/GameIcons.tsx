@@ -32,7 +32,7 @@ const GameIcons: React.FC<GameIconsProps> = ({ iconName }) => {
             iconPath = '/icons/sleep.png';
             break;
         default:
-            iconPath = '/icons/default-icon.png';
+            throw new Error('GameIconに種別のpropsが渡されていないです');
 
     }
 

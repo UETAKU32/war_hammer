@@ -1,7 +1,6 @@
 import { FC } from "react";
 import "./App.css";
 import { GameInfoProvider, useGameInfo } from "./hooks/useGameInfo";
-
 import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import { GameThemeProvider } from "./components/GameThemeProvider";
