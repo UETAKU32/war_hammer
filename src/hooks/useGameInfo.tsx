@@ -28,17 +28,20 @@ const team1: Team = {
     {
       id: 1,
       name: "ピカチュウ",
-      hp: 100,
+      maxHp: 100,
+      currentHp: 100,
     },
     {
       id: 2,
       name: "コラった",
-      hp: 20,
+      maxHp: 20,
+      currentHp: 20,
     },
     {
       id: 3,
       name: "ぽっぽ",
-      hp: 20,
+      maxHp: 20,
+      currentHp: 20,
     },
   ],
 };
@@ -50,17 +53,20 @@ const team2: Team = {
     {
       id: 4,
       name: "ヒトカゲ",
-      hp: 100,
+      maxHp: 100,
+      currentHp: 100
     },
     {
       id: 5,
       name: "キャタピ",
-      hp: 20,
+      maxHp: 20,
+      currentHp: 20
     },
     {
-      id: 5,
+      id: 6,
       name: "ゼニガメ",
-      hp: 20,
+      maxHp: 20,
+      currentHp: 4
     },
   ],
 };

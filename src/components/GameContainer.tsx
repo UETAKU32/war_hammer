@@ -11,11 +11,15 @@ export const GameContainer: FC = () => {
     <>
       <GameInfoPanel />
       <Grid container direction="row" spacing={1}>
-        <TeamInfoPanel teamName="A" />
+        <Grid direction="column" xs={2}>
+          <TeamInfoPanel teamName="A" />
+        </Grid>
         <Grid direction="column" xs={8}>
           <HoneyComb />
         </Grid>
-        <TeamInfoPanel teamName="B" />
+        <Grid direction="column" xs={2}>
+          <TeamInfoPanel teamName="B" />
+        </Grid>
       </Grid>
     </>)
 }

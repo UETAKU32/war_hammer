@@ -1,46 +1,43 @@
 import React from 'react';
 
 interface GameIconsProps {
-    iconName: string;
+    iconName: Icon;
 }
 
-const GameIcons: React.FC<GameIconsProps> = ({ iconName }) => {
-    let iconPath: string = '';
+type Icon = "agl" | "atk" | "dmg" | "range" | "def" | "sleep";
 
+const GameIcons: React.FC<GameIconsProps> = ({ iconName }) => {
     const divStyle = {
         marginRight: '10px',
     };
 
-    // iconNameに基づいて表示するアイコンを切り替える
-    switch (iconName) {
-        case 'agl':
-            iconPath = '/icons/agl.png';
-            break;
-        case 'atk':
-            iconPath = '/icons/atk.png';
-            break;
-        case 'dmg':
-            iconPath = '/icons/dmg.png';
-            break;
-        case 'range':
-            iconPath = '/icons/range.png';
-            break;
-        case 'def':
-            iconPath = '/icons/def.png';
-            break;
-        case 'sleep':
-            iconPath = '/icons/sleep.png';
-            break;
-        default:
-            throw new Error('GameIconに種別のpropsが渡されていないです');
-
-    }
-
     return (
         <div style={divStyle}>
-            <img src={iconPath} alt={`Icon for ${iconName}`} />
+            <img src={`/icons/${iconName}.png`} alt={`Icon for ${iconName}`} />
         </div>
     );
 };
 
-export default GameIcons;
+export const AglIcon = () => {
+    return <GameIcons iconName='agl' />
+}
+
+export const AtkIcon: React.FC = () => {
+    return <GameIcons iconName='atk' />;
+};
+
+export const DmgIcon: React.FC = () => {
+    return <GameIcons iconName='dmg' />;
+};
+
+export const RangeIcon: React.FC = () => {
+    return <GameIcons iconName='range' />;
+};
+
+export const DefIcon: React.FC = () => {
+    return <GameIcons iconName='def' />;
+};
+
+export const SleepIcon: React.FC = () => {
+    return <GameIcons iconName='sleep' />;
+};
