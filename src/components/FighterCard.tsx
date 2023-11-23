@@ -3,9 +3,9 @@ import React, { FC } from 'react'
 import { Card, CardContent, Typography, Avatar, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Fighter } from '../types/fighter';
-import GameIcons from './GameIcons';
+import { AglIcon, AtkIcon, DefIcon, DmgIcon, RangeIcon, SleepIcon } from './GameIcons';
 import { TeamName } from '../hooks/useGameInfo';
-import PokemonHPBar from './PokemonHPBar';
+import HpBar from './HpBar';
 
 
 type FighterCardProps = {
@@ -14,22 +14,9 @@ type FighterCardProps = {
 }
 
 
-export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter: { name } }) => {
+export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
 
-    let teamColor: string = ""
-
-    switch (teamName) {
-        case 'A':
-            teamColor = 'linear-gradient(135deg, #FF0000, #8B0000)';
-            break;
-        case 'B':
-            teamColor = 'linear-gradient(135deg, #4287f5, #0a2f6c)';
-            break;
-        default:
-            throw new Error('FighterCardにチームデータが渡されていません');
-
-    }
-
+    const teamColor: string = `linear-gradient(135deg, ${teamName === "A" ? `#FF0000, #8B0000` : `#4287f5, #0a2f6c`})`;
     const imageUrl: string = `${process.env.PUBLIC_URL}/characterImages/Dullahan.png`;
 
     return (
@@ -45,36 +32,36 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter: { name } 
                 <Box display="flex" alignItems="center" margin={1}>
                     <Avatar alt="アイコン" src={imageUrl} />
                     <Box marginRight={1}></Box>
-                    <Typography variant="h6">{name}</Typography>
+                    <Typography variant="h6">{fighter.name}</Typography>
                 </Box>
                 <Box display="flex" alignItems="center" margin={1}>
                     <FavoriteIcon sx={{ color: 'DeepPink' }} />
                     <Typography variant="body2">5/10</Typography>
                 </Box>
-                <PokemonHPBar value={2} max={10} />
+                <HpBar fighter={fighter} />
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
                 <Box display="flex" alignItems="center" margin={1}>
-                    <GameIcons iconName='agl' />
+                    <AglIcon />
                     <Typography variant="body2">5</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <GameIcons iconName='def' />
+                    <DefIcon />
                     <Typography variant="body2">5</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <GameIcons iconName='sleep' />
+                    <SleepIcon />
                     <Typography variant="body2">2</Typography>
                 </Box>
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
                 <Typography variant="body2">攻撃技:剣戟</Typography>
                 <Box display="flex" alignItems="center" margin={1}>
-                    <GameIcons iconName='atk' />
+                    <AtkIcon />
                     <Typography variant="body2">7</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <GameIcons iconName='range' />
+                    <RangeIcon />
                     <Typography variant="body2">1</Typography>
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <GameIcons iconName='dmg' />
+                    <DmgIcon />
                     <Typography variant="body2">3</Typography>
                 </Box>
             </CardContent>

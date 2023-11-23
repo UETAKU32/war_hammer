@@ -22,12 +22,12 @@ const HoneyComb: FC = () => {
   for (let row = 0; row < MaxCoordinate.row; row++) {
     for (let col = 0; col < MaxCoordinate.col; col++) {
       //座標情報を保持
-      const Coordinate: Coordinate = {
+      const coordinate: Coordinate = {
         row: row,
         col: col
       }
       //各HEXの中心座標を計算
-      const CenterPoint: CenterPoint = {
+      const centerPoint: CenterPoint = {
         x: row * HEXWidth + (col % 2 === 1 ? HEXWidth / 2 : 0) + HEXWidth / 2 + 2,
         y: col * 1.5 * HEXRadius + HEXRadius + 2,
       }
@@ -35,9 +35,9 @@ const HoneyComb: FC = () => {
       honeycomb.push(
         <>
           <MakeHEX
-            CenterPoint={CenterPoint}
-            Coordiate={Coordinate}
-            HEXRadius={HEXRadius}
+            centerPoint={centerPoint}
+            coordiate={coordinate}
+            hexRadius={HEXRadius}
           />
         </>
       )

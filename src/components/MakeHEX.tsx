@@ -3,20 +3,20 @@ import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 
 type MakeHEXProps = {
-    CenterPoint: CenterPoint;
-    Coordiate: Coordinate;
-    HEXRadius: number;
+    centerPoint: CenterPoint;
+    coordiate: Coordinate;
+    hexRadius: number;
 }
 
-const MakeHEX: FC<MakeHEXProps> = ({ CenterPoint, Coordiate, HEXRadius }) => {
+const MakeHEX: FC<MakeHEXProps> = ({ centerPoint, coordiate, hexRadius }) => {
 
     const HEXShapes = [
-        [0, HEXRadius],
-        [(Math.sqrt(3) / 2) * HEXRadius, HEXRadius / 2],
-        [(Math.sqrt(3) / 2) * HEXRadius, -HEXRadius / 2],
-        [0, -HEXRadius],
-        [-(Math.sqrt(3) / 2) * HEXRadius, -HEXRadius / 2],
-        [-(Math.sqrt(3) / 2) * HEXRadius, HEXRadius / 2],
+        [0, hexRadius],
+        [(Math.sqrt(3) / 2) * hexRadius, hexRadius / 2],
+        [(Math.sqrt(3) / 2) * hexRadius, -hexRadius / 2],
+        [0, -hexRadius],
+        [-(Math.sqrt(3) / 2) * hexRadius, -hexRadius / 2],
+        [-(Math.sqrt(3) / 2) * hexRadius, hexRadius / 2],
     ];
     const pointsString: string = HEXShapes.map((point) => point.join(",")).join(" ");
 
@@ -26,7 +26,7 @@ const MakeHEX: FC<MakeHEXProps> = ({ CenterPoint, Coordiate, HEXRadius }) => {
             fill="white"
             stroke="black"
             strokeWidth="2"
-            transform={`translate(${CenterPoint.x}, ${CenterPoint.y})`}
+            transform={`translate(${centerPoint.x}, ${centerPoint.y})`}
             style={{ cursor: "pointer" }}
         />
     )
