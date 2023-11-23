@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Card, CardContent, Typography, Avatar, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Fighter } from '../types/fighter';
-import { AglIcon, AtkIcon, DefIcon, DmgIcon, RangeIcon, SleepIcon } from './GameIcons';
+import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, Status } from './GameIcons';
 import { TeamName } from '../hooks/useGameInfo';
 import HpBar from './HpBar';
 
@@ -42,27 +42,21 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
                 <Box display="flex" alignItems="center" margin={1}>
-                    <AglIcon />
-                    <Typography variant="body2">5</Typography>
+                    <AglStatus fighter={fighter} />
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <DefIcon />
-                    <Typography variant="body2">5</Typography>
+                    <DefStatus fighter={fighter} />
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <SleepIcon />
-                    <Typography variant="body2">2</Typography>
+                    <Status fighter={fighter} />
                 </Box>
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
                 <Typography variant="body2">攻撃技:剣戟</Typography>
                 <Box display="flex" alignItems="center" margin={1}>
-                    <AtkIcon />
-                    <Typography variant="body2">7</Typography>
+                    <AtkStatus fighter={fighter} />
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <RangeIcon />
-                    <Typography variant="body2">1</Typography>
+                    <RangeStatus fighter={fighter} />
                     <Box marginLeft={1} marginRight={1}></Box>
-                    <DmgIcon />
-                    <Typography variant="body2">3</Typography>
+                    <DmgStatus fighter={fighter} />
                 </Box>
             </CardContent>
         </Card>
