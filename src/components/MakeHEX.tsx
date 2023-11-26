@@ -23,7 +23,7 @@ const MakeHEX: FC<MakeHEXProps> = ({ centerPoint, coordiate, hexRadius }) => {
     return (
         <polygon
             points={pointsString}
-            fill="white"
+            fill="rgba(100, 100, 100, 0.5)"
             stroke="black"
             strokeWidth="2"
             transform={`translate(${centerPoint.x}, ${centerPoint.y})`}

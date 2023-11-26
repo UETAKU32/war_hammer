@@ -28,8 +28,8 @@ const team1: Team = {
     {
       id: 1,
       name: "ピカチュウ",
-      maxHp: 100,
-      currentHp: 100,
+      maxHp: 10,
+      currentHp: 10,
     },
     {
       id: 2,
@@ -53,8 +53,8 @@ const team2: Team = {
     {
       id: 4,
       name: "ヒトカゲ",
-      maxHp: 100,
-      currentHp: 100
+      maxHp: 10,
+      currentHp: 10
     },
     {
       id: 5,

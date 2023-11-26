@@ -14,7 +14,7 @@ export const GameContainer: FC = () => {
         <Grid direction="column" xs={2}>
           <TeamInfoPanel teamName="A" />
         </Grid>
-        <Grid direction="column" xs={8}>
+        <Grid direction="column" xs={8} justifyContent="center" alignItems="center">
           <HoneyComb />
         </Grid>
         <Grid direction="column" xs={2}>

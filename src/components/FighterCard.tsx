@@ -3,7 +3,7 @@ import React, { FC } from 'react'
 import { Card, CardContent, Typography, Avatar, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Fighter } from '../types/fighter';
-import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, Status } from './GameIcons';
+import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, SleepStatus, StatusContainer } from './GameIcons';
 import { TeamName } from '../hooks/useGameInfo';
 import HpBar from './HpBar';
 
@@ -41,23 +41,17 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                 <HpBar fighter={fighter} />
                 <Box display="flex" alignItems="center" margin={2}>
                 </Box>
-                <Box display="flex" alignItems="center" margin={1}>
+                <StatusContainer>
                     <AglStatus fighter={fighter} />
-                    <Box marginLeft={1} marginRight={1}></Box>
                     <DefStatus fighter={fighter} />
-                    <Box marginLeft={1} marginRight={1}></Box>
-                    <Status fighter={fighter} />
-                </Box>
-                <Box display="flex" alignItems="center" margin={2}>
-                </Box>
-                <Typography variant="body2">攻撃技:剣戟</Typography>
-                <Box display="flex" alignItems="center" margin={1}>
+                    <SleepStatus fighter={fighter} />
+                </StatusContainer>
+                <Typography variant="body1">攻撃技:剣戟</Typography>
+                <StatusContainer>
                     <AtkStatus fighter={fighter} />
-                    <Box marginLeft={1} marginRight={1}></Box>
                     <RangeStatus fighter={fighter} />
-                    <Box marginLeft={1} marginRight={1}></Box>
                     <DmgStatus fighter={fighter} />
-                </Box>
+                </StatusContainer>
             </CardContent>
         </Card>
     );

@@ -2,12 +2,14 @@ import React, { FC } from 'react'
 import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import MakeHEX from './MakeHEX'
+import { Box } from '@mui/system'
+import Grid from '@mui/material/Grid';
 
 
 const HoneyComb: FC = () => {
 
   //HEXの大きさを定義
-  const HEXRadius: number = 55;//中心点から各頂点への距離
+  const HEXRadius: number = 60;//中心点から各頂点への距離
   const HEXWidth: number = Math.sqrt(3) * HEXRadius;//ヨコの長さ
   const HEXHeight: number = HEXRadius * 2;//タテの長さ
 
@@ -15,6 +17,10 @@ const HoneyComb: FC = () => {
     row: 7,
     col: 8
   }
+
+  const boardWidth: number = MaxCoordinate.col * HEXWidth * 0.95;
+  const boardHeight: number = (MaxCoordinate.row + 0.5) * HEXHeight * 0.85
+
 
   const honeycomb: any = [];
 
@@ -42,17 +48,22 @@ const HoneyComb: FC = () => {
         </>
       )
     }
+
   }
 
   return (
-    <svg
-      width="100%"
-      height="100%"
-      viewBox={`0 0 ${MaxCoordinate.col * HEXWidth} ${(MaxCoordinate.row + 0.5) * HEXHeight}}`}
-      style={{ display: "block", margin: "auto" }}
-    >
-      {honeycomb}
-    </svg>
+    <Grid item style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <Box width={boardWidth} height={boardHeight}>
+        <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${boardWidth} ${boardHeight}}`}
+          style={{ display: "block", margin: "auto" }}
+        >
+          {honeycomb}
+        </svg>
+      </Box>
+    </Grid>
   )
 }
 
