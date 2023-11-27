@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid';
 const HoneyComb: FC = () => {
 
   //HEXの大きさを定義
-  const HEXRadius: number = 60;//中心点から各頂点への距離
+  const HEXRadius: number = 65;//中心点から各頂点への距離
   const HEXWidth: number = Math.sqrt(3) * HEXRadius;//ヨコの長さ
   const HEXHeight: number = HEXRadius * 2;//タテの長さ
 

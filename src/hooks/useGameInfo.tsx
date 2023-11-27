@@ -27,21 +27,63 @@ const team1: Team = {
   fighters: [
     {
       id: 1,
-      name: "ピカチュウ",
-      maxHp: 10,
-      currentHp: 10,
+      name: "女騎士",
+      maxHp: 8,
+      currentHp: 8,
+      agl: 3,
+      def: 5,
+      sleep: 0,
+      move: {
+        name: "体当たり",
+        atk: 4,
+        range: 2,
+        dmg: 2,
+      },
+      coordinate: {
+        row: 0,
+        col: 0,
+      },
+      image: "WomanKnight.png",
     },
     {
       id: 2,
-      name: "コラった",
+      name: "ハンター",
       maxHp: 20,
       currentHp: 20,
+      agl: 3,
+      def: 5,
+      sleep: 0,
+      move: {
+        name: "体当たり",
+        atk: 4,
+        range: 2,
+        dmg: 2,
+      },
+      coordinate: {
+        row: 1,
+        col: 1,
+      },
+      image: "Hunter.png",
     },
     {
       id: 3,
-      name: "ぽっぽ",
+      name: "ケットシー",
       maxHp: 20,
       currentHp: 20,
+      agl: 3,
+      def: 5,
+      sleep: 0,
+      move: {
+        name: "体当たり",
+        atk: 4,
+        range: 2,
+        dmg: 2,
+      },
+      coordinate: {
+        row: 2,
+        col: 2,
+      },
+      image: "CaitSith.png",
     },
   ],
 };
@@ -52,21 +94,63 @@ const team2: Team = {
   fighters: [
     {
       id: 4,
-      name: "ヒトカゲ",
+      name: "ナーガ",
       maxHp: 10,
-      currentHp: 10
+      currentHp: 10,
+      agl: 3,
+      def: 5,
+      sleep: 0,
+      move: {
+        name: "体当たり",
+        atk: 4,
+        range: 2,
+        dmg: 2,
+      },
+      coordinate: {
+        row: 3,
+        col: 3,
+      },
+      image: "Naga.png",
     },
     {
       id: 5,
-      name: "キャタピ",
+      name: "デスクラウン",
       maxHp: 20,
-      currentHp: 20
+      currentHp: 20,
+      agl: 3,
+      def: 5,
+      sleep: 0,
+      move: {
+        name: "体当たり",
+        atk: 4,
+        range: 4,
+        dmg: 4,
+      },
+      coordinate: {
+        row: 1,
+        col: 2,
+      },
+      image: "Clown.png",
     },
     {
       id: 6,
-      name: "ゼニガメ",
+      name: "ワーウルフ",
       maxHp: 20,
-      currentHp: 4
+      currentHp: 4,
+      agl: 3,
+      def: 5,
+      sleep: 0,
+      move: {
+        name: "体当たり",
+        atk: 4,
+        range: 2,
+        dmg: 2,
+      },
+      coordinate: {
+        row: 5,
+        col: 5,
+      },
+      image: "WolfMan.png",
     },
   ],
 };
