@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { Card, CardContent, Typography, Avatar, Box } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Fighter } from '../types/fighter';
 import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, SleepStatus, StatusContainer } from './GameIcons';
@@ -27,6 +27,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                 borderRadius: '12px', // 角丸
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // 影
                 background: teamColor,
+                opacity: `0.95`,
             }}
         >
             <CardContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.2);' }}>

@@ -4,14 +4,16 @@ import { Coordinate } from '../types/Coordinate'
 import MakeHEX from './MakeHEX'
 import { Box } from '@mui/system'
 import Grid from '@mui/material/Grid';
+import { getCenterPointFromHex } from '../lib/coordinate'
+import FighterDisplay from './FighterDisplay'
 
+//HEXの大きさを定義
+export const HEXRadius: number = 65;//中心点から各頂点への距離
+export const HEXWidth: number = Math.sqrt(3) * HEXRadius;//ヨコの長さ
+export const HEXHeight: number = HEXRadius * 2;//タテの長さ
 
 const HoneyComb: FC = () => {
 
-  //HEXの大きさを定義
-  const HEXRadius: number = 65;//中心点から各頂点への距離
-  const HEXWidth: number = Math.sqrt(3) * HEXRadius;//ヨコの長さ
-  const HEXHeight: number = HEXRadius * 2;//タテの長さ
 
   const MaxCoordinate: Coordinate = {
     row: 7,
@@ -33,10 +35,7 @@ const HoneyComb: FC = () => {
         col: col
       }
       //各HEXの中心座標を計算
-      const centerPoint: CenterPoint = {
-        x: row * HEXWidth + (col % 2 === 1 ? HEXWidth / 2 : 0) + HEXWidth / 2 + 2,
-        y: col * 1.5 * HEXRadius + HEXRadius + 2,
-      }
+      const centerPoint: CenterPoint = getCenterPointFromHex(coordinate)
 
       honeycomb.push(
         <>
@@ -61,6 +60,7 @@ const HoneyComb: FC = () => {
           style={{ display: "block", margin: "auto" }}
         >
           {honeycomb}
+          <FighterDisplay />
         </svg>
       </Box>
     </Grid>
