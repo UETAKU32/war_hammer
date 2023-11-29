@@ -13,7 +13,7 @@ const FighterDisplay: FC = () => {
                     y={(fighter.coordinate.col * 1.5 * HEXHeight) / 2 + HEXHeight / 2 + 2 - HEXHeight / 2}
                     width={HEXWidth}
                     height={HEXHeight}
-                    xlinkHref={`${process.env.PUBLIC_URL}/characterImages/${fighter.image}`}
+                    xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${fighter.image}`}
                     style={{ pointerEvents: "none" }}
                 />
             )
