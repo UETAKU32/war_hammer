@@ -9,6 +9,7 @@ const FighterDisplay: FC = () => {
         team.fighters.filter((fighter) => fighter.currentHp > 0).forEach((fighter) =>
             fighterImages.push(
                 <image
+                    key={fighter.name}
                     x={fighter.coordinate.row * HEXWidth + (fighter.coordinate.col % 2 === 1 ? HEXWidth / 2 : 0) + 2}
                     y={(fighter.coordinate.col * 1.5 * HEXHeight) / 2 + HEXHeight / 2 + 2 - HEXHeight / 2}
                     width={HEXWidth}

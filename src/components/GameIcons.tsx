@@ -1,7 +1,6 @@
 import { Typography, Box } from '@mui/material';
 import { FC, PropsWithChildren } from 'react';
 import { Fighter } from '../types/fighter';
-import { margin } from '@mui/system';
 
 interface StatusProps {
     iconName: Icon;
@@ -16,7 +15,7 @@ const Status: FC<StatusProps> = ({ iconName, statusValue }) => {
     };
 
     return (
-        <div style={{ marginRight: `20px`, display: `flex`, alignItems: `center` }}>
+        <div style={{ marginRight: `15px`, display: `flex`, alignItems: `center` }}>
             <div style={divStyle}>
                 <img src={`/icons/${iconName}.png`} alt={`Icon for ${iconName}`} />
             </div><Typography variant="body2">{statusValue}</Typography>

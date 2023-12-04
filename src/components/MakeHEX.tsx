@@ -1,14 +1,16 @@
 import React, { FC } from 'react'
 import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
+import { getCenterPointFromHex } from '../lib/coordinate';
 
 type MakeHEXProps = {
-    centerPoint: CenterPoint;
     coordiate: Coordinate;
     hexRadius: number;
 }
 
-const MakeHEX: FC<MakeHEXProps> = ({ centerPoint, coordiate, hexRadius }) => {
+const MakeHEX: FC<MakeHEXProps> = ({ coordiate, hexRadius }) => {
+
+    const centerPoint: CenterPoint = getCenterPointFromHex(coordiate);
 
     const HEXShapes = [
         [0, hexRadius],

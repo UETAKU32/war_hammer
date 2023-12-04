@@ -1,10 +1,8 @@
 import React, { FC } from 'react'
-import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import MakeHEX from './MakeHEX'
 import { Box } from '@mui/system'
 import Grid from '@mui/material/Grid';
-import { getCenterPointFromHex } from '../lib/coordinate'
 import FighterDisplay from './FighterDisplay'
 
 //HEXの大きさを定義
@@ -34,13 +32,11 @@ const HoneyComb: FC = () => {
         row: row,
         col: col
       }
-      //各HEXの中心座標を計算
-      const centerPoint: CenterPoint = getCenterPointFromHex(coordinate)
 
       honeycomb.push(
         <>
           <MakeHEX
-            centerPoint={centerPoint}
+            key={`${row}-${col}`}
             coordiate={coordinate}
             hexRadius={HEXRadius}
           />
