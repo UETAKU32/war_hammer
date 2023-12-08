@@ -22,11 +22,14 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
     return (
         <Card
             style={{
+                marginBottom: 25,
+                position: 'relative',
                 border: '4px solid transparent', // 境界線スタイル
+                borderColor: `rgba(0, 0, 0, 0.7)`,
                 borderRadius: '4px', // 角丸
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.8)', // 影
                 background: teamColor,
-                opacity: `0.95`,
+                opacity: `0.85`,
             }}
         >
             <CardContent sx={{ backgroundColor: 'rgba(0, 0, 0, 0.2);' }}>
@@ -54,6 +57,18 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                     <RangeStatus fighter={fighter} />
                     <DmgStatus fighter={fighter} />
                 </StatusContainer>
+                <img
+                    src={`${process.env.PUBLIC_URL}/UI/FighterFlame.png`}
+                    alt="Flame"
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        opacity: 0.6,
+                    }}
+                />
             </CardContent>
         </Card>
     );
