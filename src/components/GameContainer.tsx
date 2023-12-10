@@ -21,5 +21,6 @@ export const GameContainer: FC = () => {
           <TeamInfoPanel teamName="B" />
         </Grid>
       </Grid>
-    </>)
+    </>
+  )
 }

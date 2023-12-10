@@ -23,7 +23,7 @@ export type Team = {
 
 const team1: Team = {
   name: "A",
-  victoryPoint: 10,
+  victoryPoint: 6,
   fighters: [
     {
       id: 1,
@@ -90,7 +90,7 @@ const team1: Team = {
 
 const team2: Team = {
   name: "B",
-  victoryPoint: 0,
+  victoryPoint: 4,
   fighters: [
     {
       id: 4,
