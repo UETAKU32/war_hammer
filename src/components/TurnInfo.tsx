@@ -19,6 +19,7 @@ const TurnInfo: FC = () => {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                position: 'relative'
             }}>
             <Typography variant="h4"
                 style={{
