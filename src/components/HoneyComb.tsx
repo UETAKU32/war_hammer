@@ -4,6 +4,7 @@ import MakeHEX from './MakeHEX'
 import { Box } from '@mui/system'
 import Grid from '@mui/material/Grid';
 import FighterDisplay from './FighterDisplay'
+import ActionMenu from './ActionMenu';
 
 //HEXの大きさを定義
 export const HEXRadius: number = 65;//中心点から各頂点への距離
@@ -38,7 +39,6 @@ const HoneyComb: FC = () => {
           <MakeHEX
             key={`${row}-${col}`}
             coordiate={coordinate}
-            hexRadius={HEXRadius}
           />
         </>
       )

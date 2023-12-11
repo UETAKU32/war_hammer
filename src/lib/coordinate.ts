@@ -1,10 +1,11 @@
-import { HEXRadius, HEXWidth } from "../components/HoneyComb";
+import { HEXRadius} from "../components/HoneyComb";
 import { CenterPoint } from "../types/CenterPoint";
 import { Coordinate, } from "../types/Coordinate";
 
 export function getCenterPointFromHex ({row,col}:Coordinate):CenterPoint{
+  const hexWidth :number =Math.sqrt(3) * HEXRadius;
     return {
-        x: row * HEXWidth + (col % 2 === 1 ? HEXWidth / 2 : 0) + HEXWidth / 2 + 2,
+        x: row * hexWidth + (col % 2 === 1 ? hexWidth / 2 : 0) + hexWidth / 2 + 2,
         y: col * 1.5 * HEXRadius + HEXRadius + 2,
       }
 

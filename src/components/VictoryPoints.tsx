@@ -2,14 +2,13 @@ import React, { FC } from 'react'
 import { TeamName, useGameInfo } from "../hooks/useGameInfo";
 import { Box, Typography } from '@mui/material';
 
-type VictoryPointsProps = {
+interface VictoryPointsProps {
     teamName: TeamName;
 }
 
 
-const VictoryPoints: FC<VictoryPointsProps> = (VictoryPointsProps) => {
+const VictoryPoints: FC<VictoryPointsProps> = ({ teamName }) => {
 
-    const teamName: TeamName = VictoryPointsProps.teamName
     const { gameInfo } = useGameInfo()
     const victoryPoint: number | undefined = gameInfo.teams.find((team) => team.name === teamName)?.victoryPoint
 
