@@ -1,19 +1,19 @@
 import { FC } from "react";
 import { FighterCard } from "./FighterCard";
-import { TeamName, useGameInfo } from "../hooks/useGameInfo";
+import { PlayerId } from "../types/Player";
+import { usePlayer } from "../hooks/usePlayer";
 
 type TeamInfoPanelProps = {
-  teamName: TeamName;
+  playerId: PlayerId;
 }
 
-export const TeamInfoPanel: FC<TeamInfoPanelProps> = ({ teamName }) => {
-  const { gameInfo } = useGameInfo();
-  const team = gameInfo.teams.find((player) => player.name === teamName)
-  console.log({ teamName, team })
-  if (!team) throw new Error(`Team ${teamName} was not found.`)
+export const TeamInfoPanel: FC<TeamInfoPanelProps> = ({ playerId }) => {
+  const { player } = usePlayer(playerId)
+  console.log({ teamName: playerId, team: player })
+  if (!player) throw new Error(`Team ${playerId} was not found.`)
   return (
     <>
-      {team.fighters.map((fighter) => <FighterCard key={`${fighter.id}`} teamName={teamName} fighter={fighter} />)}
+      {player.fighters.map((fighter) => <FighterCard key={`${fighter.id}`} teamName={playerId} fighter={fighter} />)}
     </>
   )
 }

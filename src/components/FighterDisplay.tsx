@@ -1,12 +1,15 @@
 import { FC } from 'react'
-import { useGameInfo } from '../hooks/useGameInfo';
 import { HEXWidth, HEXHeight } from "../components/HoneyComb";
+import { usePlayer } from '../hooks/usePlayer';
 
 const FighterDisplay: FC = () => {
-    const { gameInfo } = useGameInfo();
+    const { player: playerA } = usePlayer("A");
+    const { player: playerB } = usePlayer("B");
     const fighterImages: JSX.Element[] = []
-    gameInfo.teams.forEach((team) =>
-        team.fighters.filter((fighter) => fighter.currentHp > 0).forEach((fighter) =>
+    const allPlayers = [playerA, playerB]
+
+    allPlayers.forEach((player) =>
+        player.fighters.filter((fighter) => fighter.currentHp > 0).forEach((fighter) =>
             fighterImages.push(
                 <image
                     key={fighter.name}
