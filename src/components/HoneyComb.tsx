@@ -5,22 +5,17 @@ import { Box } from '@mui/system'
 import Grid from '@mui/material/Grid';
 import FighterDisplay from './FighterDisplay'
 import ActionMenu from './ActionMenu';
-
-//HEXの大きさを定義
-export const HEXRadius: number = 65;//中心点から各頂点への距離
-export const HEXWidth: number = Math.sqrt(3) * HEXRadius;//ヨコの長さ
-export const HEXHeight: number = HEXRadius * 2;//タテの長さ
+import { hexHeight, hexWidth } from '../lib/hexSize';
 
 const HoneyComb: FC = () => {
-
 
   const MaxCoordinate: Coordinate = {
     row: 7,
     col: 8
   }
 
-  const boardWidth: number = MaxCoordinate.col * HEXWidth * 0.95;
-  const boardHeight: number = (MaxCoordinate.row + 0.5) * HEXHeight * 0.85
+  const boardWidth: number = MaxCoordinate.col * hexWidth * 0.95;
+  const boardHeight: number = (MaxCoordinate.row + 0.5) * hexHeight * 0.85
 
 
   const honeycomb: any = [];
@@ -33,7 +28,6 @@ const HoneyComb: FC = () => {
         row: row,
         col: col
       }
-
       honeycomb.push(
         <>
           <MakeHEX
@@ -43,7 +37,6 @@ const HoneyComb: FC = () => {
         </>
       )
     }
-
   }
 
   return (
@@ -57,6 +50,10 @@ const HoneyComb: FC = () => {
         >
           {honeycomb}
           <FighterDisplay />
+          <ActionMenu coordinate={{
+            row: 0,
+            col: 0
+          }} />
         </svg>
       </Box>
     </Grid>

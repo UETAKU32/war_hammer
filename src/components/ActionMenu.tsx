@@ -3,6 +3,7 @@ import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate'
 import { CenterPoint } from '../types/CenterPoint'
 import ActionIcon from './ActionIcon'
+import { hexWidth } from '../lib/hexSize'
 
 interface ActionMenuProps {
     coordinate: Coordinate
@@ -14,11 +15,11 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     return (
         <>
             <ActionIcon action={'Attack'} point={{
-                x: centerPoint.x - 30,
+                x: centerPoint.x - hexWidth / 3,
                 y: centerPoint.y
             }} />
             <ActionIcon action={'Move'} point={{
-                x: centerPoint.x + 30,
+                x: centerPoint.x + hexWidth / 3,
                 y: centerPoint.y
             }} />
 

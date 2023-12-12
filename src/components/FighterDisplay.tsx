@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { HEXWidth, HEXHeight } from "../components/HoneyComb";
+import { hexWidth, hexHeight } from '../lib/hexSize';
 import { usePlayer } from '../hooks/usePlayer';
 
 const FighterDisplay: FC = () => {
@@ -13,10 +13,10 @@ const FighterDisplay: FC = () => {
             fighterImages.push(
                 <image
                     key={fighter.name}
-                    x={fighter.coordinate.row * HEXWidth + (fighter.coordinate.col % 2 === 1 ? HEXWidth / 2 : 0) + 2}
-                    y={(fighter.coordinate.col * 1.5 * HEXHeight) / 2 + HEXHeight / 2 + 2 - HEXHeight / 2}
-                    width={HEXWidth}
-                    height={HEXHeight}
+                    x={fighter.coordinate.row * hexWidth + (fighter.coordinate.col % 2 === 1 ? hexWidth / 2 : 0) + 2}
+                    y={(fighter.coordinate.col * 1.5 * hexHeight) / 2 + hexHeight / 2 + 2 - hexHeight / 2}
+                    width={hexWidth}
+                    height={hexHeight}
                     xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${fighter.image}`}
                     style={{ pointerEvents: "none" }}
                 />
