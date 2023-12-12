@@ -1,19 +1,17 @@
-import React, { FC } from 'react'
-import { TeamName, useGameInfo } from "../hooks/useGameInfo";
+import { FC } from 'react'
 import { Box, Typography } from '@mui/material';
+import { usePlayer } from '../hooks/usePlayer';
+import { PlayerId } from '../types/Player';
 
 interface VictoryPointsProps {
-    teamName: TeamName;
+    playerId: PlayerId;
 }
 
 
-const VictoryPoints: FC<VictoryPointsProps> = ({ teamName }) => {
+const VictoryPoints: FC<VictoryPointsProps> = ({ playerId }) => {
+    const { player: { victoryPoint } } = usePlayer(playerId);
 
-    const { gameInfo } = useGameInfo()
-    const victoryPoint: number | undefined = gameInfo.teams.find((team) => team.name === teamName)?.victoryPoint
-
-
-    const turnUiImage: string = `${process.env.PUBLIC_URL}/UI/Team${teamName}UI2.png`
+    const turnUiImage: string = `${process.env.PUBLIC_URL}/UI/Team${playerId}UI2.png`
     return (
         <Box
             style={{

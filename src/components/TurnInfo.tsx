@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
-import { TeamName } from '../hooks/useGameInfo';
 import { Box } from '@mui/system';
 import Typography from '@mui/material/Typography';
+import { PlayerId } from '../types/Player';
 
 //TODO 以下の3つの定数は、ゲーム制御回りの実装が終わったら、providerから読み込む
-const currentTeam: TeamName = "A"
+const currentTeam: PlayerId = "A"
 const maxTurn: number = 8
 const currentTurn: number = 4
 //--------------------------------------------------------------------

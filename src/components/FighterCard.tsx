@@ -3,13 +3,13 @@ import React, { FC } from 'react'
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { Fighter } from '../types/fighter';
 import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, SleepStatus, StatusContainer } from './GameIcons';
-import { TeamName } from '../hooks/useGameInfo';
 import HpBar from './HpBar';
 import CustomAvatar from './CostomAvatar';
+import { PlayerId } from '../types/Player';
 
 
 type FighterCardProps = {
-    teamName: TeamName
+    teamName: PlayerId
     fighter: Fighter
 }
 

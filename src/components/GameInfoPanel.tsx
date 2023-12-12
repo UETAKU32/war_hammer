@@ -20,13 +20,13 @@ export const GameInfoPanel: FC = () => {
       <Grid direction="column" xs={1}>
       </Grid>
       <Grid direction="column" xs={2}>
-        <VictoryPoints teamName={"A"} />
+        <VictoryPoints playerId={"A"} />
       </Grid>
       <Grid direction="column" xs={4}>
         <TurnInfo />
       </Grid>
       <Grid direction="column" xs={2}>
-        <VictoryPoints teamName={"B"} />
+        <VictoryPoints playerId={"B"} />
       </Grid>
       <Grid direction="column" xs={1}>
       </Grid>
