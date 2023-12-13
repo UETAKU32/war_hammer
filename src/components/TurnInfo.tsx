@@ -1,17 +1,13 @@
 import React, { FC } from 'react'
 import { Box } from '@mui/system';
 import Typography from '@mui/material/Typography';
-import { PlayerId } from '../types/Player';
+import { useGameInfo } from '../hooks/useGameInfo';
 
-//TODO 以下の3つの定数は、ゲーム制御回りの実装が終わったら、providerから読み込む
-const currentTeam: PlayerId = "A"
-const maxTurn: number = 8
-const currentTurn: number = 4
-//--------------------------------------------------------------------
-
-const turnUiImage: string = `${process.env.PUBLIC_URL}/UI/Team${currentTeam}UI.png`
 
 const TurnInfo: FC = () => {
+
+    const { whichTurn: currentTeam, maxTurnNum: maxTurn, currentTurnNum: currentTurn } = useGameInfo();
+    const turnUiImage: string = `${process.env.PUBLIC_URL}/UI/Team${currentTeam}UI.png`
 
     return (
         <Box
@@ -21,7 +17,7 @@ const TurnInfo: FC = () => {
                 alignItems: 'center',
                 position: 'relative'
             }}>
-            <Typography variant="h4"
+            <Typography variant="h5"
                 style={{
                     color: `white`,
                     zIndex: 1,
@@ -33,7 +29,7 @@ const TurnInfo: FC = () => {
             >Turn {currentTurn} / {maxTurn} Max</Typography>
             <img
                 src={turnUiImage}
-                alt=''
+                alt='TurnUI'
                 style={{
                     width: '100%',
                     height: '120px',

@@ -11,7 +11,7 @@ export const GameInfoPanel: FC = () => {
       alignItems="center"
       style={{
         position: 'relative',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.8)', // 影
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.8)',
         background: 'linear-gradient(to right, rgba(255, 0, 0, 0.2), rgba(0, 0, 255, 0.2))',
       }}
     >

@@ -9,7 +9,6 @@ type TeamInfoPanelProps = {
 
 export const TeamInfoPanel: FC<TeamInfoPanelProps> = ({ playerId }) => {
   const { player } = usePlayer(playerId)
-  console.log({ teamName: playerId, team: player })
   if (!player) throw new Error(`Team ${playerId} was not found.`)
   return (
     <>
