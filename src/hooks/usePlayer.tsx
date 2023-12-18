@@ -63,3 +63,9 @@ export const usePlayer = (playerId: PlayerId) => {
   if (!selectedPlayer) throw new Error(`playerId "${playerId}" was not found`);
   return { player: selectedPlayer, action: value.action }
 }
+
+export const useAllPlayers = () => {
+  const { player: playerA } = usePlayer("A");
+  const { player: playerB } = usePlayer("B");
+  return [playerA, playerB]
+}
