@@ -1,5 +1,6 @@
 import { FC, PropsWithChildren, createContext, useContext, useState } from "react";
 import { PlayerId } from "../types/Player";
+import { Fighter } from "../types/fighter";
 
 
 type GameInfo = {
@@ -7,6 +8,7 @@ type GameInfo = {
   whichWon?: PlayerId;
   maxTurnNum: number;
   currentTurnNum: number;
+  selectedFighter?: Fighter
   switchTurn: () => void;
 }
 
@@ -18,6 +20,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   //NOTE: playerに持たせるべき・・？？考え中
   const [whichWon, setWhichWon] = useState<PlayerId>();
   const [whichTurn, setWhichTurn] = useState<PlayerId>("A");
+  const [selectedFighter, setSelectedFighter] = useState<Fighter>();
   const switchTurn = () => {
     if (whichTurn === "A") {
       setWhichTurn("B");
@@ -31,6 +34,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     whichTurn,
     maxTurnNum,
     currentTurnNum,
+    selectedFighter,
     switchTurn
   }
 

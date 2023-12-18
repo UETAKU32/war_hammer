@@ -32,7 +32,7 @@ const HoneyComb: FC = () => {
         <>
           <MakeHEX
             key={`${row}-${col}`}
-            coordiate={coordinate}
+            coordinate={coordinate}
           />
         </>
       )
