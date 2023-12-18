@@ -9,4 +9,5 @@ export type Player = {
   victoryPoint: number;
   fighters: Fighter[];
   selectedCoordinate?: Coordinate;
+  selectedFighterId?: number;
 };

@@ -10,27 +10,39 @@ import {
 import { Fighter } from "../types/fighter";
 import { Player, PlayerId } from "../types/Player";
 import { player1, player2 } from "../data/initialPlayers";
+import { Coordinate } from "../types/Coordinate";
+import { isEqual } from "lodash";
+import { useGameInfo } from "./useGameInfo";
 
 const PlayerContext = createContext<PlayerProviderProps | null>(null);
 
 type PlayerAction =
+  | { type: "SELECT"; payload: { selectedFighter: Fighter, whichTurn: PlayerId } }
   | { type: "ATTACK"; payload: { attacker: Fighter; receiver: Fighter } }
   | { type: "HEAL"; payload: { healHP: number; receiver: Fighter } }
-  | { type: "ADD_VICTORY_POINT"; payload: { team: PlayerId } };
+  | { type: "ADD_VICTORY_POINT"; payload: { whichTurn: PlayerId } };
 
 const reducer = produce((players: Player[], action: PlayerAction) => {
+  let updatedPlayer: Player | undefined;
   switch (action.type) {
+    //TODO: 初回selectedFighterIdがセットされないバグ
+    case "SELECT":
+      updatedPlayer = players.find(
+        (player) => player.id === action.payload.whichTurn
+      );
+      if (!updatedPlayer) throw new Error(`Team${action.payload.whichTurn} was not found.`);
+      updatedPlayer.selectedFighterId = action.payload.selectedFighter.id;
+      break;
     case "ATTACK":
       break;
     case "HEAL":
       break;
     case "ADD_VICTORY_POINT":
-      const selectedTeam = action.payload.team;
-      const updatedTeam = players.find(
-        (player) => player.name === selectedTeam
+      updatedPlayer = players.find(
+        (player) => player.id === action.payload.whichTurn
       );
-      if (!updatedTeam) throw new Error(`Team${selectedTeam} was not found.`);
-      updatedTeam.victoryPoint++;
+      if (!updatedPlayer) throw new Error(`Team${action.payload.whichTurn} was not found.`);
+      updatedPlayer.victoryPoint++;
       break;
     default:
       break;
@@ -64,8 +76,24 @@ export const usePlayer = (playerId: PlayerId) => {
   return { player: selectedPlayer, action: value.action }
 }
 
+export const useCurrentTurnPlayer = () => {
+  const { whichTurn } = useGameInfo();
+  return usePlayer(whichTurn);
+}
+
 export const useAllPlayers = () => {
   const { player: playerA } = usePlayer("A");
   const { player: playerB } = usePlayer("B");
   return [playerA, playerB]
+}
+
+const useAllFighters = () => {
+  const allPlayers = useAllPlayers();
+  return allPlayers.flatMap((player) => player.fighters);
+}
+
+export const useFindFighterByCoordinate = () => {
+  const allFighters = useAllFighters();
+  const findFighterByCoordinate = (selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
+  return { findFighterByCoordinate };
 }

@@ -1,19 +1,19 @@
 import { FC } from "react";
 import "./App.css";
-import { GameInfoProvider, useGameInfo } from "./hooks/useGameInfo";
+import { GameInfoProvider } from "./hooks/useGameInfo";
 import { Button } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import { GameThemeProvider } from "./components/GameThemeProvider";
 import { GameContainer } from "./components/GameContainer";
-import { PlayerProvider, usePlayer } from "./hooks/usePlayer";
+import { PlayerProvider, useCurrentTurnPlayer } from "./hooks/usePlayer";
 
 
 
 
 const Sample: FC = () => {
-  const { player, action } = usePlayer("A");
+  const { player, action } = useCurrentTurnPlayer();
   const handleClick = () => {
-    action({ type: "ADD_VICTORY_POINT", payload: { team: "A" } });
+    action({ type: "ADD_VICTORY_POINT", payload: { whichTurn: "A" } });
   };
   return (
     <>

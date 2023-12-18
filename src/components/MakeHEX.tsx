@@ -1,11 +1,10 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexRadius } from '../lib/hexSize';
-import { PlayerId } from '../types/Player';
+import { useCurrentTurnPlayer, useFindFighterByCoordinate } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
-import { useSetFighterHEX } from '../hooks/useSetFighterHEX';
 
 type MakeHEXProps = {
     coordinate: Coordinate;
@@ -13,9 +12,8 @@ type MakeHEXProps = {
 
 const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
 
-    const currentPlayer: PlayerId = useGameInfo().whichTurn
-
-    useSetFighterHEX(currentPlayer, coordinate)
+    const { player, action } = useCurrentTurnPlayer();
+    const { findFighterByCoordinate } = useFindFighterByCoordinate();
 
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate);
 
@@ -29,15 +27,13 @@ const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
     ];
     const pointsString: string = HEXShapes.map((point) => point.join(",")).join(" ");
 
-    const cuurentPlayer: PlayerId = useGameInfo().whichTurn
-
     const handleClick = (coordinate: Coordinate): void => {
-        if (useSetFighterHEX(cuurentPlayer, coordinate)) {
-            setSectedFighter(useSetFighterHEX(cuurentPlayer, coordinate))
+        const selectedFighter = findFighterByCoordinate(coordinate);
+        if (selectedFighter) {
+            action({ type: "SELECT", payload: { selectedFighter, whichTurn: player.id } })
         }
-        console.log(useSetFighterHEX(cuurentPlayer, coordinate))
+        console.log({ player })
     }
-
 
     return (
         <polygon
