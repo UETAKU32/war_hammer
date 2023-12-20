@@ -1,12 +1,10 @@
 import { FC } from 'react'
 import { hexWidth, hexHeight } from '../lib/hexSize';
-import { usePlayer } from '../hooks/usePlayer';
+import { useAllPlayers } from '../hooks/usePlayer';
 
 const FighterDisplay: FC = () => {
-    const { player: playerA } = usePlayer("A");
-    const { player: playerB } = usePlayer("B");
+    const allPlayers = useAllPlayers();
     const fighterImages: JSX.Element[] = []
-    const allPlayers = [playerA, playerB]
 
     allPlayers.forEach((player) =>
         player.fighters.filter((fighter) => fighter.currentHp > 0).forEach((fighter) =>
@@ -24,6 +22,7 @@ const FighterDisplay: FC = () => {
         )
     )
 
+    //NOTE: mapでfighterImages除去できそう
     return (
         <>
             {fighterImages}
