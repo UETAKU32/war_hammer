@@ -31,9 +31,7 @@ const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
 
     const handleClick = (coordinate: Coordinate): void => {
         const selectedFighter = findFighterByCoordinate(coordinate);
-        if (selectedFighter) {
-            setSelectedFighter(selectedFighter.id)
-        }
+        setSelectedFighter(selectedFighter)
     }
 
     return (

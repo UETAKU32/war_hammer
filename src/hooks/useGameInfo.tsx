@@ -8,10 +8,10 @@ type GameInfo = {
   whichWon?: PlayerId;
   maxTurnNum: number;
   currentTurnNum: number;
-  selectedFighterId?: number;
-  setSelectedFighter: (fighterId: number | undefined) => void;
-  targetFighter?: number;
-  setTargetFighter: (fighterId: number | undefined) => void;
+  selectedFighter?: Fighter;
+  setSelectedFighter: (fighter: Fighter | undefined) => void;
+  targetFighter?: Fighter;
+  setTargetFighter: (fighterId: Fighter | undefined) => void;
   switchTurn: () => void;
 }
 
@@ -23,8 +23,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   //NOTE: playerに持たせるべき・・？？考え中
   const [whichWon, setWhichWon] = useState<PlayerId>();
   const [whichTurn, setWhichTurn] = useState<PlayerId>("A");
-  const [selectedFighter, setSelectedFighter] = useState<number | undefined>();
-  const [targetFighter, setTargetFighter] = useState<number | undefined>();
+  const [selectedFighter, setSelectedFighter] = useState<Fighter | undefined>();
+  const [targetFighter, setTargetFighter] = useState<Fighter | undefined>();
 
   const switchTurn = () => {
     if (whichTurn === "A") {
@@ -39,7 +39,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     whichTurn,
     maxTurnNum,
     currentTurnNum,
-    selectedFighterId: selectedFighter,
+    selectedFighter,
     setSelectedFighter,
     targetFighter,
     setTargetFighter,

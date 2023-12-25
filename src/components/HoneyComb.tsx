@@ -7,13 +7,10 @@ import FighterDisplay from './FighterDisplay'
 import ActionMenu from './ActionMenu';
 import { hexHeight, hexWidth } from '../lib/hexSize';
 import { useGameInfo } from '../hooks/useGameInfo';
-import { Fighter } from '../types/fighter';
-import { useFighter } from '../hooks/usePlayer';
 
 const HoneyComb: FC = () => {
 
-  const { selectedFighterId } = useGameInfo()
-  const selectedFighter = useFighter(selectedFighterId)
+  const { selectedFighter } = useGameInfo()
 
 
   const MaxCoordinate: Coordinate = {
