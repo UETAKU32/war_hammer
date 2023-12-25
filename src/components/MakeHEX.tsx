@@ -12,6 +12,8 @@ type MakeHEXProps = {
 
 const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
 
+    const { setSelectedFighter } = useGameInfo();
+
     const { player, action } = useCurrentTurnPlayer();
     const { findFighterByCoordinate } = useFindFighterByCoordinate();
 
@@ -30,9 +32,8 @@ const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
     const handleClick = (coordinate: Coordinate): void => {
         const selectedFighter = findFighterByCoordinate(coordinate);
         if (selectedFighter) {
-            action({ type: "SELECT", payload: { selectedFighter, whichTurn: player.id } })
+            setSelectedFighter(selectedFighter.id)
         }
-        console.log({ player })
     }
 
     return (

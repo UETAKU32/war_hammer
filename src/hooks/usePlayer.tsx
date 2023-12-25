@@ -17,7 +17,6 @@ import { useGameInfo } from "./useGameInfo";
 const PlayerContext = createContext<PlayerProviderProps | null>(null);
 
 type PlayerAction =
-  | { type: "SELECT"; payload: { selectedFighter: Fighter, whichTurn: PlayerId } }
   | { type: "ATTACK"; payload: { attacker: Fighter; receiver: Fighter } }
   | { type: "HEAL"; payload: { healHP: number; receiver: Fighter } }
   | { type: "ADD_VICTORY_POINT"; payload: { whichTurn: PlayerId } };
@@ -25,14 +24,6 @@ type PlayerAction =
 const reducer = produce((players: Player[], action: PlayerAction) => {
   let updatedPlayer: Player | undefined;
   switch (action.type) {
-    //TODO: 初回selectedFighterIdがセットされないバグ
-    case "SELECT":
-      updatedPlayer = players.find(
-        (player) => player.id === action.payload.whichTurn
-      );
-      if (!updatedPlayer) throw new Error(`Team${action.payload.whichTurn} was not found.`);
-      updatedPlayer.selectedFighterId = action.payload.selectedFighter.id;
-      break;
     case "ATTACK":
       break;
     case "HEAL":
@@ -90,6 +81,14 @@ export const useAllPlayers = () => {
 const useAllFighters = () => {
   const allPlayers = useAllPlayers();
   return allPlayers.flatMap((player) => player.fighters);
+}
+
+export const useFighter = (id: number | undefined) => {
+  const allFighters = useAllFighters();
+  if (!id) return
+  const fighter = allFighters.find((fighter) => fighter.id === id)
+  if (!fighter) throw new Error(`指定されたファイター:${id}は存在しません`)
+  return fighter
 }
 
 export const useFindFighterByCoordinate = () => {

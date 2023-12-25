@@ -6,8 +6,15 @@ import Grid from '@mui/material/Grid';
 import FighterDisplay from './FighterDisplay'
 import ActionMenu from './ActionMenu';
 import { hexHeight, hexWidth } from '../lib/hexSize';
+import { useGameInfo } from '../hooks/useGameInfo';
+import { Fighter } from '../types/fighter';
+import { useFighter } from '../hooks/usePlayer';
 
 const HoneyComb: FC = () => {
+
+  const { selectedFighterId } = useGameInfo()
+  const selectedFighter = useFighter(selectedFighterId)
+
 
   const MaxCoordinate: Coordinate = {
     row: 7,
@@ -50,10 +57,7 @@ const HoneyComb: FC = () => {
         >
           {honeycomb}
           <FighterDisplay />
-          <ActionMenu coordinate={{
-            row: 0,
-            col: 0
-          }} />
+          {selectedFighter && (<ActionMenu selectedFighter={selectedFighter} />)}
         </svg>
       </Box>
     </Grid>
