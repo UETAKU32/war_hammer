@@ -5,13 +5,14 @@ import { hexWidth } from '../lib/hexSize';
 interface ActionIconProps {
     action: Action
     point: CenterPoint
+    onClick?: () => void
 }
 
 type Action = "Attack" | "Move"
 
 const iconSize: number = hexWidth / 3
 
-const ActionIcon: FC<ActionIconProps> = ({ action, point }) => {
+const ActionIcon: FC<ActionIconProps> = ({ action, point, onClick }) => {
 
     return (
         <image
@@ -21,6 +22,7 @@ const ActionIcon: FC<ActionIconProps> = ({ action, point }) => {
             height={iconSize}
             xlinkHref={`${process.env.PUBLIC_URL}/icons/${action}Action.png`}
             style={{ cursor: "pointer" }}
+            onClick={onClick}
         />
     )
 }

@@ -5,6 +5,7 @@ import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexRadius } from '../lib/hexSize';
 import { useCurrentTurnPlayer, useFindFighterByCoordinate } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
+import { searchdjacent } from '../lib/searchAdjacent';
 
 type MakeHEXProps = {
     coordinate: Coordinate;
@@ -12,7 +13,8 @@ type MakeHEXProps = {
 
 const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
 
-    const { setSelectedFighter } = useGameInfo();
+    const { selectedFighter, setSelectedFighter, phase } = useGameInfo();
+
 
     const { player, action } = useCurrentTurnPlayer();
     const { findFighterByCoordinate } = useFindFighterByCoordinate();
@@ -34,10 +36,27 @@ const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
         setSelectedFighter(selectedFighter)
     }
 
+    let hexColor = "rgba(100, 100, 100, 0.5)"
+
+    let moveRange: any = []
+    if (selectedFighter && phase === "SELECT_MOVE") {
+        moveRange = findRange(selectedFighter.coordinate.row, selectedFighter.coordinate.col, selectedFighter.agl)
+
+        if (moveRange.some((item: any[]) => item[0] == coordinate.row && item[1] == coordinate.col)) {
+            hexColor = "rgba(100, 0, 100, 0.5)"
+
+        }
+    }
+
+
+
+
+
+
     return (
         <polygon
             points={pointsString}
-            fill="rgba(100, 100, 100, 0.5)"
+            fill={hexColor}
             stroke="black"
             strokeWidth="2"
             transform={`translate(${centerPoint.x}, ${centerPoint.y})`}
@@ -49,6 +68,25 @@ const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
 
 export default MakeHEX
 
-function setSectedFighter(arg0: import("../types/fighter").Fighter | undefined) {
-    throw new Error('Function not implemented.');
-}
+const findRange = (startRow: number, startCol: number, range: number) => {
+    const visited = new Set();
+    const queue = [[startRow, startCol, 0]]; // [row, col, moves]
+
+    while (queue.length > 0) {
+        const queueWithoutFirst = queue.shift();
+        if (!queueWithoutFirst) return;
+        const [currentRow, currentCol, moves] = queueWithoutFirst;
+        if (moves === range) {
+            continue;
+        }
+        const neighbors = searchdjacent({ row: currentRow, col: currentCol });
+        for (const { row: nextRow, col: nextCol } of neighbors) {
+            const nextCell = [nextRow, nextCol];
+            if (!visited.has(nextCell)) {
+                visited.add(nextCell);
+                queue.push([nextRow, nextCol, moves + 1]);
+            }
+        }
+    }
+    return Array.from(visited);
+};

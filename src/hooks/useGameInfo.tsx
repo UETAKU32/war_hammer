@@ -2,6 +2,8 @@ import { FC, PropsWithChildren, createContext, useContext, useState } from "reac
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 
+type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE";
+
 
 type GameInfo = {
   whichTurn: PlayerId;
@@ -13,6 +15,8 @@ type GameInfo = {
   targetFighter?: Fighter;
   setTargetFighter: (fighterId: Fighter | undefined) => void;
   switchTurn: () => void;
+  phase: Phase;
+  setPhase: (phase: Phase) => void;
 }
 
 const GameInfoContext = createContext<GameInfo | null>(null);
@@ -25,6 +29,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [whichTurn, setWhichTurn] = useState<PlayerId>("A");
   const [selectedFighter, setSelectedFighter] = useState<Fighter | undefined>();
   const [targetFighter, setTargetFighter] = useState<Fighter | undefined>();
+  const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
 
   const switchTurn = () => {
     if (whichTurn === "A") {
@@ -43,7 +48,9 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedFighter,
     targetFighter,
     setTargetFighter,
-    switchTurn
+    switchTurn,
+    phase,
+    setPhase
   }
 
   return (<GameInfoContext.Provider value={value}>
