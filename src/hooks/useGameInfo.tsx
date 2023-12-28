@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, createContext, useContext, useState } from "reac
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 
-type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE";
+type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK";
 
 
 type GameInfo = {

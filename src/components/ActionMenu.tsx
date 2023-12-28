@@ -21,6 +21,7 @@ const ActionMenu: FC<ActionMenuProps> = ({ selectedFighter: { coordinate } }) =>
     }
 
     const handleClickAttack = () => {
+        setPhase("SELECT_ATTACK")
     }
 
     return (
@@ -28,7 +29,8 @@ const ActionMenu: FC<ActionMenuProps> = ({ selectedFighter: { coordinate } }) =>
             <ActionIcon action={'Attack'} point={{
                 x: centerPoint.x - hexWidth / 3,
                 y: centerPoint.y
-            }} />
+            }}
+                onClick={handleClickAttack} />
             <ActionIcon
                 action={'Move'}
                 point={{

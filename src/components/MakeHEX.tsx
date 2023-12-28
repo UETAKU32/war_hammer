@@ -13,7 +13,7 @@ type MakeHEXProps = {
 
 const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
 
-    const { selectedFighter, setSelectedFighter, phase } = useGameInfo();
+    const { selectedFighter, setSelectedFighter, phase, setPhase } = useGameInfo();
 
 
     const { player, action } = useCurrentTurnPlayer();
@@ -31,26 +31,35 @@ const MakeHEX: FC<MakeHEXProps> = ({ coordinate }) => {
     ];
     const pointsString: string = HEXShapes.map((point) => point.join(",")).join(" ");
 
+    let hexColor = "rgba(100, 100, 100, 0.5)"
+
     const handleClick = (coordinate: Coordinate): void => {
         const selectedFighter = findFighterByCoordinate(coordinate);
         setSelectedFighter(selectedFighter)
-    }
-
-    let hexColor = "rgba(100, 100, 100, 0.5)"
-
-    let moveRange: any = []
-    if (selectedFighter && phase === "SELECT_MOVE") {
-        moveRange = findRange(selectedFighter.coordinate.row, selectedFighter.coordinate.col, selectedFighter.agl)
-
-        if (moveRange.some((item: any[]) => item[0] == coordinate.row && item[1] == coordinate.col)) {
-            hexColor = "rgba(100, 0, 100, 0.5)"
-
+        if (!selectedFighter) {
+            setPhase("SELECT_FIGHTER")
         }
     }
 
 
+    let range: any = []
+    if (selectedFighter && phase === "SELECT_MOVE") {
+        range = findRange(selectedFighter.coordinate.row, selectedFighter.coordinate.col, selectedFighter.agl)
 
+        if (range.some((item: any[]) => item[0] == coordinate.row && item[1] == coordinate.col)) {
+            hexColor = "rgba(0, 100, 0, 0.5)"
+        }
+    } else if (selectedFighter && phase === "SELECT_ATTACK") {
+        range = findRange(selectedFighter.coordinate.row, selectedFighter.coordinate.col, selectedFighter.move.range)
 
+        if (range.some((item: any[]) => item[0] == coordinate.row && item[1] == coordinate.col)) {
+            hexColor = "rgba(100, 0, 100, 0.5)"
+        }
+    }
+
+    if (selectedFighter?.coordinate.row === coordinate.row && selectedFighter?.coordinate.col === coordinate.col) {
+        hexColor = "rgba(100, 100, 0, 0.5)"
+    }
 
 
     return (

@@ -10,7 +10,7 @@ export const player1: Player = {
       name: "聖騎士",
       maxHp: 6,
       currentHp: 6,
-      agl: 3,
+      agl: 2,
       def: 5,
       sleep: 0,
       move: {
@@ -30,13 +30,13 @@ export const player1: Player = {
       name: "熟達の狩人",
       maxHp: 5,
       currentHp: 5,
-      agl: 3,
+      agl: 2,
       def: 4,
       sleep: 0,
       move: {
         name: "弓狙撃",
         atk: 4,
-        range: 3,
+        range: 2,
         dmg: 2,
       },
       coordinate: {
@@ -50,7 +50,7 @@ export const player1: Player = {
       name: "ケットシー",
       maxHp: 4,
       currentHp: 4,
-      agl: 4,
+      agl: 3,
       def: 5,
       sleep: 0,
       move: {
@@ -78,7 +78,7 @@ export const player2: Player = {
       name: "ナーガ",
       maxHp: 4,
       currentHp: 3,
-      agl: 3,
+      agl: 2,
       def: 5,
       sleep: 0,
       move: {
@@ -98,13 +98,13 @@ export const player2: Player = {
       name: "ジョーカー",
       maxHp: 5,
       currentHp: 1,
-      agl: 3,
+      agl: 2,
       def: 4,
       sleep: 0,
       move: {
         name: "死の奇術",
         atk: 4,
-        range: 3,
+        range: 2,
         dmg: 2,
       },
       coordinate: {
@@ -118,7 +118,7 @@ export const player2: Player = {
       name: "ワーウルフ",
       maxHp: 6,
       currentHp: 3,
-      agl: 4,
+      agl: 3,
       def: 4,
       sleep: 0,
       move: {
