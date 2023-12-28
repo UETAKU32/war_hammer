@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { FC } from "react";
 import { GameInfoPanel } from "./GameInfoPanel";
 import { TeamInfoPanel } from "./TeamInfoPanel";
-import HoneyComb from "./HoneyComb";
+import Map from "./Map";
 
 export const GameContainer: FC = () => {
   return (
@@ -13,7 +13,7 @@ export const GameContainer: FC = () => {
           <TeamInfoPanel playerId="A" />
         </Grid>
         <Grid direction="column" xs={8} justifyContent="center" alignItems="center">
-          <HoneyComb />
+          <Map />
         </Grid>
         <Grid direction="column" xs={2}>
           <TeamInfoPanel playerId="B" />

@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, createContext, useContext, useState } from "reac
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 
-type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK";
+export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK";
 
 
 type GameInfo = {
@@ -30,7 +30,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [selectedFighter, setSelectedFighter] = useState<Fighter | undefined>();
   const [targetFighter, setTargetFighter] = useState<Fighter | undefined>();
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
-
+  console.log({ phase })
   const switchTurn = () => {
     if (whichTurn === "A") {
       setWhichTurn("B");
