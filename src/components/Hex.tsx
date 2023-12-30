@@ -3,8 +3,8 @@ import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexRadius } from '../lib/hexSize';
-import { useCurrentTurnPlayer, useFindFighterByCoordinate } from '../hooks/usePlayer';
-import { Phase, useGameInfo } from '../hooks/useGameInfo';
+import { useCurrentTurnPlayer, useFindTeamFighterByCoordinate } from '../hooks/usePlayer';
+import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 
 type HexProps = {
@@ -19,11 +19,11 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
-    const { selectedFighter, setSelectedFighter, phase, setPhase } = useGameInfo();
+    const { whichTurn, selectedFighter, setSelectedFighter, phase, setPhase } = useGameInfo();
 
 
     const { player, action } = useCurrentTurnPlayer();
-    const { findFighterByCoordinate } = useFindFighterByCoordinate();
+    const { findTeamFighterByCoordinate } = useFindTeamFighterByCoordinate(whichTurn);
 
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate);
 
@@ -39,7 +39,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
     const handleClick = (coordinate: Coordinate): void => {
-        const selectedFighter = findFighterByCoordinate(coordinate);
+        const selectedFighter = findTeamFighterByCoordinate(coordinate);
         setSelectedFighter(selectedFighter)
         //NOTE: キャラがいない場合はSELECTED_FIGHTERにリセット
         if (!selectedFighter) {

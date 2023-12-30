@@ -1,7 +1,6 @@
 import { FC } from "react";
 import "./App.css";
-import { GameInfoProvider } from "./hooks/useGameInfo";
-import { Button } from "@mui/material";
+import { GameInfoProvider, useGameInfo } from "./hooks/useGameInfo";
 import Grid from '@mui/material/Grid';
 import { GameThemeProvider } from "./components/GameThemeProvider";
 import { GameContainer } from "./components/GameContainer";
@@ -12,14 +11,17 @@ import { PlayerProvider, useCurrentTurnPlayer } from "./hooks/usePlayer";
 
 const Sample: FC = () => {
   const { player, action } = useCurrentTurnPlayer();
+  const { switchTurn } = useGameInfo();
   const handleClick = () => {
     action({ type: "ADD_VICTORY_POINT", payload: { whichTurn: "A" } });
   };
+  const handleTurn = () => {
+    switchTurn()
+  }
   return (
     <>
-      <Button>aaaaa</Button>
-      <div>victoryPoint: {player.victoryPoint}</div>
       <button onClick={handleClick}>+1</button>
+      <button onClick={handleTurn}>TurnChange</button>
     </>
   );
 };

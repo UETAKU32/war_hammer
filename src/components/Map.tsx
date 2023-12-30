@@ -106,6 +106,6 @@ const findRange = (fighter: Fighter, range: number) => {
       }
     }
   }
-  console.log({ visited })
+
   return Array.from(visited);
 };
