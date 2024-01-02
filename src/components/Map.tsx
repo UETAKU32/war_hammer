@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { Coordinate } from '../types/Coordinate'
 import Hex from './Hex'
 import { Box } from '@mui/system'
@@ -9,10 +9,12 @@ import { hexHeight, hexWidth } from '../lib/hexSize';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { searchdjacent } from '../lib/searchAdjacent';
 import { Fighter } from '../types/fighter';
+import MoveConfirm from './MoveConfirm';
 
 const Map: FC = () => {
 
-  const { selectedFighter, phase } = useGameInfo();
+  const { selectedFighter, selectedHex, phase } = useGameInfo();
+  console.log({ phase })
 
   const getRange = () => {
     if (!selectedFighter || phase === "SELECT_FIGHTER") {
@@ -70,6 +72,7 @@ const Map: FC = () => {
           {honeycomb}
           <FighterDisplay />
           {selectedFighter && (<ActionMenu selectedFighter={selectedFighter} />)}
+          {(selectedFighter && selectedHex) && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
         </svg>
       </Box>
     </Grid>

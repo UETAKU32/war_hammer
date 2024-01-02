@@ -3,7 +3,7 @@ import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexRadius } from '../lib/hexSize';
-import { useCurrentTurnPlayer, useFindTeamFighterByCoordinate } from '../hooks/usePlayer';
+import { useCurrentTurnPlayer, useFindFighterByCoordinate, useFindTeamFighterByCoordinate, usePlayer } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 
@@ -19,10 +19,10 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
-    const { whichTurn, selectedFighter, setSelectedFighter, phase, setPhase } = useGameInfo();
-
+    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setPhase } = useGameInfo();
 
     const { player, action } = useCurrentTurnPlayer();
+    const { findFighterByCoordinate } = useFindFighterByCoordinate();
     const { findTeamFighterByCoordinate } = useFindTeamFighterByCoordinate(whichTurn);
 
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate);
@@ -40,10 +40,22 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
     const handleClick = (coordinate: Coordinate): void => {
         const selectedFighter = findTeamFighterByCoordinate(coordinate);
-        setSelectedFighter(selectedFighter)
+        if (phase === "SELECT_FIGHTER") {
+            setSelectedFighter(selectedFighter)
+        } else if (phase === "SELECT_MOVE" && isColored && !findFighterByCoordinate(coordinate)) {
+            setSelectedHex(coordinate)
+            setPhase("CONFIRM_MOVE")
+        } else if (phase === "SELECT_ATTACK" && isColored) {
+
+        } else if (phase === "CONFIRM_MOVE" && selectedHex && selectedFighter) {
+            action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: coordinate } });
+
+        }
         //NOTE: キャラがいない場合はSELECTED_FIGHTERにリセット
-        if (!selectedFighter) {
+        else if (!selectedFighter) {
             setPhase("SELECT_FIGHTER")
+            setSelectedHex(undefined)
+            setSelectedFighter(undefined)
         }
     }
 

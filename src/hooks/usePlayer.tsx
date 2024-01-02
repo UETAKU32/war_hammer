@@ -18,6 +18,7 @@ const PlayerContext = createContext<PlayerProviderProps | null>(null);
 
 type PlayerAction =
   | { type: "ATTACK"; payload: { attacker: Fighter; receiver: Fighter } }
+  | { type: "MOVE"; payload: { fighter: Fighter; coordinate: Coordinate } }
   | { type: "HEAL"; payload: { healHP: number; receiver: Fighter } }
   | { type: "ADD_VICTORY_POINT"; payload: { whichTurn: PlayerId } };
 
@@ -25,6 +26,11 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
   let updatedPlayer: Player | undefined;
   switch (action.type) {
     case "ATTACK":
+      break;
+    case "MOVE":
+      const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.fighter.id)
+      if (!updatedFighter) throw new Error(`Fghter:${action.payload.fighter.name} was not found.`);
+      updatedFighter.coordinate = action.payload.coordinate
       break;
     case "HEAL":
       break;

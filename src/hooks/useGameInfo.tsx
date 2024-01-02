@@ -1,6 +1,7 @@
 import { FC, PropsWithChildren, createContext, useContext, useState } from "react";
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
+import { Coordinate } from "../types/Coordinate";
 
 export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK";
 
@@ -14,6 +15,8 @@ type GameInfo = {
   setSelectedFighter: (fighter: Fighter | undefined) => void;
   targetFighter?: Fighter;
   setTargetFighter: (fighterId: Fighter | undefined) => void;
+  selectedHex?: Coordinate;
+  setSelectedHex: (coordinate: Coordinate | undefined) => void;
   switchTurn: () => void;
   phase: Phase;
   setPhase: (phase: Phase) => void;
@@ -29,8 +32,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [whichTurn, setWhichTurn] = useState<PlayerId>("A");
   const [selectedFighter, setSelectedFighter] = useState<Fighter | undefined>();
   const [targetFighter, setTargetFighter] = useState<Fighter | undefined>();
+  const [selectedHex, setSelectedHex] = useState<Coordinate | undefined>();
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
-  console.log({ phase })
   const switchTurn = () => {
     if (whichTurn === "A") {
       setWhichTurn("B");
@@ -48,6 +51,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedFighter,
     targetFighter,
     setTargetFighter,
+    selectedHex,
+    setSelectedHex,
     switchTurn,
     phase,
     setPhase
