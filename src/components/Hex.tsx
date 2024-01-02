@@ -19,7 +19,7 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
-    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setPhase } = useGameInfo();
+    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setPhase, switchTurn } = useGameInfo();
 
     const { player, action } = useCurrentTurnPlayer();
     const { findFighterByCoordinate } = useFindFighterByCoordinate();
@@ -39,20 +39,27 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
     const handleClick = (coordinate: Coordinate): void => {
-        const selectedFighter = findTeamFighterByCoordinate(coordinate);
+        const clickedFighter = findTeamFighterByCoordinate(coordinate);
         if (phase === "SELECT_FIGHTER") {
-            setSelectedFighter(selectedFighter)
+            setSelectedFighter(clickedFighter)
         } else if (phase === "SELECT_MOVE" && isColored && !findFighterByCoordinate(coordinate)) {
             setSelectedHex(coordinate)
             setPhase("CONFIRM_MOVE")
         } else if (phase === "SELECT_ATTACK" && isColored) {
 
-        } else if (phase === "CONFIRM_MOVE" && selectedHex && selectedFighter) {
-            action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: coordinate } });
-
+        } else if (phase === "CONFIRM_MOVE" && selectedHex && selectedFighter && isColored) {
+            if (isEqual(selectedHex, coordinate)) {
+                action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: coordinate } });
+                setSelectedFighter(undefined);
+                setSelectedHex(undefined);
+                switchTurn();
+                setPhase("SELECT_FIGHTER");
+            } else {
+                setSelectedHex(coordinate)
+            }
         }
         //NOTE: キャラがいない場合はSELECTED_FIGHTERにリセット
-        else if (!selectedFighter) {
+        else if (!clickedFighter) {
             setPhase("SELECT_FIGHTER")
             setSelectedHex(undefined)
             setSelectedFighter(undefined)
@@ -64,7 +71,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
         if (selectedFighter && isEqual(selectedFighter.coordinate, coordinate)) return SELECTED_FIGHTER;
         if (isColored) {
             if (phase === "SELECT_ATTACK") return IN_ATTACK_RANGE_COLOR;
-            if (phase === "SELECT_MOVE") return IN_MOVE_RANGE_COLOR;
+            if (phase === "SELECT_MOVE" || phase === "CONFIRM_MOVE") return IN_MOVE_RANGE_COLOR;
         }
         return NONE;
     }
