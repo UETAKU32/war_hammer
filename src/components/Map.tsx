@@ -89,7 +89,7 @@ export default Map;
  * @returns 
  */
 const findRange = (fighter: Fighter, range: number) => {
-  const { col: startRow, row: startCol } = fighter.coordinate;
+  const { row: startRow, col: startCol } = fighter.coordinate;
   const visited = new Set();
   const queue = [[startRow, startCol, 0]]; // [row, col, moves]
 
