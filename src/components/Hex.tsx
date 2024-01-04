@@ -54,9 +54,15 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
                 setSelectedHex(undefined);
                 switchTurn();
                 setPhase("SELECT_FIGHTER");
-            } else {
+            } else if (!findFighterByCoordinate(coordinate)) {
                 setSelectedHex(coordinate)
+            } else if (clickedFighter) {
+                setSelectedFighter(clickedFighter)
+                setSelectedHex(undefined)
             }
+        } else if (clickedFighter) {
+            setSelectedHex(undefined);
+            setSelectedFighter(clickedFighter);
         }
         //NOTE: キャラがいない場合はSELECTED_FIGHTERにリセット
         else if (!clickedFighter) {
