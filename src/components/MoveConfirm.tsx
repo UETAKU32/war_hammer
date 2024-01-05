@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from 'react'
 import { Coordinate } from '../types/Coordinate'
 import { hexWidth, hexHeight } from '../lib/hexSize';
 import { Fighter } from '../types/fighter';
+import { getCenterPointFromHex } from '../lib/coordinate';
 
 interface MoveConfirmProps {
     selectedFighter: Pick<Fighter, "image">
@@ -9,6 +10,8 @@ interface MoveConfirmProps {
 }
 
 const MoveConfirm: FC<MoveConfirmProps> = ({ selectedFighter: { image }, coordinate }) => {
+
+    const centerPoint = getCenterPointFromHex(coordinate);
 
     const [opancy, setOpancy] = useState(0.6);
 
@@ -22,8 +25,8 @@ const MoveConfirm: FC<MoveConfirmProps> = ({ selectedFighter: { image }, coordin
     return (
         <>
             <image
-                x={coordinate.row * hexWidth + (coordinate.col % 2 === 1 ? hexWidth / 2 : 0) + 2}
-                y={(coordinate.col * 1.5 * hexHeight) / 2 + hexHeight / 2 + 2 - hexHeight / 2}
+                x={centerPoint.x - hexWidth / 2 + 2}
+                y={centerPoint.y - hexHeight / 2}
                 width={hexWidth}
                 height={hexHeight}
                 xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${image}`}
