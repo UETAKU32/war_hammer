@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC } from 'react'
 import { Coordinate } from '../types/Coordinate'
 import Hex from './Hex'
 import { Box } from '@mui/system'
@@ -10,18 +10,18 @@ import { useGameInfo } from '../hooks/useGameInfo';
 import { searchdjacent } from '../lib/searchAdjacent';
 import { Fighter } from '../types/fighter';
 import MoveConfirm from './MoveConfirm';
+import AttackConfirm from './AttackConfirm';
 
 const Map: FC = () => {
 
   const { selectedFighter, selectedHex, phase } = useGameInfo();
-  console.log({ phase })
 
   const getRange = () => {
     if (!selectedFighter || phase === "SELECT_FIGHTER") {
       return [];
     }
     if (phase === "SELECT_MOVE" || phase === "CONFIRM_MOVE") return findRange(selectedFighter, selectedFighter.agl);
-    if (phase === "SELECT_ATTACK") return findRange(selectedFighter, selectedFighter.move.range);
+    if (phase === "SELECT_ATTACK" || phase === "CONFIRM_ATTACK") return findRange(selectedFighter, selectedFighter.move.range);
 
   }
 
@@ -60,6 +60,10 @@ const Map: FC = () => {
     }
   }
 
+  const s: Coordinate = {
+    row: 1,
+    col: 1
+  }
   return (
     <Grid item style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Box width={boardWidth} height={boardHeight}>
@@ -72,7 +76,8 @@ const Map: FC = () => {
           {honeycomb}
           <FighterDisplay />
           {selectedFighter && (<ActionMenu selectedFighter={selectedFighter} />)}
-          {(selectedFighter && selectedHex) && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
+          {(selectedFighter && selectedHex && phase === "CONFIRM_MOVE") && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
+          {(selectedFighter && selectedHex && phase === "CONFIRM_ATTACK") && (<AttackConfirm coordinate={selectedHex} />)}
         </svg>
       </Box>
     </Grid>

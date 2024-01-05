@@ -98,10 +98,10 @@ export const useFighter = (id: number | undefined) => {
 }
 
 //全ファイターの中から座標検索をする関数
-export const useFindFighterByCoordinate = () => {
+export const useFindAllFighterByCoordinate = () => {
   const allFighters = useAllFighters();
-  const findFighterByCoordinate = (selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
-  return { findFighterByCoordinate };
+  const findAllFighterByCoordinate = (selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
+  return { findAllFighterByCoordinate };
 }
 
 //指定チームのファイターの中から座標検索をする関数
@@ -109,4 +109,12 @@ export const useFindTeamFighterByCoordinate = (playerId: PlayerId) => {
   const teamFighters = usePlayer(playerId).player.fighters
   const findTeamFighterByCoordinate = (selectedCoordinate: Coordinate) => teamFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
   return { findTeamFighterByCoordinate };
+}
+
+//指定チームにとって敵チームのファイターの中から座標検索をする関数
+export const useEnemyTeamFighterByCoordinate = (playerId: PlayerId) => {
+  const enemyId: PlayerId = playerId === "A" ? "B" : "A";
+  const enemyFighters = usePlayer(enemyId).player.fighters
+  const findEnemyFighterByCoordinate = (selectedCoordinate: Coordinate) => enemyFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
+  return { findEnemyFighterByCoordinate };
 }

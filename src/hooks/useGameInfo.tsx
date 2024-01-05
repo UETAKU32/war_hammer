@@ -3,7 +3,7 @@ import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
 
-export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK";
+export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK";
 
 
 type GameInfo = {
