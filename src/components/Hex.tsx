@@ -53,7 +53,6 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
             } else if (clickedFighter) {
                 setSelectedFighter(clickedFighter)
             }
-
         } else if (phase === "CONFIRM_MOVE" && selectedHex && selectedFighter && isColored) {
             if (isEqual(selectedHex, coordinate)) {
                 action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: coordinate } });
@@ -66,8 +65,24 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
             } else if (clickedFighter) {
                 setSelectedFighter(clickedFighter)
                 setSelectedHex(undefined)
+                setPhase("SELECT_MOVE")
             }
-        } else if (clickedFighter) {
+        } else if (phase === "CONFIRM_ATTACK" && selectedHex && selectedFighter && isColored) {
+            if (isEqual(selectedHex, coordinate)) {
+                //usePlayer攻撃アクションを作成してここに定義
+                setSelectedFighter(undefined);
+                setSelectedHex(undefined);
+                switchTurn();
+                setPhase("SELECT_FIGHTER");
+            } else if (clickedFighter) {
+                setSelectedFighter(clickedFighter)
+                setSelectedHex(undefined)
+                setPhase("SELECT_ATTACK")
+            } else if (findEnemyFighterByCoordinate(coordinate)) {
+                setSelectedHex(coordinate)
+            }
+        }
+        else if (clickedFighter) {
             setSelectedHex(undefined);
             setSelectedFighter(clickedFighter);
         }
