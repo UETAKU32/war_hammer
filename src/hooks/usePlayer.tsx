@@ -26,6 +26,21 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
   let updatedPlayer: Player | undefined;
   switch (action.type) {
     case "ATTACK":
+      //0~10の乱数を生成、基準値を5として、(+防御力-攻撃力)分補正をする。乱数が補正後の値を超えているなら攻撃成功
+      //クリティカルヒットは基準値を9として補正値の1/5を加算
+      const randomNumber: number = Math.random() * 10;
+      const correction: number = action.payload.receiver.def - action.payload.attacker.move.atk
+      const successBorder: number = correction + 5
+      const criticalBorder: number = correction / 5 + 9
+      if (randomNumber >= criticalBorder) {
+        const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
+        if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
+        updatedFighter.currentHp -= (action.payload.attacker.move.dmg + 1)
+      } else if (randomNumber >= successBorder) {
+        const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
+        if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
+        updatedFighter.currentHp -= (action.payload.attacker.move.dmg)
+      }
       break;
     case "MOVE":
       const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.fighter.id)
