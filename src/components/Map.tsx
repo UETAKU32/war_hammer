@@ -20,8 +20,8 @@ const Map: FC = () => {
     if (!selectedFighter || phase === "SELECT_FIGHTER") {
       return [];
     }
-    if (phase === "SELECT_MOVE" || phase === "CONFIRM_MOVE") return findRange(selectedFighter, selectedFighter.agl);
-    if (phase === "SELECT_ATTACK" || phase === "CONFIRM_ATTACK") return findRange(selectedFighter, selectedFighter.move.range);
+    if ((phase === "SELECT_MOVE" || phase === "CONFIRM_MOVE") && selectedFighter.coordinate) return findRange(selectedFighter.coordinate, selectedFighter.agl);
+    if ((phase === "SELECT_ATTACK" || phase === "CONFIRM_ATTACK") && selectedFighter.coordinate) return findRange(selectedFighter.coordinate, selectedFighter.move.range);
 
   }
 
@@ -71,7 +71,7 @@ const Map: FC = () => {
         >
           {honeycomb}
           <FighterDisplay />
-          {selectedFighter && (<ActionMenu selectedFighter={selectedFighter} />)}
+          {selectedFighter?.coordinate && (<ActionMenu coordinate={selectedFighter.coordinate} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_MOVE") && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_ATTACK") && (<AttackConfirm coordinate={selectedHex} />)}
         </svg>
@@ -89,8 +89,8 @@ export default Map;
  * @param range 
  * @returns 
  */
-const findRange = (fighter: Fighter, range: number) => {
-  const { row: startRow, col: startCol } = fighter.coordinate;
+const findRange = (coordinate: Coordinate, range: number) => {
+  const { row: startRow, col: startCol } = coordinate;
   const visited = new Set();
   const queue = [[startRow, startCol, 0]]; // [row, col, moves]
 

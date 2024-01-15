@@ -35,12 +35,13 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       if (randomNumber >= criticalBorder) {
         const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
         if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
-        updatedFighter.currentHp -= (action.payload.attacker.move.dmg + 1)
+        reduceHp(updatedFighter, action.payload.attacker.move.dmg + 1)
       } else if (randomNumber >= successBorder) {
         const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
         if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
-        updatedFighter.currentHp -= (action.payload.attacker.move.dmg)
+        reduceHp(updatedFighter, action.payload.attacker.move.dmg)
       }
+
       break;
     case "MOVE":
       const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.fighter.id)
@@ -132,4 +133,13 @@ export const useEnemyTeamFighterByCoordinate = (playerId: PlayerId) => {
   const enemyFighters = usePlayer(enemyId).player.fighters
   const findEnemyFighterByCoordinate = (selectedCoordinate: Coordinate) => enemyFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
   return { findEnemyFighterByCoordinate };
+}
+
+const reduceHp = (damagedFighter: Fighter, damage: number) => {
+  damagedFighter.currentHp -= damage;
+  if (damagedFighter.currentHp <= 0) {
+    damagedFighter.currentHp = 0;
+    damagedFighter.coordinate = undefined;
+  }
+  return damagedFighter;
 }

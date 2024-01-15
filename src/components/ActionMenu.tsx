@@ -5,12 +5,13 @@ import { AttackIcon, MoveIcon } from './ActionIcon'
 import { hexWidth } from '../lib/hexSize'
 import { Fighter } from '../types/fighter'
 import { useGameInfo } from '../hooks/useGameInfo'
+import { Coordinate } from '../types/Coordinate'
 
 interface ActionMenuProps {
-    selectedFighter: Pick<Fighter, "coordinate">
+    coordinate: Coordinate
 }
 
-const ActionMenu: FC<ActionMenuProps> = ({ selectedFighter: { coordinate } }) => {
+const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate)
 
     const { setPhase } = useGameInfo()

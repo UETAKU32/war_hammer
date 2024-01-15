@@ -55,8 +55,8 @@ export const player1: Player = {
       sleep: 0,
       move: {
         name: "キャットレイピア",
-        atk: 4,
-        range: 1,
+        atk: 100,
+        range: 3,
         dmg: 2,
       },
       coordinate: {

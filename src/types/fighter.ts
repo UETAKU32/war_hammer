@@ -10,6 +10,6 @@ export type Fighter = {
   def:number;
   sleep:number;
   move:Move;
-  coordinate:Coordinate;
+  coordinate?:Coordinate;
   image:string;
 };

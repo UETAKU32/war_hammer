@@ -7,8 +7,10 @@ const FighterDisplay: FC = () => {
     const allPlayers = useAllPlayers();
     const fighterImages: JSX.Element[] = []
 
-    allPlayers.forEach((player) =>
-        player.fighters.filter((fighter) => fighter.currentHp > 0).forEach((fighter) => {
+    allPlayers.forEach((player) => {
+        const aliveFighters = player.fighters.filter((fighter) => fighter.coordinate);
+        aliveFighters.forEach((fighter) => {
+            if (!fighter.coordinate) return
             const centerPoint = getCenterPointFromHex(fighter.coordinate)
             fighterImages.push(
                 <image
@@ -21,9 +23,9 @@ const FighterDisplay: FC = () => {
                     style={{ pointerEvents: "none" }}
                 />
             )
-        }
-        )
-    )
+        })
+    })
+
 
     //NOTE: mapでfighterImages除去できそう
     return (
