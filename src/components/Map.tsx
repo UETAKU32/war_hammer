@@ -60,10 +60,6 @@ const Map: FC = () => {
     }
   }
 
-  const s: Coordinate = {
-    row: 1,
-    col: 1
-  }
   return (
     <Grid item style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <Box width={boardWidth} height={boardHeight}>
