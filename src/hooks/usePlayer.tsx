@@ -11,7 +11,7 @@ import { Fighter } from "../types/fighter";
 import { Player, PlayerId } from "../types/Player";
 import { player1, player2 } from "../data/initialPlayers";
 import { Coordinate } from "../types/Coordinate";
-import { isEqual } from "lodash";
+import { includes, isEqual } from "lodash";
 import { useGameInfo } from "./useGameInfo";
 
 const PlayerContext = createContext<PlayerProviderProps | null>(null);
@@ -29,17 +29,21 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       //0~10の乱数を生成、基準値を5として、(+防御力-攻撃力)分補正をする。乱数が補正後の値を超えているなら攻撃成功
       //クリティカルヒットは基準値を9として補正値の1/5を加算
       const randomNumber: number = Math.random() * 10;
-      const correction: number = action.payload.receiver.def - action.payload.attacker.move.atk
+      const attacker = action.payload.attacker
+      const correction: number = action.payload.receiver.def - attacker.move.atk
       const successBorder: number = correction + 5
       const criticalBorder: number = correction / 5 + 9
+      const attackerPlayer = players.find((p) => includes(p.fighters.map((f) => f.id), attacker.id))
+      console.log({ attackerPlayer })
+      if (!attackerPlayer) throw new Error(`プレイヤーが見つかりませんでした`)
       if (randomNumber >= criticalBorder) {
         const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
         if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
-        reduceHp(updatedFighter, action.payload.attacker.move.dmg + 1)
+        reduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
       } else if (randomNumber >= successBorder) {
         const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
         if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
-        reduceHp(updatedFighter, action.payload.attacker.move.dmg)
+        reduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
       }
 
       break;
@@ -135,11 +139,12 @@ export const useEnemyTeamFighterByCoordinate = (playerId: PlayerId) => {
   return { findEnemyFighterByCoordinate };
 }
 
-const reduceHp = (damagedFighter: Fighter, damage: number) => {
+const reduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {
   damagedFighter.currentHp -= damage;
   if (damagedFighter.currentHp <= 0) {
     damagedFighter.currentHp = 0;
     damagedFighter.coordinate = undefined;
+    attackPlayer.victoryPoint += 1;
   }
   return damagedFighter;
 }

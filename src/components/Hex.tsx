@@ -73,6 +73,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
                 const targetFighter = findEnemyFighterByCoordinate(coordinate)
                 if (targetFighter) {
                     action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter } })
+                    console.log({ targetFighter })
                     setSelectedFighter(undefined);
                     setSelectedHex(undefined);
                     switchTurn();
