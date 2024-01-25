@@ -35,11 +35,16 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [selectedHex, setSelectedHex] = useState<Coordinate | undefined>();
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
   const switchTurn = () => {
-    if (whichTurn === "A") {
-      setWhichTurn("B");
+    if (currentTurnNum <= maxTurnNum) {
+      if (whichTurn === "A") {
+        setWhichTurn("B");
+      } else {
+        setWhichTurn("A");
+        setCurrentTurnNum((prevTurnNum) => prevTurnNum + 1);
+      }
     } else {
-      setWhichTurn("A");
-      setCurrentTurnNum((prevTurnNum) => prevTurnNum + 1);
+      setWhichWon("A")
+      console.log({ whichWon })
     }
   }
 

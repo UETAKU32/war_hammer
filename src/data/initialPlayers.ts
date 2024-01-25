@@ -10,7 +10,7 @@ export const player1: Player = {
       name: "聖騎士",
       maxHp: 6,
       currentHp: 6,
-      agl: 2,
+      agl: 5,
       def: 5,
       sleep: 0,
       move: {
