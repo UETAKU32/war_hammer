@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, createContext, useContext, useState } from "react";
+import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
@@ -8,14 +8,14 @@ export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_
 
 type GameInfo = {
   whichTurn: PlayerId;
-  whichWon?: PlayerId;
+  whichWon: PlayerId | undefined;
   maxTurnNum: number;
   currentTurnNum: number;
-  selectedFighter?: Fighter;
+  selectedFighter: Fighter | undefined;
   setSelectedFighter: (fighter: Fighter | undefined) => void;
-  targetFighter?: Fighter;
+  targetFighter: Fighter | undefined;
   setTargetFighter: (fighterId: Fighter | undefined) => void;
-  selectedHex?: Coordinate;
+  selectedHex: Coordinate | undefined;
   setSelectedHex: (coordinate: Coordinate | undefined) => void;
   switchTurn: () => void;
   phase: Phase;
@@ -35,7 +35,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [selectedHex, setSelectedHex] = useState<Coordinate | undefined>();
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
   const switchTurn = () => {
-    if (currentTurnNum <= maxTurnNum) {
+    if (!isLastPhase) {
       if (whichTurn === "A") {
         setWhichTurn("B");
       } else {
@@ -44,11 +44,13 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     } else {
       setWhichWon("A")
-      console.log({ whichWon })
     }
   }
 
+  const isLastPhase = currentTurnNum === maxTurnNum && whichTurn === "B";
+
   const value: GameInfo = {
+    whichWon,
     whichTurn,
     maxTurnNum,
     currentTurnNum,
