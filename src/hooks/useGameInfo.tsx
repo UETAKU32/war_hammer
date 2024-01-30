@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import { FC, PropsWithChildren, createContext, useContext, useState } from "react";
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
@@ -62,7 +62,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedHex,
     switchTurn,
     phase,
-    setPhase
+    setPhase,
   }
 
   return (<GameInfoContext.Provider value={value}>

@@ -8,13 +8,13 @@ import ActionMenu from './ActionMenu';
 import { hexHeight, hexWidth } from '../lib/hexSize';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { searchdjacent } from '../lib/searchAdjacent';
-import { Fighter } from '../types/fighter';
 import MoveConfirm from './MoveConfirm';
 import AttackConfirm from './AttackConfirm';
+import HitEffect from './HitEffect';
 
 const Map: FC = () => {
 
-  const { selectedFighter, selectedHex, phase } = useGameInfo();
+  const { selectedFighter, selectedHex, phase, } = useGameInfo();
 
   const getRange = () => {
     if (!selectedFighter || phase === "SELECT_FIGHTER") {
@@ -59,6 +59,10 @@ const Map: FC = () => {
       )
     }
   }
+  const c: Coordinate = {
+    row: 1,
+    col: 2
+  }
 
   return (
     <Grid item style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
@@ -74,6 +78,7 @@ const Map: FC = () => {
           {selectedFighter?.coordinate && (<ActionMenu coordinate={selectedFighter.coordinate} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_MOVE") && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_ATTACK") && (<AttackConfirm coordinate={selectedHex} />)}
+          {<HitEffect coordinate={c} hitType={"Defended"} />}
         </svg>
       </Box>
     </Grid>
