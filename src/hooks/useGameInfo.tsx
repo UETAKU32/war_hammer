@@ -2,6 +2,7 @@ import { FC, PropsWithChildren, createContext, useContext, useState } from "reac
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
+import { HitEffectProps } from "../components/HitEffect";
 
 export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK";
 
@@ -20,6 +21,8 @@ type GameInfo = {
   switchTurn: () => void;
   phase: Phase;
   setPhase: (phase: Phase) => void;
+  hitEffect: HitEffectProps | undefined;
+  setHitEffect: (hitEffect: HitEffectProps | undefined) => void;
 }
 
 const GameInfoContext = createContext<GameInfo | null>(null);
@@ -34,6 +37,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [targetFighter, setTargetFighter] = useState<Fighter | undefined>();
   const [selectedHex, setSelectedHex] = useState<Coordinate | undefined>();
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
+  const [hitEffect, setHitEffect] = useState<HitEffectProps | undefined>();
   const switchTurn = () => {
     if (!isLastPhase) {
       if (whichTurn === "A") {
@@ -63,6 +67,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     switchTurn,
     phase,
     setPhase,
+    hitEffect,
+    setHitEffect,
   }
 
   return (<GameInfoContext.Provider value={value}>

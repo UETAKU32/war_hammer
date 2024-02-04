@@ -13,17 +13,20 @@ import { player1, player2 } from "../data/initialPlayers";
 import { Coordinate } from "../types/Coordinate";
 import { includes, isEqual } from "lodash";
 import { useGameInfo } from "./useGameInfo";
+import { HitEffectProps } from "../components/HitEffect";
 
 const PlayerContext = createContext<PlayerProviderProps | null>(null);
 
 type PlayerAction =
-  | { type: "ATTACK"; payload: { attacker: Fighter; receiver: Fighter } }
+  | { type: "ATTACK"; payload: { attacker: Fighter; receiver: Fighter; coordinate: Coordinate } }
   | { type: "MOVE"; payload: { fighter: Fighter; coordinate: Coordinate } }
   | { type: "HEAL"; payload: { healHP: number; receiver: Fighter } }
   | { type: "ADD_VICTORY_POINT"; payload: { whichTurn: PlayerId } };
 
+
 const reducer = produce((players: Player[], action: PlayerAction) => {
   let updatedPlayer: Player | undefined;
+
   switch (action.type) {
     case "ATTACK":
       //0~10の乱数を生成、基準値を5として、(+防御力-攻撃力)分補正をする。乱数が補正後の値を超えているなら攻撃成功
@@ -33,24 +36,40 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       const correction: number = action.payload.receiver.def - attacker.move.atk
       const successBorder: number = correction + 5
       const criticalBorder: number = correction / 5 + 9
+
+
       const attackerPlayer = players.find((p) => includes(p.fighters.map((f) => f.id), attacker.id))
-      console.log({ attackerPlayer })
       if (!attackerPlayer) throw new Error(`プレイヤーが見つかりませんでした`)
+      const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
+      if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
+
       if (randomNumber >= criticalBorder) {
-        const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
-        if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
+        const hitEffect: HitEffectProps = {
+          coordinate: action.payload.coordinate,
+          hitType: "Critical",
+        }
+        useSetHitEffect(hitEffect);
         reduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
       } else if (randomNumber >= successBorder) {
-        const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
-        if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
+        const hitEffect: HitEffectProps = {
+          coordinate: action.payload.coordinate,
+          hitType: "Attacked",
+        }
+        useSetHitEffect(hitEffect);
         reduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
+      } else {
+        const hitEffect: HitEffectProps = {
+          coordinate: action.payload.coordinate,
+          hitType: "Defended",
+        }
+        useSetHitEffect(hitEffect);
       }
 
       break;
     case "MOVE":
-      const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.fighter.id)
-      if (!updatedFighter) throw new Error(`Fghter:${action.payload.fighter.name} was not found.`);
-      updatedFighter.coordinate = action.payload.coordinate
+      const movedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.fighter.id)
+      if (!movedFighter) throw new Error(`Fghter:${action.payload.fighter.name} was not found.`);
+      movedFighter.coordinate = action.payload.coordinate
       break;
     case "HEAL":
       break;
@@ -115,6 +134,11 @@ export const useFighter = (id: number | undefined) => {
   const fighter = allFighters.find((fighter) => fighter.id === id)
   if (!fighter) throw new Error(`指定されたファイター:${id}は存在しません`)
   return fighter
+}
+
+const useSetHitEffect = (hitEffect: HitEffectProps) => {
+  const { setHitEffect } = useGameInfo();
+  setHitEffect(hitEffect);
 }
 
 //全ファイターの中から座標検索をする関数

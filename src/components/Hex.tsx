@@ -6,7 +6,6 @@ import { hexRadius } from '../lib/hexSize';
 import { useCurrentTurnPlayer, useEnemyTeamFighterByCoordinate, useFindAllFighterByCoordinate, useFindTeamFighterByCoordinate, usePlayer } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
-import { Fighter } from '../types/fighter';
 
 type HexProps = {
     coordinate: Coordinate;
@@ -72,8 +71,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
             if (isEqual(selectedHex, coordinate)) {
                 const targetFighter = findEnemyFighterByCoordinate(coordinate)
                 if (targetFighter) {
-                    action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter } })
-                    console.log({ targetFighter })
+                    action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: coordinate } })
                     setSelectedFighter(undefined);
                     setSelectedHex(undefined);
                     switchTurn();

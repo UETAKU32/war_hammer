@@ -1,12 +1,13 @@
-import { FC, useState, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { Coordinate } from '../types/Coordinate'
 import { hexWidth, hexHeight } from '../lib/hexSize';
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { useSpring, animated } from 'react-spring';
+import { useGameInfo } from '../hooks/useGameInfo';
 
 type HitType = "Critical" | "Attacked" | "Defended"
 
-export interface HitEffectProps {
+export type HitEffectProps = {
     coordinate: Coordinate
     hitType: HitType
 }
@@ -14,6 +15,7 @@ export interface HitEffectProps {
 const HitEffect: FC<HitEffectProps> = ({ coordinate, hitType }) => {
 
     const centerPoint = getCenterPointFromHex(coordinate);
+    const { setHitEffect } = useGameInfo();
 
 
     const { opacity } = useSpring({
@@ -21,6 +23,13 @@ const HitEffect: FC<HitEffectProps> = ({ coordinate, hitType }) => {
         to: { opacity: 0 },
         config: { duration: 1000 }, // アニメーションの持続時間（1秒）
     });
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setHitEffect(undefined);
+        }, 1000);
+        return () => clearTimeout(timeoutId);
+    })
 
 
 

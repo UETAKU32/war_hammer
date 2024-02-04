@@ -14,7 +14,7 @@ import HitEffect from './HitEffect';
 
 const Map: FC = () => {
 
-  const { selectedFighter, selectedHex, phase, } = useGameInfo();
+  const { selectedFighter, selectedHex, phase, hitEffect } = useGameInfo();
 
   const getRange = () => {
     if (!selectedFighter || phase === "SELECT_FIGHTER") {
@@ -78,7 +78,7 @@ const Map: FC = () => {
           {selectedFighter?.coordinate && (<ActionMenu coordinate={selectedFighter.coordinate} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_MOVE") && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_ATTACK") && (<AttackConfirm coordinate={selectedHex} />)}
-          {<HitEffect coordinate={c} hitType={"Defended"} />}
+          {hitEffect && (<HitEffect hitType={hitEffect.hitType} coordinate={hitEffect.coordinate} />)}
         </svg>
       </Box>
     </Grid>
