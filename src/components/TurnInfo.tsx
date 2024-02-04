@@ -10,6 +10,9 @@ const TurnInfo: FC = () => {
     let turnUiImage: string = `${process.env.PUBLIC_URL}/UI/Team${currentTeam}UI.png`
     const turnMessage: string = `Turn ${currentTurn} / ${maxTurn} Max`
     const winnerMessage: string = `Winner Is Team${whichWon}`
+    if (whichWon) {
+        turnUiImage = `${process.env.PUBLIC_URL}/UI/Team${whichWon}UI.png`
+    }
 
 
     return (
