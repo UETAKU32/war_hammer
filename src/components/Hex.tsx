@@ -19,7 +19,7 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
-    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setPhase, switchTurn } = useGameInfo();
+    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, toPhase, switchTurn } = useGameInfo();
 
     const { player, action } = useCurrentTurnPlayer();
     const { findAllFighterByCoordinate } = useFindAllFighterByCoordinate();
@@ -39,61 +39,75 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
     const pointsString: string = HEXShapes.map((point) => point.join(",")).join(" ");
 
 
-    const handleClick = (coordinate: Coordinate): void => {
-        const clickedFighter = findTeamFighterByCoordinate(coordinate);
+    const handleClick = (clickedCoordinate: Coordinate): void => {
+        console.log({ selectedHex, selectedFighter });
+        const clickedFighter = findTeamFighterByCoordinate(clickedCoordinate);
+
         if (phase === "SELECT_FIGHTER") {
-            setSelectedFighter(clickedFighter)
-        } else if (phase === "SELECT_MOVE" && isColored && !findAllFighterByCoordinate(coordinate)) {
-            setSelectedHex(coordinate)
-            setPhase("CONFIRM_MOVE")
-        } else if (phase === "SELECT_ATTACK" && isColored) {
-            if (findEnemyFighterByCoordinate(coordinate)) {
-                setPhase("CONFIRM_ATTACK")
-                setSelectedHex(coordinate)
-            } else if (clickedFighter) {
-                setSelectedFighter(clickedFighter)
-            }
-        } else if (phase === "CONFIRM_MOVE" && selectedHex && selectedFighter && isColored) {
-            if (isEqual(selectedHex, coordinate)) {
-                action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: coordinate } });
-                setSelectedFighter(undefined);
-                setSelectedHex(undefined);
-                switchTurn();
-                setPhase("SELECT_FIGHTER");
-            } else if (!findAllFighterByCoordinate(coordinate)) {
-                setSelectedHex(coordinate)
-            } else if (clickedFighter) {
-                setSelectedFighter(clickedFighter)
-                setSelectedHex(undefined)
-                setPhase("SELECT_MOVE")
-            }
-        } else if (phase === "CONFIRM_ATTACK" && selectedHex && selectedFighter && isColored) {
-            if (isEqual(selectedHex, coordinate)) {
-                const targetFighter = findEnemyFighterByCoordinate(coordinate)
-                if (targetFighter) {
-                    action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: coordinate } })
-                    setSelectedFighter(undefined);
-                    setSelectedHex(undefined);
-                    switchTurn();
-                    setPhase("SELECT_FIGHTER");
-                }
-            } else if (clickedFighter) {
-                setSelectedFighter(clickedFighter)
-                setSelectedHex(undefined)
-                setPhase("SELECT_ATTACK")
-            } else if (findEnemyFighterByCoordinate(coordinate)) {
-                setSelectedHex(coordinate)
-            }
+            setSelectedFighter(clickedFighter);
+            return;
         }
-        else if (clickedFighter) {
+
+        //クリックされたHexがハイライトされており、キャラがいなければ
+        if (phase === "SELECT_MOVE" && isColored && !findAllFighterByCoordinate(clickedCoordinate)) {
+            toPhase.confirmMove(clickedCoordinate);
+            return;
+        }
+        if (phase === "SELECT_ATTACK" && isColored) {
+            if (findEnemyFighterByCoordinate(clickedCoordinate)) {
+                toPhase.confirmAttack(clickedCoordinate);
+            } else if (clickedFighter) {
+                setSelectedFighter(clickedFighter)
+            }
+            return;
+        }
+
+        //移動フェーズ
+        if (phase === "CONFIRM_MOVE" && selectedHex && selectedFighter && isColored) {
+            //移動確定
+            if (isEqual(selectedHex, clickedCoordinate)) {
+                action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: clickedCoordinate } });
+                switchTurn();
+                //別の移動候補先を選択
+            } else if (!findAllFighterByCoordinate(clickedCoordinate)) {
+                setSelectedHex(clickedCoordinate)
+                //仲間に移動フェーズを渡す
+            } else if (clickedFighter) {
+                toPhase.selectMove(clickedFighter);
+            }
+            return;
+        }
+
+        //攻撃フェーズ
+        if (phase === "CONFIRM_ATTACK" && selectedHex && selectedFighter && isColored) {
+            //攻撃確定
+            if (isEqual(selectedHex, clickedCoordinate)) {
+                const targetFighter = findEnemyFighterByCoordinate(clickedCoordinate)
+                if (targetFighter) {
+                    action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
+                    switchTurn();
+                }
+                //別の攻撃対象を選択
+            } else if (clickedFighter) {
+                toPhase.selectAttack(clickedFighter);
+                //仲間に攻撃フェーズを渡す
+            } else if (findEnemyFighterByCoordinate(clickedCoordinate)) {
+                setSelectedHex(clickedCoordinate)
+            }
+            return;
+        }
+
+        //上記if全てに当てはまらない場合、下記条件式の判定をしたい
+        if (clickedFighter) {
             setSelectedHex(undefined);
             setSelectedFighter(clickedFighter);
+            return;
         }
+
         //NOTE: キャラがいない場合はSELECTED_FIGHTERにリセット
-        else if (!clickedFighter) {
-            setPhase("SELECT_FIGHTER")
-            setSelectedHex(undefined)
-            setSelectedFighter(undefined)
+        if (!clickedFighter) {
+            toPhase.selectFighter()
+            return;
         }
     }
 

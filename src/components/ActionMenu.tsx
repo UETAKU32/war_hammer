@@ -3,7 +3,6 @@ import { getCenterPointFromHex } from '../lib/coordinate'
 import { CenterPoint } from '../types/CenterPoint'
 import { AttackIcon, MoveIcon } from './ActionIcon'
 import { hexWidth } from '../lib/hexSize'
-import { Fighter } from '../types/fighter'
 import { useGameInfo } from '../hooks/useGameInfo'
 import { Coordinate } from '../types/Coordinate'
 
@@ -14,15 +13,7 @@ interface ActionMenuProps {
 const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate)
 
-    const { setPhase } = useGameInfo()
-
-    const handleClickMove = () => {
-        setPhase("SELECT_MOVE")
-    }
-
-    const handleClickAttack = () => {
-        setPhase("SELECT_ATTACK")
-    }
+    const { toPhase } = useGameInfo()
 
     return (
         <>
@@ -31,13 +22,13 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
                     x: centerPoint.x - hexWidth / 3,
                     y: centerPoint.y
                 }}
-                onClick={handleClickAttack} />
+                onClick={toPhase.selectAttack} />
             <MoveIcon
                 point={{
                     x: centerPoint.x + hexWidth / 3,
                     y: centerPoint.y
                 }}
-                onClick={handleClickMove} />
+                onClick={toPhase.selectMove} />
         </>
     )
 }

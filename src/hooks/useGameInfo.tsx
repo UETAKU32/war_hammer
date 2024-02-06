@@ -20,9 +20,17 @@ type GameInfo = {
   setSelectedHex: (coordinate: Coordinate | undefined) => void;
   switchTurn: () => void;
   phase: Phase;
-  setPhase: (phase: Phase) => void;
+  toPhase: ToPhaseFunctions;
   hitEffect: HitEffectProps | undefined;
   setHitEffect: (hitEffect: HitEffectProps | undefined) => void;
+}
+
+type ToPhaseFunctions = {
+  selectFighter: () => void;
+  selectMove: (selectedFighter?: Fighter) => void;
+  selectAttack: (selectedFighter?: Fighter) => void;
+  confirmMove: (selectedHex: Coordinate) => void;
+  confirmAttack: (selectedHex: Coordinate) => void
 }
 
 const GameInfoContext = createContext<GameInfo | null>(null);
@@ -39,6 +47,9 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
   const [hitEffect, setHitEffect] = useState<HitEffectProps | undefined>();
   const switchTurn = () => {
+    setSelectedFighter(undefined);
+    setSelectedHex(undefined);
+    setPhase("SELECT_FIGHTER");
     if (!isLastPhase) {
       if (whichTurn === "A") {
         setWhichTurn("B");
@@ -48,6 +59,34 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
       }
     } else {
       setWhichWon("A")
+    }
+  }
+
+  const toPhase: ToPhaseFunctions = {
+    confirmMove: (selectedHex: Coordinate) => {
+      setSelectedHex(selectedHex);
+      setPhase("CONFIRM_MOVE");
+    },
+    confirmAttack: (selectedHex: Coordinate) => {
+      setSelectedHex(selectedHex);
+      setPhase("CONFIRM_ATTACK");
+    },
+    selectMove: (clickedFighter?: Fighter) => {
+      if (!clickedFighter && !selectedFighter) throw new Error("SELECT_MOVE phase must be with selectedFighter")
+      if (clickedFighter) setSelectedFighter(clickedFighter);
+      setSelectedHex(undefined)
+      setPhase("SELECT_MOVE");
+    },
+    selectFighter: () => {
+      setPhase("SELECT_FIGHTER")
+      setSelectedHex(undefined)
+      setSelectedFighter(undefined)
+    },
+    selectAttack: (clickedFighter?: Fighter) => {
+      if (!clickedFighter && !selectedFighter) throw new Error("SELECT_ATTACK phase must be with selectedFighter")
+      if (clickedFighter) setSelectedFighter(clickedFighter);
+      setSelectedHex(undefined)
+      setPhase("SELECT_ATTACK")
     }
   }
 
@@ -65,10 +104,10 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     selectedHex,
     setSelectedHex,
     switchTurn,
-    phase,
-    setPhase,
+    toPhase,
     hitEffect,
     setHitEffect,
+    phase
   }
 
   return (<GameInfoContext.Provider value={value}>
