@@ -20,6 +20,7 @@ type GameInfo = {
   setSelectedHex: (coordinate: Coordinate | undefined) => void;
   switchTurn: () => void;
   phase: Phase;
+  setPhase: (phase: Phase) => void;
   toPhase: ToPhaseFunctions;
   hitEffect: HitEffectProps | undefined;
   setHitEffect: (hitEffect: HitEffectProps | undefined) => void;
@@ -107,7 +108,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     toPhase,
     hitEffect,
     setHitEffect,
-    phase
+    phase,
+    setPhase
   }
 
   return (<GameInfoContext.Provider value={value}>
