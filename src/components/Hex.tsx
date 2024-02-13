@@ -6,6 +6,7 @@ import { hexRadius } from '../lib/hexSize';
 import { useCurrentTurnPlayer, useEnemyTeamFighterByCoordinate, useFindAllFighterByCoordinate, useFindTeamFighterByCoordinate, usePlayer } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
+import { usePhaseChange } from '../hooks/usePhaseGhange';
 
 type HexProps = {
     coordinate: Coordinate;
@@ -19,7 +20,8 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
-    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, toPhase, switchTurn } = useGameInfo();
+    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, switchTurn } = useGameInfo();
+    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, doMove } = usePhaseChange();
 
     const { player, action } = useCurrentTurnPlayer();
     const { findAllFighterByCoordinate } = useFindAllFighterByCoordinate();
@@ -40,7 +42,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
     const handleClick = (clickedCoordinate: Coordinate): void => {
-        console.log({ selectedHex, selectedFighter });
+
         const clickedFighter = findTeamFighterByCoordinate(clickedCoordinate);
 
         if (phase === "SELECT_FIGHTER") {
@@ -50,12 +52,12 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
         //クリックされたHexがハイライトされており、キャラがいなければ
         if (phase === "SELECT_MOVE" && isColored && !findAllFighterByCoordinate(clickedCoordinate)) {
-            toPhase.confirmMove(clickedCoordinate);
+            confirmMove(clickedCoordinate);
             return;
         }
         if (phase === "SELECT_ATTACK" && isColored) {
             if (findEnemyFighterByCoordinate(clickedCoordinate)) {
-                toPhase.confirmAttack(clickedCoordinate);
+                confirmAttack(clickedCoordinate);
             } else if (clickedFighter) {
                 setSelectedFighter(clickedFighter)
             }
@@ -66,14 +68,13 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
         if (phase === "CONFIRM_MOVE" && selectedHex && selectedFighter && isColored) {
             //移動確定
             if (isEqual(selectedHex, clickedCoordinate)) {
-                action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: clickedCoordinate } });
-                switchTurn();
+                doMove(selectedHex);
                 //別の移動候補先を選択
             } else if (!findAllFighterByCoordinate(clickedCoordinate)) {
                 setSelectedHex(clickedCoordinate)
                 //仲間に移動フェーズを渡す
             } else if (clickedFighter) {
-                toPhase.selectMove(clickedFighter);
+                selectMove(clickedFighter);
             }
             return;
         }
@@ -89,7 +90,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
                 }
                 //別の攻撃対象を選択
             } else if (clickedFighter) {
-                toPhase.selectAttack(clickedFighter);
+                selectAttack(clickedFighter);
                 //仲間に攻撃フェーズを渡す
             } else if (findEnemyFighterByCoordinate(clickedCoordinate)) {
                 setSelectedHex(clickedCoordinate)
@@ -106,7 +107,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
         //NOTE: キャラがいない場合はSELECTED_FIGHTERにリセット
         if (!clickedFighter) {
-            toPhase.selectFighter()
+            selectFighter()
             return;
         }
     }

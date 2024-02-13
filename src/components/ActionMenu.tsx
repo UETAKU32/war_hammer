@@ -3,7 +3,6 @@ import { getCenterPointFromHex } from '../lib/coordinate'
 import { CenterPoint } from '../types/CenterPoint'
 import { AttackIcon, MoveIcon } from './ActionIcon'
 import { hexWidth } from '../lib/hexSize'
-import { Fighter } from '../types/fighter'
 import { useGameInfo } from '../hooks/useGameInfo'
 import { Coordinate } from '../types/Coordinate'
 
