@@ -25,6 +25,7 @@ type PlayerAction =
 
 
 const reducer = produce((players: Player[], action: PlayerAction) => {
+  const { setHitEffect } = useGameInfo();
   let updatedPlayer: Player | undefined;
 
   switch (action.type) {
@@ -48,21 +49,21 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
           coordinate: action.payload.coordinate,
           hitType: "Critical",
         }
-        useSetHitEffect(hitEffect);
+        setHitEffect(hitEffect);
         reduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
       } else if (randomNumber >= successBorder) {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
           hitType: "Attacked",
         }
-        useSetHitEffect(hitEffect);
+        setHitEffect(hitEffect);
         reduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
       } else {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
           hitType: "Defended",
         }
-        useSetHitEffect(hitEffect);
+        setHitEffect(hitEffect);
       }
 
       break;
@@ -136,31 +137,17 @@ export const useFighter = (id: number | undefined) => {
   return fighter
 }
 
-const useSetHitEffect = (hitEffect: HitEffectProps) => {
-  const { setHitEffect } = useGameInfo();
-  setHitEffect(hitEffect);
-}
+/**
+ * @returns findAllFighterByCoordinate - 全ファイターの中から座標検索をする関数
+ * @returns findFighterByTeamAndCoordinate - 指定チームのファイターの中から座標検索をする関数
+ */
+export const useFindFighter = () => {
+  const allPlayers = useAllPlayers();
+  const allFighters = allPlayers.flatMap((player) => player.fighters);
 
-//全ファイターの中から座標検索をする関数
-export const useFindAllFighterByCoordinate = () => {
-  const allFighters = useAllFighters();
-  const findAllFighterByCoordinate = (selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
-  return { findAllFighterByCoordinate };
-}
-
-//指定チームのファイターの中から座標検索をする関数
-export const useFindTeamFighterByCoordinate = (playerId: PlayerId) => {
-  const teamFighters = usePlayer(playerId).player.fighters
-  const findTeamFighterByCoordinate = (selectedCoordinate: Coordinate) => teamFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
-  return { findTeamFighterByCoordinate };
-}
-
-//指定チームにとって敵チームのファイターの中から座標検索をする関数
-export const useEnemyTeamFighterByCoordinate = (playerId: PlayerId) => {
-  const enemyId: PlayerId = playerId === "A" ? "B" : "A";
-  const enemyFighters = usePlayer(enemyId).player.fighters
-  const findEnemyFighterByCoordinate = (selectedCoordinate: Coordinate) => enemyFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate))
-  return { findEnemyFighterByCoordinate };
+  const findFighterByCoordinate = (selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate));
+  const findFighterByTeamAndCoordinate = (selectedCoordinate: Coordinate, selectedPlayer: PlayerId) => allPlayers.find(p => p.id === selectedPlayer)?.fighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate));
+  return { findFighterByCoordinate, findFighterByTeamAndCoordinate }
 }
 
 const reduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {

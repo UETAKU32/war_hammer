@@ -3,7 +3,7 @@ import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexRadius } from '../lib/hexSize';
-import { useCurrentTurnPlayer, useEnemyTeamFighterByCoordinate, useFindAllFighterByCoordinate, useFindTeamFighterByCoordinate, usePlayer } from '../hooks/usePlayer';
+import { useCurrentTurnPlayer, useFindFighter } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 
@@ -20,11 +20,9 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, toPhase, switchTurn } = useGameInfo();
-
-    const { player, action } = useCurrentTurnPlayer();
-    const { findAllFighterByCoordinate } = useFindAllFighterByCoordinate();
-    const { findTeamFighterByCoordinate } = useFindTeamFighterByCoordinate(whichTurn);
-    const { findEnemyFighterByCoordinate } = useEnemyTeamFighterByCoordinate(whichTurn);
+    const enemy = whichTurn === "A" ? "B" : "A";
+    const { action } = useCurrentTurnPlayer();
+    const { findFighterByCoordinate, findFighterByTeamAndCoordinate } = useFindFighter();
 
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate);
 
@@ -41,7 +39,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
     const handleClick = (clickedCoordinate: Coordinate): void => {
         console.log({ selectedHex, selectedFighter });
-        const clickedFighter = findTeamFighterByCoordinate(clickedCoordinate);
+        const clickedFighter = findFighterByTeamAndCoordinate(clickedCoordinate, whichTurn);
 
         if (phase === "SELECT_FIGHTER") {
             setSelectedFighter(clickedFighter);
@@ -49,12 +47,12 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
         }
 
         //クリックされたHexがハイライトされており、キャラがいなければ
-        if (phase === "SELECT_MOVE" && isColored && !findAllFighterByCoordinate(clickedCoordinate)) {
+        if (phase === "SELECT_MOVE" && isColored && !findFighterByCoordinate(clickedCoordinate)) {
             toPhase.confirmMove(clickedCoordinate);
             return;
         }
         if (phase === "SELECT_ATTACK" && isColored) {
-            if (findEnemyFighterByCoordinate(clickedCoordinate)) {
+            if (findFighterByTeamAndCoordinate(clickedCoordinate, enemy)) {
                 toPhase.confirmAttack(clickedCoordinate);
             } else if (clickedFighter) {
                 setSelectedFighter(clickedFighter)
@@ -69,7 +67,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
                 action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: clickedCoordinate } });
                 switchTurn();
                 //別の移動候補先を選択
-            } else if (!findAllFighterByCoordinate(clickedCoordinate)) {
+            } else if (!findFighterByCoordinate(clickedCoordinate)) {
                 setSelectedHex(clickedCoordinate)
                 //仲間に移動フェーズを渡す
             } else if (clickedFighter) {
@@ -82,7 +80,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
         if (phase === "CONFIRM_ATTACK" && selectedHex && selectedFighter && isColored) {
             //攻撃確定
             if (isEqual(selectedHex, clickedCoordinate)) {
-                const targetFighter = findEnemyFighterByCoordinate(clickedCoordinate)
+                const targetFighter = findFighterByTeamAndCoordinate(clickedCoordinate, enemy)
                 if (targetFighter) {
                     action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
                     switchTurn();
@@ -91,7 +89,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
             } else if (clickedFighter) {
                 toPhase.selectAttack(clickedFighter);
                 //仲間に攻撃フェーズを渡す
-            } else if (findEnemyFighterByCoordinate(clickedCoordinate)) {
+            } else if (findFighterByTeamAndCoordinate(clickedCoordinate, enemy)) {
                 setSelectedHex(clickedCoordinate)
             }
             return;
