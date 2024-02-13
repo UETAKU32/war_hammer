@@ -4,6 +4,7 @@ import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
 import { HitEffectProps } from "../components/HitEffect";
 
+
 export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK";
 
 
@@ -20,18 +21,11 @@ type GameInfo = {
   setSelectedHex: (coordinate: Coordinate | undefined) => void;
   switchTurn: () => void;
   phase: Phase;
-  toPhase: ToPhaseFunctions;
+  setPhase: (phase: Phase) => void;
   hitEffect: HitEffectProps | undefined;
   setHitEffect: (hitEffect: HitEffectProps | undefined) => void;
 }
 
-type ToPhaseFunctions = {
-  selectFighter: () => void;
-  selectMove: (selectedFighter?: Fighter) => void;
-  selectAttack: (selectedFighter?: Fighter) => void;
-  confirmMove: (selectedHex: Coordinate) => void;
-  confirmAttack: (selectedHex: Coordinate) => void
-}
 
 const GameInfoContext = createContext<GameInfo | null>(null);
 
@@ -62,33 +56,6 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  const toPhase: ToPhaseFunctions = {
-    confirmMove: (selectedHex: Coordinate) => {
-      setSelectedHex(selectedHex);
-      setPhase("CONFIRM_MOVE");
-    },
-    confirmAttack: (selectedHex: Coordinate) => {
-      setSelectedHex(selectedHex);
-      setPhase("CONFIRM_ATTACK");
-    },
-    selectMove: (clickedFighter?: Fighter) => {
-      if (!clickedFighter && !selectedFighter) throw new Error("SELECT_MOVE phase must be with selectedFighter")
-      if (clickedFighter) setSelectedFighter(clickedFighter);
-      setSelectedHex(undefined)
-      setPhase("SELECT_MOVE");
-    },
-    selectFighter: () => {
-      setPhase("SELECT_FIGHTER")
-      setSelectedHex(undefined)
-      setSelectedFighter(undefined)
-    },
-    selectAttack: (clickedFighter?: Fighter) => {
-      if (!clickedFighter && !selectedFighter) throw new Error("SELECT_ATTACK phase must be with selectedFighter")
-      if (clickedFighter) setSelectedFighter(clickedFighter);
-      setSelectedHex(undefined)
-      setPhase("SELECT_ATTACK")
-    }
-  }
 
   const isLastPhase = currentTurnNum === maxTurnNum && whichTurn === "B";
 
@@ -104,10 +71,10 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     selectedHex,
     setSelectedHex,
     switchTurn,
-    toPhase,
     hitEffect,
     setHitEffect,
-    phase
+    phase,
+    setPhase
   }
 
   return (<GameInfoContext.Provider value={value}>

@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import { GameThemeProvider } from "./components/GameThemeProvider";
 import { GameContainer } from "./components/GameContainer";
 import { PlayerProvider, useCurrentTurnPlayer } from "./hooks/usePlayer";
+import { PhaseChangeProvider } from "./hooks/usePhaseGhange";
 
 
 
@@ -31,12 +32,14 @@ function App() {
     <GameThemeProvider>
       <GameInfoProvider>
         <PlayerProvider>
-          <Grid container direction="row" spacing={1} mb={5}>
-            <Grid direction="row" xs={12}>
-              <Sample />
+          <PhaseChangeProvider>
+            <Grid container direction="row" spacing={1} mb={5}>
+              <Grid direction="row" xs={12}>
+                <Sample />
+              </Grid>
             </Grid>
-          </Grid>
-          <GameContainer />
+            <GameContainer />
+          </PhaseChangeProvider>
         </PlayerProvider>
       </GameInfoProvider>
     </GameThemeProvider>

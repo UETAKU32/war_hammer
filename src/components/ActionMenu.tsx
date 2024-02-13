@@ -13,7 +13,15 @@ interface ActionMenuProps {
 const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate)
 
-    const { toPhase } = useGameInfo()
+    const { setPhase } = useGameInfo()
+
+    const handleClickMove = () => {
+        setPhase("SELECT_MOVE")
+    }
+
+    const handleClickAttack = () => {
+        setPhase("SELECT_ATTACK")
+    }
 
     return (
         <>
@@ -22,13 +30,13 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
                     x: centerPoint.x - hexWidth / 3,
                     y: centerPoint.y
                 }}
-                onClick={toPhase.selectAttack} />
+                onClick={handleClickAttack} />
             <MoveIcon
                 point={{
                     x: centerPoint.x + hexWidth / 3,
                     y: centerPoint.y
                 }}
-                onClick={toPhase.selectMove} />
+                onClick={handleClickMove} />
         </>
     )
 }
