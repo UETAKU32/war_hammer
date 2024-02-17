@@ -21,8 +21,8 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
-    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, switchTurn } = useGameInfo();
-    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, doMove } = usePhaseChange();
+    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase } = useGameInfo();
+    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, doMove, doAttack } = usePhaseChange();
     const enemy = whichTurn === "A" ? "B" : "A";
     const { player, action } = useCurrentTurnPlayer();
     const { findFighterByCoordinate, findFighterByTeamAndCoordinate } = useFindFighter();
@@ -42,7 +42,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
     const handleClick = (clickedCoordinate: Coordinate): void => {
-        const clickedFighter = findTeamFighterByCoordinate(clickedCoordinate);
+        const clickedFighter = findFighterByTeamAndCoordinate(clickedCoordinate, whichTurn);
 
         if (phase === "SELECT_FIGHTER") {
             setSelectedFighter(clickedFighter);
@@ -83,10 +83,9 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
             //攻撃確定
             if (isEqual(selectedHex, clickedCoordinate)) {
                 const targetFighter = findFighterByTeamAndCoordinate(clickedCoordinate, enemy)
-                if (targetFighter) {
-                    action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
-                    switchTurn();
-                }
+                if (!targetFighter) return
+                doAttack(targetFighter, clickedCoordinate)
+
                 //別の攻撃対象を選択
             } else if (clickedFighter) {
                 selectAttack(clickedFighter);

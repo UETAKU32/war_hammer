@@ -18,6 +18,7 @@ type PhaseChangeProps = {
     confirmMove: (selectedHex: Coordinate) => void;
     confirmAttack: (selectedHex: Coordinate) => void;
     doMove: (selectedHex: Coordinate) => void;
+    doAttack: (targetFighter: Fighter, clickedCoordinate: Coordinate) => void;
 };
 
 export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -61,13 +62,21 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         switchTurn();
     }
 
+    const doAttack = (targetFighter: Fighter, clickedCoordinate: Coordinate) => {
+        if (targetFighter && selectedFighter) {
+            action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
+            switchTurn();
+        }
+    }
+
     const toPhase: PhaseChangeProps = {
         confirmMove,
         confirmAttack,
         selectMove,
         selectFighter,
         selectAttack,
-        doMove
+        doMove,
+        doAttack,
     }
 
     return (
