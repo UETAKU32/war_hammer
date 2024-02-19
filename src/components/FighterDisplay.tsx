@@ -20,15 +20,17 @@ const FighterDisplay: FC = () => {
         <>
             {aliveFighters.map((fighter) => {
                 if (fighter.coordinate) {
-                    <image
-                        key={fighter.name}
-                        x={getCenterPointFromHex(fighter.coordinate).x - hexWidth / 2 + 2}
-                        y={getCenterPointFromHex(fighter.coordinate).y - hexHeight / 2}
-                        width={hexWidth}
-                        height={hexHeight}
-                        xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${fighter.image}`}
-                        style={{ pointerEvents: "none" }}
-                    />
+                    return (
+                        <image
+                            key={fighter.name}
+                            x={getCenterPointFromHex(fighter.coordinate).x - hexWidth / 2 + 2}
+                            y={getCenterPointFromHex(fighter.coordinate).y - hexHeight / 2}
+                            width={hexWidth}
+                            height={hexHeight}
+                            xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${fighter.image}`}
+                            style={{ pointerEvents: "none" }}
+                        />
+                    )
                 }
             })}
         </>
