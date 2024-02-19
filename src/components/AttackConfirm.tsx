@@ -1,40 +1,38 @@
-import { FC, useState, useEffect } from 'react'
-import { Coordinate } from '../types/Coordinate'
+import { FC } from 'react';
+import { Coordinate } from '../types/Coordinate';
 import { hexWidth, hexHeight } from '../lib/hexSize';
 import { getCenterPointFromHex } from '../lib/coordinate';
+import { useSpring, animated } from 'react-spring';
 
 interface AttackConfirmProps {
-    coordinate: Coordinate
+    coordinate: Coordinate;
 }
 
 const AttackConfirm: FC<AttackConfirmProps> = ({ coordinate }) => {
-
     const centerPoint = getCenterPointFromHex(coordinate);
 
-    const [opancy, setOpancy] = useState(0.6);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setOpancy((prevOpancy) => (prevOpancy === 0.6 ? 1 : 0.6));
-        }, 1000)
-        return () => clearInterval(interval);
-    }, []);
+    const { opacity } = useSpring({
+        loop: { reverse: true },
+        from: { opacity: 1 },
+        to: { opacity: 0 },
+        config: { duration: 1000 },
+    });
 
     return (
         <>
-            <image
+            <animated.image
                 x={centerPoint.x - hexWidth / 4 + 2}
                 y={centerPoint.y - hexHeight / 4}
                 width={hexWidth / 2}
                 height={hexHeight / 2}
                 xlinkHref={`${process.env.PUBLIC_URL}/icons/AttackAction.png`}
                 style={{
-                    pointerEvents: "none",
-                    opacity: opancy, transition: `opancy 1s ease-in-out`
+                    pointerEvents: 'none',
+                    opacity: opacity,
                 }}
             />
         </>
-    )
-}
+    );
+};
 
-export default AttackConfirm
+export default AttackConfirm;

@@ -19,7 +19,7 @@ const FighterDisplay: FC = () => {
     return (
         <>
             {aliveFighters.map((fighter) => {
-                if (fighter.coordinate)
+                if (fighter.coordinate) {
                     <image
                         key={fighter.name}
                         x={getCenterPointFromHex(fighter.coordinate).x - hexWidth / 2 + 2}
@@ -29,6 +29,7 @@ const FighterDisplay: FC = () => {
                         xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${fighter.image}`}
                         style={{ pointerEvents: "none" }}
                     />
+                }
             })}
         </>
     )
