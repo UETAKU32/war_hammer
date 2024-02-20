@@ -3,7 +3,7 @@ import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexRadius } from '../lib/hexSize';
-import { useCurrentTurnPlayer, useFindFighter } from '../hooks/usePlayer';
+import { useFindFighter } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
@@ -24,7 +24,6 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase } = useGameInfo();
     const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, doMove, doAttack } = usePhaseChange();
     const enemy = whichTurn === "A" ? "B" : "A";
-    const { player, action } = useCurrentTurnPlayer();
     const { findFighterByCoordinate, findFighterByTeamAndCoordinate } = useFindFighter();
 
 

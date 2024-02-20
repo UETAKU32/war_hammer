@@ -26,6 +26,8 @@ const FighterDisplay: FC = () => {
                             style={{ pointerEvents: "none" }}
                         />
                     )
+                } else {
+                    return null
                 }
             })}
         </>

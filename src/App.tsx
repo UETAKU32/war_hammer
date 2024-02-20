@@ -11,7 +11,7 @@ import { PhaseChangeProvider } from "./hooks/usePhaseGhange";
 
 
 const Sample: FC = () => {
-  const { player, action } = useCurrentTurnPlayer();
+  const { action } = useCurrentTurnPlayer();
   const { switchTurn } = useGameInfo();
   const handleClick = () => {
     action({ type: "ADD_VICTORY_POINT", payload: { whichTurn: "A" } });

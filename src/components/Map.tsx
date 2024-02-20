@@ -59,10 +59,6 @@ const Map: FC = () => {
       )
     }
   }
-  const c: Coordinate = {
-    row: 1,
-    col: 2
-  }
 
   return (
     <Grid item style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
