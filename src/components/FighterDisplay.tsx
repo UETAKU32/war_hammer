@@ -6,19 +6,14 @@ import { Fighter } from '../types/fighter';
 
 const FighterDisplay: FC = () => {
     const allPlayers = useAllPlayers();
-    let aliveFighters: Fighter[] = []
-    allPlayers.forEach((player) => {
-        player.fighters.forEach((fighter) => {
-            if (fighter.coordinate) {
-                aliveFighters.push(fighter)
-            }
-        })
-    })
+    const aliveFighters: Fighter[] = allPlayers
+        .flatMap(player => player.fighters)
+        .filter(fighter => fighter.coordinate);
 
-    //NOTE: mapでfighterImages除去できそう
     return (
         <>
             {aliveFighters.map((fighter) => {
+                //getCenterPointFromHexが型定義を認識しないためif (fighter.coordinate)でundefinedを回避
                 if (fighter.coordinate) {
                     return (
                         <image
