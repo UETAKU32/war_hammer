@@ -137,6 +137,13 @@ export const useFighter = (id: number | undefined) => {
   return fighter
 }
 
+export const usePlayersFighter = (id: PlayerId) => {
+  const allPlayers = useAllPlayers();
+  const fighters = allPlayers.find((player) => player.id === id)?.fighters
+  if (!fighters) throw new Error(`指定されたプレイヤー:${id}は存在しません`)
+  return fighters
+}
+
 /**
  * @returns findAllFighterByCoordinate - 全ファイターの中から座標検索をする関数
  * @returns findFighterByTeamAndCoordinate - 指定チームのファイターの中から座標検索をする関数

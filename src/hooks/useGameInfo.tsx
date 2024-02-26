@@ -11,6 +11,7 @@ export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_
 type GameInfo = {
   whichTurn: PlayerId;
   whichWon: PlayerId | undefined;
+  setWhichWon: (playerId: PlayerId) => void;
   maxTurnNum: number;
   currentTurnNum: number;
   selectedFighter: Fighter | undefined;
@@ -61,6 +62,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const value: GameInfo = {
     whichWon,
+    setWhichWon,
     whichTurn,
     maxTurnNum,
     currentTurnNum,

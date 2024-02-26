@@ -3,8 +3,17 @@ import { FC } from "react";
 import { GameInfoPanel } from "./GameInfoPanel";
 import { TeamInfoPanel } from "./TeamInfoPanel";
 import Map from "./Map";
+import { usePlayersFighter } from "../hooks/usePlayer";
+import { useGameInfo } from "../hooks/useGameInfo";
 
 export const GameContainer: FC = () => {
+
+  const { setWhichWon } = useGameInfo()
+  const aliveFightersA = usePlayersFighter("A").filter((fighter) => fighter.coordinate);
+  const aliveFightersB = usePlayersFighter("B").filter((fighter) => fighter.coordinate);
+  if (aliveFightersB.length < 1) setWhichWon("A");
+  if (aliveFightersA.length < 1) setWhichWon("B");
+
   return (
     <>
       <GameInfoPanel />
