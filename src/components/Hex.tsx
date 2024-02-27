@@ -17,6 +17,7 @@ const NONE = "rgba(100, 100, 100, 0.5)";
 const SELECTED_FIGHTER = "rgba(100, 100, 0, 0.5)";
 const IN_ATTACK_RANGE_COLOR = "rgba(100, 0, 100, 0.5)";
 const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
+const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
 
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
@@ -115,6 +116,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
         if (isColored) {
             if (phase === "SELECT_ATTACK" || phase === "CONFIRM_ATTACK") return IN_ATTACK_RANGE_COLOR;
             if (phase === "SELECT_MOVE" || phase === "CONFIRM_MOVE") return IN_MOVE_RANGE_COLOR;
+            if (phase === "SELECT_PUSH" || phase === "CONFIRM_PUSH") return IN_PUSH_RANGE_COLOR;
         }
         return NONE;
     }

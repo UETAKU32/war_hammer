@@ -22,7 +22,7 @@ const Map: FC = () => {
     }
     if ((phase === "SELECT_MOVE" || phase === "CONFIRM_MOVE") && selectedFighter.coordinate) return findRange(selectedFighter.coordinate, selectedFighter.agl);
     if ((phase === "SELECT_ATTACK" || phase === "CONFIRM_ATTACK") && selectedFighter.coordinate) return findRange(selectedFighter.coordinate, selectedFighter.move.range);
-
+    if ((phase === "SELECT_PUSH" || phase === "CONFIRM_PUSH") && selectedHex) return findRange(selectedHex, 1);
   }
 
   //FIXME: anyじゃなくて、ちゃんと型定義したい！

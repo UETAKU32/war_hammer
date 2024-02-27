@@ -5,7 +5,7 @@ import { Coordinate } from "../types/Coordinate";
 import { HitEffectProps } from "../components/HitEffect";
 
 
-export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK";
+export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK" | "SELECT_PUSH" | "CONFIRM_PUSH";
 
 
 type GameInfo = {

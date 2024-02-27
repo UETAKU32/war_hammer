@@ -65,7 +65,7 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
     const doAttack = (targetFighter: Fighter, clickedCoordinate: Coordinate) => {
         if (targetFighter && selectedFighter) {
             action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
-            switchTurn();
+            setPhase("SELECT_PUSH")
         }
     }
 
