@@ -25,7 +25,7 @@ type PlayerAction =
 
 
 const reducer = produce((players: Player[], action: PlayerAction) => {
-  const { setHitEffect } = useGameInfo();
+  const { setHitEffect, switchTurn } = useGameInfo();
   let updatedPlayer: Player | undefined;
 
   switch (action.type) {
@@ -50,22 +50,22 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
           hitType: "Critical",
         }
         setHitEffect(hitEffect);
-        reduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
+        useReduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
       } else if (randomNumber >= successBorder) {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
           hitType: "Attacked",
         }
         setHitEffect(hitEffect);
-        reduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
+        useReduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
       } else {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
           hitType: "Defended",
         }
         setHitEffect(hitEffect);
+        switchTurn();
       }
-
       break;
     case "MOVE":
       const movedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.fighter.id)
@@ -157,12 +157,16 @@ export const useFindFighter = () => {
   return { findFighterByCoordinate, findFighterByTeamAndCoordinate }
 }
 
-const reduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {
+const useReduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {
+  const { switchTurn, setPhase } = useGameInfo();
   damagedFighter.currentHp -= damage;
   if (damagedFighter.currentHp <= 0) {
     damagedFighter.currentHp = 0;
     damagedFighter.coordinate = undefined;
     attackPlayer.victoryPoint += 1;
+    switchTurn();
+  } else {
+    setPhase("SELECT_PUSH")
   }
   return damagedFighter;
 }
