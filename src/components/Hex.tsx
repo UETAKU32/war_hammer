@@ -95,6 +95,10 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
             }
             return;
         }
+        //押し出しフェーズ
+        if (phase === "SELECT_PUSH" && isColored && !findFighterByCoordinate(clickedCoordinate)) {
+            confirmMove(clickedCoordinate)
+        }
 
         //上記if全てに当てはまらない場合、下記条件式の判定をしたい
         if (clickedFighter) {

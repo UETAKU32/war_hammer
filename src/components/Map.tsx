@@ -11,10 +11,11 @@ import { searchdjacent } from '../lib/searchAdjacent';
 import MoveConfirm from './MoveConfirm';
 import AttackConfirm from './AttackConfirm';
 import HitEffect from './HitEffect';
+import PushConfirm from './PushConfirm';
 
 const Map: FC = () => {
 
-  const { selectedFighter, selectedHex, phase, hitEffect } = useGameInfo();
+  const { selectedFighter, selectedHex, phase, hitEffect, targetFighter } = useGameInfo();
 
   const getRange = () => {
     if (!selectedFighter || phase === "SELECT_FIGHTER") {
@@ -74,6 +75,7 @@ const Map: FC = () => {
           {selectedFighter?.coordinate && (<ActionMenu coordinate={selectedFighter.coordinate} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_MOVE") && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_ATTACK") && (<AttackConfirm coordinate={selectedHex} />)}
+          {(targetFighter && selectedHex && phase === "CONFIRM_PUSH") && (<PushConfirm targetFighter={targetFighter} coordinate={selectedHex} />)}
           {hitEffect && (<HitEffect hitType={hitEffect.hitType} coordinate={hitEffect.coordinate} />)}
         </svg>
       </Box>
