@@ -17,7 +17,7 @@ const FighterDisplay: FC = () => {
                 if (fighter.coordinate) {
                     return (
                         <image
-                            key={fighter.name}
+                            key={fighter.id}
                             x={getCenterPointFromHex(fighter.coordinate).x - hexWidth / 2 + 2}
                             y={getCenterPointFromHex(fighter.coordinate).y - hexHeight / 2}
                             width={hexWidth}
