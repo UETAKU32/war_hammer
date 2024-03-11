@@ -26,6 +26,7 @@ type PlayerAction =
 
 const reducer = produce((players: Player[], action: PlayerAction) => {
   const { setHitEffect, switchTurn } = useGameInfo();
+  const reduceHp = useReduceHp();
   let updatedPlayer: Player | undefined;
 
   switch (action.type) {
@@ -50,14 +51,14 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
           hitType: "Critical",
         }
         setHitEffect(hitEffect);
-        useReduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
+        reduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
       } else if (randomNumber >= successBorder) {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
           hitType: "Attacked",
         }
         setHitEffect(hitEffect);
-        useReduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
+        reduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
       } else {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
@@ -157,16 +158,20 @@ export const useFindFighter = () => {
   return { findFighterByCoordinate, findFighterByTeamAndCoordinate }
 }
 
-const useReduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {
+const useReduceHp = () => {
   const { switchTurn, setPhase } = useGameInfo();
-  damagedFighter.currentHp -= damage;
-  if (damagedFighter.currentHp <= 0) {
-    damagedFighter.currentHp = 0;
-    damagedFighter.coordinate = undefined;
-    attackPlayer.victoryPoint += 1;
-    switchTurn();
-  } else {
-    setPhase("SELECT_PUSH")
+  const reduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {
+    damagedFighter.currentHp -= damage;
+    //NOTE: 死んだ場合の処理
+    if (damagedFighter.currentHp <= 0) {
+      damagedFighter.currentHp = 0;
+      damagedFighter.coordinate = undefined;
+      attackPlayer.victoryPoint += 1;
+      switchTurn();
+      //NOTE: HPが残っていれば押し出しフェーズ
+    } else {
+      setPhase("SELECT_PUSH")
+    }
   }
-  return damagedFighter;
+  return reduceHp;
 }

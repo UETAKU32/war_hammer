@@ -24,10 +24,10 @@ const Map: FC = () => {
     if ((phase === "SELECT_MOVE" || phase === "CONFIRM_MOVE") && selectedFighter.coordinate) return findRange(selectedFighter.coordinate, selectedFighter.agl);
     if ((phase === "SELECT_ATTACK" || phase === "CONFIRM_ATTACK") && selectedFighter.coordinate) return findRange(selectedFighter.coordinate, selectedFighter.move.range);
     if ((phase === "SELECT_PUSH" || phase === "CONFIRM_PUSH") && selectedHex) return findRange(selectedHex, 1);
+    return []
   }
 
-  //FIXME: anyじゃなくて、ちゃんと型定義したい！
-  const range: any = getRange()
+  const range = getRange()
 
   const MaxCoordinate: Coordinate = {
     row: 7,
@@ -48,7 +48,7 @@ const Map: FC = () => {
         row: row,
         col: col
       }
-      const isColored = range.some(([rangeRow, rangeCol]: any[]) => rangeRow === coordinate.row && rangeCol === coordinate.col)
+      const isColored = range.some(({ row: rangeRow, col: rangeCol }) => rangeRow === coordinate.row && rangeCol === coordinate.col)
       honeycomb.push(
         <>
           <Hex
@@ -94,19 +94,20 @@ export default Map;
  */
 const findRange = (coordinate: Coordinate, range: number) => {
   const { row: startRow, col: startCol } = coordinate;
-  const visited = new Set();
+  const visited = new Set<Coordinate>();
   const queue = [[startRow, startCol, 0]]; // [row, col, moves]
 
   while (queue.length > 0) {
     const queueWithoutFirst = queue.shift();
-    if (!queueWithoutFirst) return;
+    //HACK: 型解決のためにチェックしているが、queue.lengh == 0の場合は、whileの中に入らないため、queueWithoutFirstがundefinedは起こり得ないはず。
+    if (!queueWithoutFirst) return Array.from(visited);
     const [currentRow, currentCol, moves] = queueWithoutFirst;
     if (moves === range) {
       continue;
     }
     const neighbors = searchdjacent({ row: currentRow, col: currentCol });
     for (const { row: nextRow, col: nextCol } of neighbors) {
-      const nextCell = [nextRow, nextCol];
+      const nextCell = { row: nextRow, col: nextCol };
       if (!visited.has(nextCell)) {
         visited.add(nextCell);
         queue.push([nextRow, nextCol, moves + 1]);
