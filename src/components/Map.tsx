@@ -100,7 +100,7 @@ const findRange = (coordinate: Coordinate, range: number) => {
   while (queue.length > 0) {
     const queueWithoutFirst = queue.shift();
     //HACK: 型解決のためにチェックしているが、queue.lengh == 0の場合は、whileの中に入らないため、queueWithoutFirstがundefinedは起こり得ないはず。
-    if (!queueWithoutFirst) return Array.from(visited);
+    if (!queueWithoutFirst) break;
     const [currentRow, currentCol, moves] = queueWithoutFirst;
     if (moves === range) {
       continue;
