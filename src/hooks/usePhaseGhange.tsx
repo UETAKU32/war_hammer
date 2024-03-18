@@ -7,7 +7,6 @@ import {
 } from "react";
 import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
-import { useCurrentTurnPlayer } from "./usePlayer";
 import { useGameInfo } from "./useGameInfo";
 
 const PhanseChangeContext = createContext<PhaseChangeProps | null>(null);
@@ -18,14 +17,15 @@ type PhaseChangeProps = {
     selectAttack: (selectedFighter?: Fighter) => void;
     confirmMove: (selectedHex: Coordinate) => void;
     confirmAttack: (selectedHex: Coordinate) => void;
-    doMove: (selectedHex: Coordinate) => void;
-    doAttack: (targetFighter: Fighter, clickedCoordinate: Coordinate) => void;
 };
 
+/**
+ * フェーズ変更を提供するProvider
+ * ファイター情報やプレイヤー情報の変更は行わない
+ * @param param0 
+ * @returns 
+ */
 export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
-
-    //PlayerProviderに依存している
-    const { action } = useCurrentTurnPlayer();
     const { phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter } = useGameInfo()
 
     useEffect(() => {
@@ -68,19 +68,6 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         setPhase("SELECT_ATTACK")
     };
 
-    const doMove = (selectedHex: Coordinate) => {
-        if (!selectedFighter) return
-        action({ type: "MOVE", payload: { fighter: selectedFighter, coordinate: selectedHex } });
-        switchTurn();
-    }
-
-    const doAttack = (targetFighter: Fighter, clickedCoordinate: Coordinate) => {
-        if (!targetFighter) return
-        if (targetFighter && selectedFighter) {
-            action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
-            console.log({ effect: hitEffect?.hitType })
-        }
-    }
 
     const toPhase: PhaseChangeProps = {
         confirmMove,
@@ -88,8 +75,6 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         selectMove,
         selectFighter,
         selectAttack,
-        doMove,
-        doAttack,
     }
 
     return (
