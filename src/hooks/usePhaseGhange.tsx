@@ -66,7 +66,10 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         if (!targetFighter) return
         if (targetFighter && selectedFighter) {
             action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
+            console.log({ effect: hitEffect?.hitType })
         }
+
+        console.log("ここで判定する⇩")
         console.log({ effect: hitEffect?.hitType })
         if (targetFighter.currentHp > 0 && (hitEffect?.hitType === "ATTACKED" || hitEffect?.hitType === "CRITICAL")) {
             setPhase("SELECT_PUSH");
