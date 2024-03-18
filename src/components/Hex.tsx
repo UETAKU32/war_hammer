@@ -82,11 +82,11 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
         if (phase === "CONFIRM_ATTACK" && selectedHex && selectedFighter && isColored) {
             //攻撃確定
             if (isEqual(selectedHex, clickedCoordinate)) {
-                const target = findFighterByTeamAndCoordinate(clickedCoordinate, enemy)
-                if (!target) return
-                setTargetFighter(target)
+                const targetFighter = findFighterByTeamAndCoordinate(clickedCoordinate, enemy)
+                if (!targetFighter) return
+                doAttack(targetFighter, clickedCoordinate)
+                setTargetFighter(targetFighter);
 
-                doAttack(clickedCoordinate)
                 //別の攻撃対象を選択
             } else if (clickedFighter) {
                 selectAttack(clickedFighter);
