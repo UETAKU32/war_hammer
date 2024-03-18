@@ -6,6 +6,8 @@ import { HitEffectProps } from "../components/HitEffect";
 
 
 export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK" | "SELECT_PUSH" | "CONFIRM_PUSH";
+//大文字に変えて、gameinfoで定義する
+export type HitType = "CRITICAL" | "ATTACKED" | "DEFENDED"
 
 
 type GameInfo = {
@@ -45,6 +47,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setSelectedFighter(undefined);
     setSelectedHex(undefined);
     setPhase("SELECT_FIGHTER");
+    setTargetFighter(undefined)
     if (!isLastPhase) {
       if (whichTurn === "A") {
         setWhichTurn("B");
@@ -79,6 +82,9 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setPhase
   }
 
+  console.log({ phase })
+  console.log({ targetFighter })
+  console.log({ effect: hitEffect?.hitType })
   return (<GameInfoContext.Provider value={value}>
     {children}
   </GameInfoContext.Provider>)

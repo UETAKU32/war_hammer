@@ -3,9 +3,8 @@ import { Coordinate } from '../types/Coordinate'
 import { hexWidth, hexHeight } from '../lib/hexSize';
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { useSpring, animated } from 'react-spring';
-import { useGameInfo } from '../hooks/useGameInfo';
+import { HitType, useGameInfo } from '../hooks/useGameInfo';
 
-type HitType = "Critical" | "Attacked" | "Defended"
 
 export type HitEffectProps = {
     coordinate: Coordinate

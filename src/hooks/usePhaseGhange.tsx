@@ -18,13 +18,13 @@ type PhaseChangeProps = {
     confirmMove: (selectedHex: Coordinate) => void;
     confirmAttack: (selectedHex: Coordinate) => void;
     doMove: (selectedHex: Coordinate) => void;
-    doAttack: (targetFighter: Fighter, clickedCoordinate: Coordinate) => void;
+    doAttack: (clickedCoordinate: Coordinate) => void;
 };
 
 export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
 
     const { action } = useCurrentTurnPlayer();
-    const { setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn } = useGameInfo()
+    const { setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter } = useGameInfo()
 
     const confirmMove = (selectedHex: Coordinate) => {
         setSelectedHex(selectedHex);
@@ -62,9 +62,23 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         switchTurn();
     }
 
-    const doAttack = (targetFighter: Fighter, clickedCoordinate: Coordinate) => {
+    const doAttack = (clickedCoordinate: Coordinate) => {
+        if (!targetFighter) return
         if (targetFighter && selectedFighter) {
             action({ type: "ATTACK", payload: { attacker: selectedFighter, receiver: targetFighter, coordinate: clickedCoordinate } })
+        }
+        console.log({ effect: hitEffect?.hitType })
+        afterAttack();
+
+    }
+
+    const afterAttack = () => {
+        if (!targetFighter) return
+        if (targetFighter.currentHp > 0 && (hitEffect?.hitType === "ATTACKED" || hitEffect?.hitType === "CRITICAL")) {
+            setPhase("SELECT_PUSH");
+        } else {
+            switchTurn();
+            console.log("doattackが呼ばれたけどpushに移行しなかった")
         }
     }
 

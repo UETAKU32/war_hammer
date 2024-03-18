@@ -48,24 +48,23 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       if (randomNumber >= criticalBorder) {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
-          hitType: "Critical",
+          hitType: "CRITICAL",
         }
         setHitEffect(hitEffect);
         reduceHp(updatedFighter, attacker.move.dmg + 1, attackerPlayer)
       } else if (randomNumber >= successBorder) {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
-          hitType: "Attacked",
+          hitType: "ATTACKED",
         }
         setHitEffect(hitEffect);
         reduceHp(updatedFighter, attacker.move.dmg, attackerPlayer)
       } else {
         const hitEffect: HitEffectProps = {
           coordinate: action.payload.coordinate,
-          hitType: "Defended",
+          hitType: "DEFENDED",
         }
         setHitEffect(hitEffect);
-        switchTurn();
       }
       break;
     case "MOVE":
@@ -159,7 +158,7 @@ export const useFindFighter = () => {
 }
 
 const useReduceHp = () => {
-  const { switchTurn, setPhase } = useGameInfo();
+
   const reduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {
     damagedFighter.currentHp -= damage;
     //NOTE: 死んだ場合の処理
@@ -167,10 +166,7 @@ const useReduceHp = () => {
       damagedFighter.currentHp = 0;
       damagedFighter.coordinate = undefined;
       attackPlayer.victoryPoint += 1;
-      switchTurn();
       //NOTE: HPが残っていれば押し出しフェーズ
-    } else {
-      setPhase("SELECT_PUSH")
     }
   }
   return reduceHp;
