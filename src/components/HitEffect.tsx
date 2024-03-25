@@ -7,8 +7,8 @@ import { HitType, useGameInfo } from '../hooks/useGameInfo';
 
 
 export type HitEffectProps = {
-    coordinate: Coordinate
-    hitType: HitType
+    coordinate: Coordinate;
+    hitType: HitType;
 }
 
 const HitEffect: FC<HitEffectProps> = ({ coordinate, hitType }) => {

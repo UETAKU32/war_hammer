@@ -79,7 +79,7 @@ export const player2: Player = {
       maxHp: 9,
       currentHp: 9,
       agl: 2,
-      def: 5,
+      def: 0,
       sleep: 0,
       move: {
         name: "蛇の邪眼",

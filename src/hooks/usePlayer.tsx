@@ -17,11 +17,16 @@ import { HitEffectProps } from "../components/HitEffect";
 
 const PlayerContext = createContext<PlayerProviderProps | null>(null);
 
+type AttackProps = { attacker: Fighter; receiver: Fighter; coordinate: Coordinate };
+type MoveProps = { fighter: Fighter; coordinate: Coordinate };
+type HealProps = { healHP: number; receiver: Fighter };
+type AddVictoryPointProps = { whichTurn: PlayerId };
+
 type PlayerAction =
-  | { type: "ATTACK"; payload: { attacker: Fighter; receiver: Fighter; coordinate: Coordinate } }
-  | { type: "MOVE"; payload: { fighter: Fighter; coordinate: Coordinate } }
-  | { type: "HEAL"; payload: { healHP: number; receiver: Fighter } }
-  | { type: "ADD_VICTORY_POINT"; payload: { whichTurn: PlayerId } };
+  | { type: "ATTACK"; payload: AttackProps }
+  | { type: "MOVE"; payload: MoveProps }
+  | { type: "HEAL"; payload: HealProps }
+  | { type: "ADD_VICTORY_POINT"; payload: AddVictoryPointProps };
 
 
 const reducer = produce((players: Player[], action: PlayerAction) => {
@@ -88,15 +93,26 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
 
 type PlayerProviderProps = {
   players: Player[];
-  action: Dispatch<PlayerAction>;
+  attack: (args: AttackProps) => void;
+  move: (args: MoveProps) => void;
+  heal: (args: HealProps) => void;
+  addVictoryPoint: (args: AddVictoryPointProps) => void;
 };
 
 
 export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const playersData = [player1, player2]
   const [players, action] = useReducer(reducer, playersData);
+  const { switchTurn } = useGameInfo()
+  const attack = (args: AttackProps) => action({ type: "ATTACK", payload: args });
+  const move = (args: MoveProps) => {
+    action({ type: "MOVE", payload: args });
+    switchTurn()
+  };
+  const heal = (args: HealProps) => action({ type: "HEAL", payload: args });
+  const addVictoryPoint = (args: AddVictoryPointProps) => action({ type: "ADD_VICTORY_POINT", payload: args });
   return (
-    <PlayerContext.Provider value={{ players, action }}>
+    <PlayerContext.Provider value={{ players, attack, move, heal, addVictoryPoint }}>
       {children}
     </PlayerContext.Provider>
   );
@@ -108,9 +124,10 @@ export const usePlayer = (playerId: PlayerId) => {
     throw new Error(
       "usePlayer must be called in PlayerInfoProvider."
     );
-  const selectedPlayer = value.players.find((p) => p.id === playerId);
+  const { players, ...props } = value;
+  const selectedPlayer = players.find((p) => p.id === playerId);
   if (!selectedPlayer) throw new Error(`playerId "${playerId}" was not found`);
-  return { player: selectedPlayer, action: value.action }
+  return { player: selectedPlayer, ...props }
 }
 
 export const useCurrentTurnPlayer = () => {

@@ -11,10 +11,10 @@ import { PhaseChangeProvider } from "./hooks/usePhaseGhange";
 
 
 const Sample: FC = () => {
-  const { action } = useCurrentTurnPlayer();
+  const { addVictoryPoint } = useCurrentTurnPlayer();
   const { switchTurn } = useGameInfo();
   const handleClick = () => {
-    action({ type: "ADD_VICTORY_POINT", payload: { whichTurn: "A" } });
+    addVictoryPoint({ whichTurn: "A" });
   };
   const handleTurn = () => {
     switchTurn()
@@ -31,16 +31,16 @@ function App() {
   return (
     <GameThemeProvider>
       <GameInfoProvider>
-        <PlayerProvider>
-          <PhaseChangeProvider>
+        <PhaseChangeProvider>
+          <PlayerProvider>
             <Grid container direction="row" spacing={1} mb={5}>
               <Grid direction="row" xs={12}>
                 <Sample />
               </Grid>
             </Grid>
             <GameContainer />
-          </PhaseChangeProvider>
-        </PlayerProvider>
+          </PlayerProvider>
+        </PhaseChangeProvider>
       </GameInfoProvider>
     </GameThemeProvider>
   );
