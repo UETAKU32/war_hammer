@@ -17,6 +17,7 @@ type PhaseChangeProps = {
     selectAttack: (selectedFighter?: Fighter) => void;
     confirmMove: (selectedHex: Coordinate) => void;
     confirmAttack: (selectedHex: Coordinate) => void;
+    confirmPush: (selectedHex: Coordinate) => void;
 };
 
 /**
@@ -26,7 +27,7 @@ type PhaseChangeProps = {
  * @returns 
  */
 export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
-    const { phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter } = useGameInfo()
+    const { phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter, setPushedHex } = useGameInfo()
 
     useEffect(() => {
         if (phase === "CONFIRM_ATTACK" && targetFighter && hitEffect) {
@@ -68,6 +69,12 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         setPhase("SELECT_ATTACK")
     };
 
+    const confirmPush = (selectedHex: Coordinate) => {
+        setPushedHex(selectedHex);
+        setPhase("CONFIRM_PUSH");
+        console.log({ phase })
+    }
+
 
     const toPhase: PhaseChangeProps = {
         confirmMove,
@@ -75,6 +82,7 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         selectMove,
         selectFighter,
         selectAttack,
+        confirmPush,
     }
 
     return (
@@ -94,3 +102,5 @@ export const usePhaseChange = () => {
         );
     return value
 }
+
+

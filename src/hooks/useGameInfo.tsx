@@ -27,6 +27,8 @@ type GameInfo = {
   setPhase: (phase: Phase) => void;
   hitEffect: HitEffectProps | undefined;
   setHitEffect: (hitEffect: HitEffectProps | undefined) => void;
+  pushedHex: Coordinate | undefined;
+  setPushedHex: (coordinate: Coordinate | undefined) => void;
 }
 
 
@@ -43,6 +45,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [selectedHex, setSelectedHex] = useState<Coordinate | undefined>();
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
   const [hitEffect, setHitEffect] = useState<HitEffectProps | undefined>();
+  const [pushedHex, setPushedHex] = useState<Coordinate | undefined>();
   const switchTurn = () => {
     setSelectedFighter(undefined);
     setSelectedHex(undefined);
@@ -79,12 +82,11 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     hitEffect,
     setHitEffect,
     phase,
-    setPhase
+    setPhase,
+    pushedHex,
+    setPushedHex,
   }
 
-  console.log({ phase })
-  console.log({ targetFighter })
-  console.log({ effect: hitEffect?.hitType })
   return (<GameInfoContext.Provider value={value}>
     {children}
   </GameInfoContext.Provider>)

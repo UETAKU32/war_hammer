@@ -24,7 +24,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter } = useGameInfo();
     const { attack, move } = usePlayer(whichTurn);
-    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack } = usePhaseChange();
+    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, confirmPush } = usePhaseChange();
     const enemy = whichTurn === "A" ? "B" : "A";
     const { findFighterByCoordinate, findFighterByTeamAndCoordinate } = useFindFighter();
 
@@ -98,8 +98,13 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
             return;
         }
         //押し出しフェーズ
-        if (phase === "SELECT_PUSH" && isColored && !findFighterByCoordinate(clickedCoordinate)) {
-            confirmMove(clickedCoordinate)
+        if (phase === "SELECT_PUSH") {
+            if (isColored) {
+                confirmPush(coordinate);
+                return
+            } else {
+                return;
+            }
         }
 
         //上記if全てに当てはまらない場合、下記条件式の判定をしたい
