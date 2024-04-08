@@ -22,7 +22,7 @@ const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
 const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
-    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter } = useGameInfo();
+    const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter, pushedHex, setPushedHex } = useGameInfo();
     const { attack, move } = usePlayer(whichTurn);
     const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, confirmPush } = usePhaseChange();
     const enemy = whichTurn === "A" ? "B" : "A";
@@ -99,12 +99,27 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
         }
         //押し出しフェーズ
         if (phase === "SELECT_PUSH") {
-            if (isColored) {
+            if (isColored && !findFighterByCoordinate(clickedCoordinate)) {
                 confirmPush(coordinate);
                 return
             } else {
+                //機能検討中！！
                 return;
             }
+        }
+
+        if (phase === "CONFIRM_PUSH" && pushedHex && targetFighter && isColored) {
+
+            //移動確定
+            if (isEqual(pushedHex, clickedCoordinate)) {
+                move({ fighter: targetFighter, coordinate: clickedCoordinate })
+                //別の移動候補先を選択
+            } else if (!findFighterByCoordinate(clickedCoordinate)) {
+                setPushedHex(clickedCoordinate)
+                //仲間に移動フェーズを渡す
+            }
+            return;
+
         }
 
         //上記if全てに当てはまらない場合、下記条件式の判定をしたい
