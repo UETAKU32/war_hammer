@@ -12,8 +12,13 @@ import MoveConfirm from './MoveConfirm';
 import AttackConfirm from './AttackConfirm';
 import HitEffect from './HitEffect';
 import PushConfirm from './PushConfirm';
+import { MapInfo } from '../data/map';
 
-const Map: FC = () => {
+type MapProps = {
+  mapInfo: MapInfo;
+}
+
+const Map: FC<MapProps> = ({ mapInfo: { data, maxCoordinate } }) => {
 
   const { selectedFighter, selectedHex, phase, hitEffect, targetFighter, pushedHex } = useGameInfo();
 
@@ -29,20 +34,16 @@ const Map: FC = () => {
 
   const range = getRange()
 
-  const MaxCoordinate: Coordinate = {
-    row: 7,
-    col: 8
-  }
-
-  const boardWidth: number = MaxCoordinate.col * hexWidth * 0.95;
-  const boardHeight: number = (MaxCoordinate.row + 0.5) * hexHeight * 0.85
+  const boardWidth: number = maxCoordinate.col * hexWidth * 0.95;
+  const boardHeight: number = (maxCoordinate.row + 0.5) * hexHeight * 0.85
 
 
   const honeycomb: any = [];
 
+
   //row col の蜂の巣型盤面を作成
-  for (let row = 0; row < MaxCoordinate.row; row++) {
-    for (let col = 0; col < MaxCoordinate.col; col++) {
+  for (let col = 0; col < maxCoordinate.col; col++) {
+    for (let row = 0; row < maxCoordinate.row; row++) {
       //座標情報を保持
       const coordinate: Coordinate = {
         row: row,
@@ -55,6 +56,7 @@ const Map: FC = () => {
             key={`${row}-${col}`}
             coordinate={coordinate}
             isColored={isColored}
+            type={data[col][row]}
           />
         </>
       )

@@ -8,9 +8,18 @@ import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
 
+/**
+ * Hexの種類
+ * NORMAL: 通常のHex
+ * FORBIDDEN: 移動不可のHex
+ * POND: 毒沼
+ */
+export type Type = "NORMAL" | "FORBIDDEN" | "POND";
+
 type HexProps = {
     coordinate: Coordinate;
     isColored: boolean;
+    type: Type;
 }
 
 const NONE = "rgba(100, 100, 100, 0.5)";
@@ -19,7 +28,7 @@ const IN_ATTACK_RANGE_COLOR = "rgba(100, 0, 100, 0.5)";
 const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
 
-const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
+const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
 
 
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter, pushedHex, setPushedHex } = useGameInfo();
@@ -43,6 +52,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
     const handleClick = (clickedCoordinate: Coordinate): void => {
+        if (type === "FORBIDDEN") return;
         const clickedFighter = findFighterByTeamAndCoordinate(clickedCoordinate, whichTurn);
 
         if (phase === "SELECT_FIGHTER") {
