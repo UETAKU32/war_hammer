@@ -28,7 +28,7 @@ const IN_ATTACK_RANGE_COLOR = "rgba(100, 0, 100, 0.5)";
 const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
 
-const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
+const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
 
 
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter, pushedHex, setPushedHex } = useGameInfo();
@@ -52,6 +52,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored }) => {
 
 
     const handleClick = (clickedCoordinate: Coordinate): void => {
+        if (type === "FORBIDDEN") return;
         const clickedFighter = findFighterByTeamAndCoordinate(clickedCoordinate, whichTurn);
 
         if (phase === "SELECT_FIGHTER") {
