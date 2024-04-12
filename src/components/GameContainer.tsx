@@ -5,6 +5,7 @@ import { TeamInfoPanel } from "./TeamInfoPanel";
 import Map from "./Map";
 import { usePlayersFighter } from "../hooks/usePlayer";
 import { useGameInfo } from "../hooks/useGameInfo";
+import { defaultMap } from "../data/map";
 
 export const GameContainer: FC = () => {
 
@@ -22,7 +23,7 @@ export const GameContainer: FC = () => {
           <TeamInfoPanel playerId="A" />
         </Grid>
         <Grid direction="column" xs={8} justifyContent="center" alignItems="center">
-          <Map />
+          <Map mapInfo={defaultMap} />
         </Grid>
         <Grid direction="column" xs={2}>
           <TeamInfoPanel playerId="B" />

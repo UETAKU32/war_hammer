@@ -8,9 +8,18 @@ import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
 
+/**
+ * Hexの種類
+ * NORMAL: 通常のHex
+ * FORBIDDEN: 移動不可のHex
+ * POND: 毒沼
+ */
+export type Type = "NORMAL" | "FORBIDDEN" | "POND";
+
 type HexProps = {
     coordinate: Coordinate;
     isColored: boolean;
+    type: Type;
 }
 
 const NONE = "rgba(100, 100, 100, 0.5)";
