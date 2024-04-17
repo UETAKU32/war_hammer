@@ -50,16 +50,18 @@ const Map: FC<MapProps> = ({ mapInfo: { data, maxCoordinate } }) => {
         col: col
       }
       const isColored = range.some(({ row: rangeRow, col: rangeCol }) => rangeRow === coordinate.row && rangeCol === coordinate.col)
-      honeycomb.push(
-        <>
-          <Hex
-            key={`${row}-${col}`}
-            coordinate={coordinate}
-            isColored={isColored}
-            type={data[col][row]}
-          />
-        </>
-      )
+      if (data[col][row] !== "FORBIDDEN") {
+        honeycomb.push(
+          <>
+            <Hex
+              key={`${row}-${col}`}
+              coordinate={coordinate}
+              isColored={isColored}
+              type={data[col][row]}
+            />
+          </>
+        )
+      }
     }
   }
 
