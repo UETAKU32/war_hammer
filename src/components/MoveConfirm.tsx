@@ -15,7 +15,7 @@ const MoveConfirm: FC<MoveConfirmProps> = ({ selectedFighter: { image }, coordin
     const centerPoint = getCenterPointFromHex(coordinate);
 
     const { opacity } = useSpring({
-        loop: { reverse: true },
+        loop: true,
         from: { opacity: 1 },
         to: { opacity: 0 },
         config: { duration: 1000 },
