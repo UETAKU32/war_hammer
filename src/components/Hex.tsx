@@ -7,19 +7,13 @@ import { useFindFighter, usePlayer } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
+import { HexType } from '../data/map';
 
-/**
- * Hexの種類
- * NORMAL: 通常のHex
- * FORBIDDEN: 移動不可のHex
- * POND: 毒沼
- */
-export type Type = "NORMAL" | "FORBIDDEN" | "POND";
 
 type HexProps = {
     coordinate: Coordinate;
     isColored: boolean;
-    type: Type;
+    type: HexType;
 }
 
 const NONE = "rgba(100, 100, 100, 0.5)";
@@ -27,6 +21,17 @@ const SELECTED_FIGHTER = "rgba(100, 100, 0, 0.5)";
 const IN_ATTACK_RANGE_COLOR = "rgba(100, 0, 100, 0.5)";
 const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
+
+export const TreasureHex: FC<HexProps> = (props) => {
+
+    return (
+        <>
+            <Hex {...props} />
+            <text x="-10" y="10" fill="black" fontSize="10" transform={`translate(${getCenterPointFromHex(props.coordinate).x}, ${getCenterPointFromHex(props.coordinate).y})`}>💰</text>
+        </>
+    )
+}
+
 
 const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
 

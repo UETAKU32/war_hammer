@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Coordinate } from '../types/Coordinate'
-import Hex from './Hex'
+import Hex, { TreasureHex } from './Hex'
 import { Box } from '@mui/system'
 import Grid from '@mui/material/Grid';
 import FighterDisplay from './FighterDisplay'
@@ -51,16 +51,28 @@ const Map: FC<MapProps> = ({ mapInfo: { data, maxCoordinate } }) => {
       }
       const isColored = range.some(({ row: rangeRow, col: rangeCol }) => rangeRow === coordinate.row && rangeCol === coordinate.col)
       if (data[col][row] !== "FORBIDDEN") {
-        honeycomb.push(
-          <>
-            <Hex
+        if (data[col][row] === "TREASURE") {
+          honeycomb.push(
+            <TreasureHex
               key={`${row}-${col}`}
               coordinate={coordinate}
               isColored={isColored}
               type={data[col][row]}
             />
-          </>
-        )
+          )
+        } else {
+          honeycomb.push(
+            <>
+              <Hex
+                key={`${row}-${col}`}
+                coordinate={coordinate}
+                isColored={isColored}
+                type={data[col][row]}
+              />
+            </>
+          )
+        }
+
       }
     }
   }
