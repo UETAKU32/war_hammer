@@ -30,8 +30,10 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
     const { phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter, setPushedHex } = useGameInfo()
 
     useEffect(() => {
-        if (phase === "CONFIRM_ATTACK" && targetFighter && hitEffect) {
-            if (targetFighter.currentHp > 0 && (hitEffect.hitType === "ATTACKED" || hitEffect.hitType === "CRITICAL")) {
+        if (phase === "CONFIRM_ATTACK" && targetFighter && hitEffect && selectedFighter) {
+            if (targetFighter.currentHp - selectedFighter.move.dmg > 0 && hitEffect.hitType === "ATTACKED") {
+                setPhase("SELECT_PUSH");
+            } else if (targetFighter.currentHp - selectedFighter.move.dmg + 1 > 0 && hitEffect.hitType === "CRITICAL") {
                 setPhase("SELECT_PUSH");
             } else {
                 switchTurn();
