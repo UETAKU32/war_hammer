@@ -112,19 +112,17 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
             if (isColored && !findFighterByCoordinate(clickedCoordinate)) {
                 confirmPush(coordinate);
                 return
-            } else {
-                //機能検討中！！
-                return;
             }
+            return;
         }
 
-        if (phase === "CONFIRM_PUSH" && pushedHex && targetFighter && isColored) {
+        if (phase === "CONFIRM_PUSH" && pushedHex && targetFighter) {
 
             //移動確定
-            if (isEqual(pushedHex, clickedCoordinate)) {
+            if (isEqual(pushedHex, clickedCoordinate) && isColored) {
                 move({ fighter: targetFighter, coordinate: clickedCoordinate })
                 //別の移動候補先を選択
-            } else if (!findFighterByCoordinate(clickedCoordinate)) {
+            } else if (!findFighterByCoordinate(clickedCoordinate) && isColored) {
                 setPushedHex(clickedCoordinate)
                 //仲間に移動フェーズを渡す
             }
