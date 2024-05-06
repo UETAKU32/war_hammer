@@ -2,7 +2,7 @@ import { Player } from "../types/Player";
 
 export const player1: Player = {
   id: "A",
-  name: "上原",
+  name: "Player1",
   victoryPoint: 0,
   fighters: [
     {
@@ -70,7 +70,7 @@ export const player1: Player = {
 
 export const player2: Player = {
   id: "B",
-  name: "吐師",
+  name: "Player2",
   victoryPoint: 0,
   fighters: [
     {
@@ -117,7 +117,7 @@ export const player2: Player = {
       id: 6,
       name: "ワーウルフ",
       maxHp: 6,
-      currentHp: 3,
+      currentHp: 6,
       agl: 3,
       def: 4,
       sleep: 0,
