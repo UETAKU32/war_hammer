@@ -1,21 +1,23 @@
 import { Coordinate } from "../types/Coordinate";
 
-export type Type = "NORMAL" | "FORBIDDEN" | "POND";
+export type HexType = "NORMAL" | "FORBIDDEN" | "POND" | "TREASURE";
 
 export type MapInfo = {
-  data: Type[][];
+  data: HexType[][];
   maxCoordinate: Coordinate;
 };
 
-const mapAData: Type[][] = [
-  ["NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
+export const MAX_TREASURE_COUNT = 5;
+
+const mapAData: HexType[][] = [
+  ["NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "NORMAL", "NORMAL", "TREASURE"],
   ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "NORMAL", "NORMAL",  "FORBIDDEN", "NORMAL", "FORBIDDEN", "NORMAL"],
+  ["NORMAL", "NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "FORBIDDEN", "NORMAL"],
   ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
   ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
   ["NORMAL", "FORBIDDEN", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
   ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "NORMAL"],
+  ["NORMAL", "NORMAL", "NORMAL", "TREASURE", "FORBIDDEN", "NORMAL", "NORMAL"],
 ];
 
 export const defaultMap: MapInfo = {
@@ -25,3 +27,17 @@ export const defaultMap: MapInfo = {
     col: mapAData.length,
   },
 };
+
+const getTreasureCoordinates = () => {
+  const treasureCoordinates: Coordinate[] = [];
+  mapAData.forEach((row, rowIndex) => {
+    row.forEach((type, colIndex) => {
+      if (type === "TREASURE") {
+        treasureCoordinates.push({ row: rowIndex, col: colIndex });
+      }
+    });
+  });
+  return treasureCoordinates;
+};
+
+export const treasureCoordinates: Coordinate[] = getTreasureCoordinates();

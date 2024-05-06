@@ -3,12 +3,18 @@ import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
 import { HitEffectProps } from "../components/HitEffect";
+import { MAX_TREASURE_COUNT, treasureCoordinates } from "../data/map";
+import { isEqual } from "lodash";
 
 
 export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK" | "SELECT_PUSH" | "CONFIRM_PUSH";
 //大文字に変えて、gameinfoで定義する
 export type HitType = "CRITICAL" | "ATTACKED" | "DEFENDED"
 
+type Treasure = {
+  count: number;
+  coordinate: Coordinate;
+}
 
 type GameInfo = {
   whichTurn: PlayerId;
@@ -29,6 +35,7 @@ type GameInfo = {
   setHitEffect: (hitEffect: HitEffectProps | undefined) => void;
   pushedHex: Coordinate | undefined;
   setPushedHex: (coordinate: Coordinate | undefined) => void;
+  findTreasureAt: (coordinate: Coordinate) => Treasure | undefined;
 }
 
 
@@ -46,7 +53,13 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [phase, setPhase] = useState<Phase>("SELECT_FIGHTER");
   const [hitEffect, setHitEffect] = useState<HitEffectProps | undefined>();
   const [pushedHex, setPushedHex] = useState<Coordinate | undefined>();
+  const [treasures, setTreasures] = useState<Treasure[]>(treasureCoordinates.map((coordinate) => ({ count: MAX_TREASURE_COUNT, coordinate })));
   const switchTurn = () => {
+    //TODO: ファイターがいる宝箱のみ-1
+    //  暫定処理でターン変更時、全ての宝箱のカウントを強制的に-1
+    treasureCoordinates.forEach((coordinate) => {
+      decreaseTreasureCount(coordinate);
+    })
     setSelectedFighter(undefined);
     setSelectedHex(undefined);
     setPhase("SELECT_FIGHTER");
@@ -61,6 +74,17 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     } else {
       setWhichWon("A")
     }
+  }
+
+  const findTreasureAt = (coordinate: Coordinate) => treasures.find((treasure) => isEqual(treasure.coordinate, coordinate));
+  //memo: countが0になった場合、treasuresから削除せず、map上に空になった宝箱を表示すると良さげかも
+  const decreaseTreasureCount = (coordinate: Coordinate) => {
+    setTreasures((prevTreasures) => prevTreasures.map((treasure) => {
+      if (isEqual(treasure.coordinate, coordinate)) {
+        return { ...treasure, count: treasure.count - 1 };
+      }
+      return treasure;
+    }))
   }
 
 
@@ -85,6 +109,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setPhase,
     pushedHex,
     setPushedHex,
+    findTreasureAt
   }
 
   return (<GameInfoContext.Provider value={value}>
