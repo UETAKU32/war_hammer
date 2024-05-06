@@ -33,13 +33,13 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         if (phase === "CONFIRM_ATTACK" && targetFighter && hitEffect && selectedFighter) {
             if (targetFighter.currentHp - selectedFighter.move.dmg > 0 && hitEffect.hitType === "ATTACKED") {
                 setPhase("SELECT_PUSH");
-            } else if (targetFighter.currentHp - selectedFighter.move.dmg + 1 > 0 && hitEffect.hitType === "CRITICAL") {
+            } else if (targetFighter.currentHp - selectedFighter.move.dmg - 1 > 0 && hitEffect.hitType === "CRITICAL") {
                 setPhase("SELECT_PUSH");
             } else {
                 switchTurn();
             }
         }
-    }, [hitEffect, setPhase, targetFighter, switchTurn, phase])
+    }, [hitEffect, setPhase, targetFighter, switchTurn, phase, selectedFighter])
 
     const confirmMove = (selectedHex: Coordinate) => {
         setSelectedHex(selectedHex);
