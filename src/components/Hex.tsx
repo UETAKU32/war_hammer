@@ -24,8 +24,8 @@ const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
 
 export const TreasureHex: FC<HexProps> = (props) => {
     const { findTreasureAt } = useGameInfo();
-    const tresure = findTreasureAt(props.coordinate)
-    if (!tresure) {
+    const treasure = findTreasureAt(props.coordinate)
+    if (!treasure) {
         throw Error(`${props.coordinate}宝物が存在するはずだが、無い`)
     }
 
@@ -33,7 +33,7 @@ export const TreasureHex: FC<HexProps> = (props) => {
     return (
         <>
             <Hex {...props} />
-            <text x="-10" y="10" fill="black" fontSize="10" transform={`translate(${getCenterPointFromHex(props.coordinate).x}, ${getCenterPointFromHex(props.coordinate).y})`}>💰{tresure.count}</text>
+            <text x="-10" y="10" fill="black" fontSize="10" transform={`translate(${getCenterPointFromHex(props.coordinate).x}, ${getCenterPointFromHex(props.coordinate).y})`}>💰{treasure.count}</text>
         </>
     )
 }

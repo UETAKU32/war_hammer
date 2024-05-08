@@ -30,8 +30,8 @@ export const defaultMap: MapInfo = {
 
 const getTreasureCoordinates = () => {
   const treasureCoordinates: Coordinate[] = [];
-  mapAData.forEach((row, rowIndex) => {
-    row.forEach((type, colIndex) => {
+  mapAData.forEach((col, colIndex) => {
+    col.forEach((type, rowIndex) => {
       if (type === "TREASURE") {
         treasureCoordinates.push({ row: rowIndex, col: colIndex });
       }
