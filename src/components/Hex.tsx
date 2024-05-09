@@ -1,8 +1,8 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
-import { hexRadius } from '../lib/hexSize';
+import { hexHeight, hexRadius, hexWidth } from '../lib/hexSize';
 import { useFindFighter, usePlayer } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
@@ -24,16 +24,39 @@ const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
 
 export const TreasureHex: FC<HexProps> = (props) => {
     const { findTreasureAt } = useGameInfo();
-    const treasure = findTreasureAt(props.coordinate)
+    const treasure = findTreasureAt(props.coordinate);
     if (!treasure) {
         throw Error(`${props.coordinate}宝物が存在するはずだが、無い`)
-    }
+    };
+
+    type TreasureStatus = "Closed" | "Opened" | "Empty";
+
+    const [treasureStatus, setTreasureStatus] = useState<TreasureStatus>("Closed");
+
+    useEffect(() => {
+        if (treasure.count > 3) {
+            setTreasureStatus("Closed");
+        } else if (treasure.count > 0) {
+            setTreasureStatus("Opened");
+        } else {
+            setTreasureStatus("Empty");
+        }
+    }, [treasure.count])
+
 
 
     return (
         <>
             <Hex {...props} />
-            <text x="-10" y="10" fill="black" fontSize="10" transform={`translate(${getCenterPointFromHex(props.coordinate).x}, ${getCenterPointFromHex(props.coordinate).y})`}>💰{treasure.count}</text>
+            <image
+                x={getCenterPointFromHex(props.coordinate).x - hexWidth / 2 + 2}
+                y={getCenterPointFromHex(props.coordinate).y - hexHeight / 2}
+                width={hexWidth}
+                height={hexHeight}
+                xlinkHref={`${process.env.PUBLIC_URL}/UI/Treasure${treasureStatus}.png`}
+                style={{ pointerEvents: "none" }}
+                opacity={0.5}
+            />
         </>
     )
 }
