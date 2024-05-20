@@ -57,6 +57,14 @@ export const TreasureHex: FC<HexProps> = (props) => {
                 style={{ pointerEvents: "none" }}
                 opacity={0.5}
             />
+            <text
+                x={getCenterPointFromHex(props.coordinate).x - hexWidth / 3}
+                y={getCenterPointFromHex(props.coordinate).y - hexHeight / 5}
+                fill="yellow"
+                fontSize={hexWidth / 3}
+                style={{ pointerEvents: 'none', fontWeight: 'bold' }}
+                opacity={0.6}
+            >{treasure.count}</text>
         </>
     )
 }
