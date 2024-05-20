@@ -36,6 +36,7 @@ type GameInfo = {
   pushedHex: Coordinate | undefined;
   setPushedHex: (coordinate: Coordinate | undefined) => void;
   findTreasureAt: (coordinate: Coordinate) => Treasure | undefined;
+  decreaseTreasureCount: (coordinate: Coordinate) => void;
 }
 
 
@@ -57,9 +58,6 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const switchTurn = () => {
     //TODO: ファイターがいる宝箱のみ-1
     //  暫定処理でターン変更時、全ての宝箱のカウントを強制的に-1
-    treasureCoordinates.forEach((coordinate) => {
-      decreaseTreasureCount(coordinate);
-    })
     setSelectedFighter(undefined);
     setSelectedHex(undefined);
     setPhase("SELECT_FIGHTER");
@@ -77,7 +75,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   }
 
   const findTreasureAt = (coordinate: Coordinate) => treasures.find((treasure) => isEqual(treasure.coordinate, coordinate));
-  //memo: countが0になった場合、treasuresから削除せず、map上に空になった宝箱を表示すると良さげかも
+
   const decreaseTreasureCount = (coordinate: Coordinate) => {
     setTreasures((prevTreasures) => prevTreasures.map((treasure) => {
       if (isEqual(treasure.coordinate, coordinate)) {
@@ -109,7 +107,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setPhase,
     pushedHex,
     setPushedHex,
-    findTreasureAt
+    findTreasureAt,
+    decreaseTreasureCount,
   }
 
   return (<GameInfoContext.Provider value={value}>

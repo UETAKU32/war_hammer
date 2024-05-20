@@ -23,7 +23,8 @@ const IN_MOVE_RANGE_COLOR = "rgba(0, 100, 0, 0.5)"
 const IN_PUSH_RANGE_COLOR = "rgba(0, 100, 100, 0.5)"
 
 export const TreasureHex: FC<HexProps> = (props) => {
-    const { findTreasureAt } = useGameInfo();
+    const { findTreasureAt, whichTurn, decreaseTreasureCount } = useGameInfo();
+    const { findFighterByCoordinate } = useFindFighter();
     const treasure = findTreasureAt(props.coordinate);
     if (!treasure) {
         throw Error(`${props.coordinate}宝物が存在するはずだが、無い`)
@@ -32,6 +33,12 @@ export const TreasureHex: FC<HexProps> = (props) => {
     type TreasureStatus = "Closed" | "Opened" | "Empty";
 
     const [treasureStatus, setTreasureStatus] = useState<TreasureStatus>("Closed");
+
+    useEffect(() => {
+        if (findFighterByCoordinate(props.coordinate)) {
+            decreaseTreasureCount(props.coordinate);
+        }
+    }, [whichTurn])
 
     useEffect(() => {
         if (treasure.count > 3) {
@@ -58,8 +65,8 @@ export const TreasureHex: FC<HexProps> = (props) => {
                 opacity={0.5}
             />
             <text
-                x={getCenterPointFromHex(props.coordinate).x - hexWidth / 3}
-                y={getCenterPointFromHex(props.coordinate).y - hexHeight / 5}
+                x={getCenterPointFromHex(props.coordinate).x - hexWidth / 2}
+                y={getCenterPointFromHex(props.coordinate).y - hexHeight / 10}
                 fill="yellow"
                 fontSize={hexWidth / 3}
                 style={{ pointerEvents: 'none', fontWeight: 'bold' }}
