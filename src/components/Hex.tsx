@@ -3,7 +3,7 @@ import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexHeight, hexRadius, hexWidth } from '../lib/hexSize';
-import { useFindFighter, usePlayer } from '../hooks/usePlayer';
+import { useCurrentTurnPlayer, useFindFighter, usePlayer } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
@@ -33,6 +33,7 @@ export const TreasureHex: FC<HexProps> = (props) => {
     type TreasureStatus = "Closed" | "Opened" | "Empty";
 
     const [treasureStatus, setTreasureStatus] = useState<TreasureStatus>("Closed");
+    const { addVictoryPoint } = useCurrentTurnPlayer();
 
     useEffect(() => {
         if (findFighterByCoordinate(props.coordinate)) {
@@ -48,7 +49,12 @@ export const TreasureHex: FC<HexProps> = (props) => {
         } else {
             setTreasureStatus("Empty");
         }
+        if (treasure.count === 0 && findFighterByCoordinate(props.coordinate)) {
+            addVictoryPoint({ whichTurn: "A" });
+        }
     }, [treasure.count])
+
+    const showCount = treasure.count > 0 ? treasure.count : 0;
 
 
 
@@ -71,7 +77,7 @@ export const TreasureHex: FC<HexProps> = (props) => {
                 fontSize={hexWidth / 3}
                 style={{ pointerEvents: 'none', fontWeight: 'bold' }}
                 opacity={0.6}
-            >{treasure.count}</text>
+            >{showCount}</text>
         </>
     )
 }
