@@ -30,7 +30,7 @@ type PlayerAction =
 
 
 const reducer = produce((players: Player[], action: PlayerAction) => {
-  const { setHitEffect, switchTurn } = useGameInfo();
+  const { setHitEffect, } = useGameInfo();
   const reduceHp = useReduceHp();
   let updatedPlayer: Player | undefined;
 
@@ -48,7 +48,7 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       const attackerPlayer = players.find((p) => includes(p.fighters.map((f) => f.id), attacker.id))
       if (!attackerPlayer) throw new Error(`プレイヤーが見つかりませんでした`)
       const updatedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.receiver.id)
-      if (!updatedFighter) throw new Error(`Fghter:${action.payload.receiver.name} was not found.`);
+      if (!updatedFighter) throw new Error(`Fighter:${action.payload.receiver.name} was not found.`);
 
       if (randomNumber >= criticalBorder) {
         const hitEffect: HitEffectProps = {
@@ -173,6 +173,29 @@ export const useFindFighter = () => {
   const findFighterByTeamAndCoordinate = (selectedCoordinate: Coordinate, selectedPlayer: PlayerId) => allPlayers.find(p => p.id === selectedPlayer)?.fighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate));
   return { findFighterByCoordinate, findFighterByTeamAndCoordinate }
 }
+
+export const useFindTeam = () => {
+  const allPlayers = useAllPlayers();
+
+  const findPlayerByFighter = (findFighter: Fighter): PlayerId => {
+    let result: PlayerId | undefined = undefined;
+
+    allPlayers.forEach((player) => {
+      player.fighters.forEach(fighter => {
+        if (isEqual(fighter, findFighter)) {
+          result = player.id;
+        }
+      });
+    })
+    if (!result) {
+      throw new Error(`Fighter with id ${findFighter} not found`);
+    }
+    return result;
+  }
+
+  return { findPlayerByFighter }
+}
+
 
 const useReduceHp = () => {
 

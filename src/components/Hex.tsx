@@ -3,11 +3,12 @@ import { CenterPoint } from '../types/CenterPoint'
 import { Coordinate } from '../types/Coordinate'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexHeight, hexRadius, hexWidth } from '../lib/hexSize';
-import { useCurrentTurnPlayer, useFindFighter, usePlayer } from '../hooks/usePlayer';
+import { useCurrentTurnPlayer, useFindFighter, useFindTeam, usePlayer } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
 import { HexType } from '../data/map';
+import { Fighter } from '../types/fighter';
 
 
 type HexProps = {
@@ -34,6 +35,7 @@ export const TreasureHex: FC<HexProps> = (props) => {
 
     const [treasureStatus, setTreasureStatus] = useState<TreasureStatus>("Closed");
     const { addVictoryPoint } = useCurrentTurnPlayer();
+    const { findPlayerByFighter } = useFindTeam();
 
     useEffect(() => {
         if (findFighterByCoordinate(props.coordinate)) {
@@ -50,10 +52,14 @@ export const TreasureHex: FC<HexProps> = (props) => {
             setTreasureStatus("Empty");
         }
         if (treasure.count === 0 && findFighterByCoordinate(props.coordinate)) {
-            addVictoryPoint({ whichTurn: "A" });
+            const fighter = findFighterByCoordinate(props.coordinate)
+            if (fighter) {
+                addVictoryPoint({ whichTurn: findPlayerByFighter(fighter) });
+            }
         }
     }, [treasure.count])
 
+    //内部的にはcountはマイナスになるが、画面上では0で減少は停止するようにする
     const showCount = treasure.count > 0 ? treasure.count : 0;
 
 
