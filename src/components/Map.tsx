@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Coordinate } from '../types/Coordinate'
-import Hex, { TreasureHex } from './Hex'
+import Hex from './Hex'
 import { Box } from '@mui/system'
 import Grid from '@mui/material/Grid';
 import FighterDisplay from './FighterDisplay'
@@ -13,6 +13,7 @@ import AttackConfirm from './AttackConfirm';
 import HitEffect from './HitEffect';
 import PushConfirm from './PushConfirm';
 import { MapInfo } from '../data/map';
+import { TreasureHex } from './TreasureHex';
 
 type MapProps = {
   mapInfo: MapInfo;
