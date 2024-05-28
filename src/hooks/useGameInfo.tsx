@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, createContext, useContext, useState } from "react";
+import { FC, PropsWithChildren, createContext, useCallback, useContext, useState } from "react";
 import { PlayerId } from "../types/Player";
 import { Fighter } from "../types/fighter";
 import { Coordinate } from "../types/Coordinate";
@@ -55,7 +55,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [hitEffect, setHitEffect] = useState<HitEffectProps | undefined>();
   const [pushedHex, setPushedHex] = useState<Coordinate | undefined>();
   const [treasures, setTreasures] = useState<Treasure[]>(treasureCoordinates.map((coordinate) => ({ count: MAX_TREASURE_COUNT, coordinate })));
-  const switchTurn = () => {
+  const isLastPhase = currentTurnNum === maxTurnNum && whichTurn === "B";
+  const switchTurn = useCallback(() => {
     //TODO: ファイターがいる宝箱のみ-1
     //  暫定処理でターン変更時、全ての宝箱のカウントを強制的に-1
     setSelectedFighter(undefined);
@@ -72,21 +73,18 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     } else {
       setWhichWon("A")
     }
-  }
+  }, [isLastPhase, whichTurn]);
 
-  const findTreasureAt = (coordinate: Coordinate) => treasures.find((treasure) => isEqual(treasure.coordinate, coordinate));
+  const findTreasureAt = useCallback((coordinate: Coordinate) => treasures.find((treasure) => isEqual(treasure.coordinate, coordinate)), [treasures]);
 
-  const decreaseTreasureCount = (coordinate: Coordinate) => {
+  const decreaseTreasureCount = useCallback((coordinate: Coordinate) => {
     setTreasures((prevTreasures) => prevTreasures.map((treasure) => {
       if (isEqual(treasure.coordinate, coordinate)) {
         return { ...treasure, count: treasure.count - 1 };
       }
       return treasure;
     }))
-  }
-
-
-  const isLastPhase = currentTurnNum === maxTurnNum && whichTurn === "B";
+  }, []);
 
   const value: GameInfo = {
     whichWon,

@@ -1,10 +1,11 @@
 import { produce } from "immer";
 import {
-  Dispatch,
   FC,
   PropsWithChildren,
   createContext,
+  useCallback,
   useContext,
+  useMemo,
   useReducer,
 } from "react";
 import { Fighter } from "../types/fighter";
@@ -104,13 +105,13 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   const playersData = [player1, player2]
   const [players, action] = useReducer(reducer, playersData);
   const { switchTurn } = useGameInfo()
-  const attack = (args: AttackProps) => action({ type: "ATTACK", payload: args });
-  const move = (args: MoveProps) => {
+  const attack = useCallback((args: AttackProps) => action({ type: "ATTACK", payload: args }), []);
+  const move = useCallback((args: MoveProps) => {
     action({ type: "MOVE", payload: args });
     switchTurn()
-  };
-  const heal = (args: HealProps) => action({ type: "HEAL", payload: args });
-  const addVictoryPoint = (args: AddVictoryPointProps) => action({ type: "ADD_VICTORY_POINT", payload: args });
+  }, [switchTurn]);
+  const heal = useCallback((args: HealProps) => action({ type: "HEAL", payload: args }), []);
+  const addVictoryPoint = useCallback((args: AddVictoryPointProps) => action({ type: "ADD_VICTORY_POINT", payload: args }), []);
   return (
     <PlayerContext.Provider value={{ players, attack, move, heal, addVictoryPoint }}>
       {children}
@@ -125,7 +126,7 @@ export const usePlayer = (playerId: PlayerId) => {
       "usePlayer must be called in PlayerInfoProvider."
     );
   const { players, ...props } = value;
-  const selectedPlayer = players.find((p) => p.id === playerId);
+  const selectedPlayer = useMemo(() => players.find((p) => p.id === playerId), [playerId, players]);
   if (!selectedPlayer) throw new Error(`playerId "${playerId}" was not found`);
   return { player: selectedPlayer, ...props }
 }
@@ -138,7 +139,8 @@ export const useCurrentTurnPlayer = () => {
 export const useAllPlayers = () => {
   const { player: playerA } = usePlayer("A");
   const { player: playerB } = usePlayer("B");
-  return [playerA, playerB]
+  const allPlayers = useMemo(() => [playerA, playerB], [playerA, playerB]);
+  return allPlayers;
 }
 
 const useAllFighters = () => {
@@ -167,10 +169,10 @@ export const usePlayersFighter = (id: PlayerId) => {
  */
 export const useFindFighter = () => {
   const allPlayers = useAllPlayers();
-  const allFighters = allPlayers.flatMap((player) => player.fighters);
+  const allFighters = useMemo(() => allPlayers.flatMap((player) => player.fighters), [allPlayers]);
 
-  const findFighterByCoordinate = (selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate));
-  const findFighterByTeamAndCoordinate = (selectedCoordinate: Coordinate, selectedPlayer: PlayerId) => allPlayers.find(p => p.id === selectedPlayer)?.fighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate));
+  const findFighterByCoordinate = useCallback((selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate)), [allFighters]);
+  const findFighterByTeamAndCoordinate = useCallback((selectedCoordinate: Coordinate, selectedPlayer: PlayerId) => allPlayers.find(p => p.id === selectedPlayer)?.fighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate)), [allPlayers]);
   return { findFighterByCoordinate, findFighterByTeamAndCoordinate }
 }
 

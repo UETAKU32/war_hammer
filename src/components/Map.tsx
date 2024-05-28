@@ -56,7 +56,8 @@ const Map: FC<MapProps> = ({ mapInfo: { data, maxCoordinate } }) => {
           honeycomb.push(
             <TreasureHex
               key={`${row}-${col}`}
-              coordinate={coordinate}
+              row={row}
+              col={col}
               isColored={isColored}
               type={data[col][row]}
             />
