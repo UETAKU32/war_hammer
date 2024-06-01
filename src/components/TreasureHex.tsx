@@ -1,16 +1,23 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexHeight, hexWidth } from '../lib/hexSize';
 import { useCurrentTurnPlayer, useFindFighter, useFindTeam } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
 import Hex, { HexProps } from './Hex';
+import { HexType } from '../data/map';
 
-export const TreasureHex: FC<HexProps> = (props) => {
+export const TreasureHex: FC<{
+    col: number;
+    row: number;
+    isColored: boolean;
+    type: HexType;
+}> = (props) => {
+    const coordinate = useMemo(() => ({ row: props.row, col: props.col }), [props.row, props.col]);
     const { findTreasureAt, whichTurn, decreaseTreasureCount } = useGameInfo();
     const { findFighterByCoordinate } = useFindFighter();
-    const treasure = findTreasureAt(props.coordinate);
+    const treasure = findTreasureAt({ col: props.col, row: props.row });
     if (!treasure) {
-        throw Error(`${props.coordinate}宝物が存在するはずだが、無い`)
+        throw Error(`${{ col: props.col, row: props.row }}宝物が存在するはずだが、無い`)
     };
 
     type TreasureStatus = "Closed" | "Opened" | "Empty";
@@ -20,10 +27,10 @@ export const TreasureHex: FC<HexProps> = (props) => {
     const { findPlayerByFighter } = useFindTeam();
 
     useEffect(() => {
-        if (findFighterByCoordinate(props.coordinate)) {
-            decreaseTreasureCount(props.coordinate);
+        if (findFighterByCoordinate(coordinate)) {
+            decreaseTreasureCount(coordinate);
         }
-    }, [whichTurn])
+    }, [decreaseTreasureCount, findFighterByCoordinate, coordinate, whichTurn])
 
     useEffect(() => {
         if (treasure.count > 3) {
@@ -33,8 +40,8 @@ export const TreasureHex: FC<HexProps> = (props) => {
         } else {
             setTreasureStatus("Empty");
         }
-        if (treasure.count === 0 && findFighterByCoordinate(props.coordinate)) {
-            const fighter = findFighterByCoordinate(props.coordinate)
+        if (treasure.count === 0 && findFighterByCoordinate(coordinate)) {
+            const fighter = findFighterByCoordinate(coordinate)
             if (fighter) {
                 addVictoryPoint({ whichTurn: findPlayerByFighter(fighter) });
             }
@@ -48,10 +55,10 @@ export const TreasureHex: FC<HexProps> = (props) => {
 
     return (
         <>
-            <Hex {...props} />
+            <Hex coordinate={coordinate} {...props} />
             <image
-                x={getCenterPointFromHex(props.coordinate).x - hexWidth / 2 + 2}
-                y={getCenterPointFromHex(props.coordinate).y - hexHeight / 2}
+                x={getCenterPointFromHex(coordinate).x - hexWidth / 2 + 2}
+                y={getCenterPointFromHex(coordinate).y - hexHeight / 2}
                 width={hexWidth}
                 height={hexHeight}
                 xlinkHref={`${process.env.PUBLIC_URL}/UI/Treasure${treasureStatus}.png`}
@@ -59,8 +66,8 @@ export const TreasureHex: FC<HexProps> = (props) => {
                 opacity={0.5}
             />
             <text
-                x={getCenterPointFromHex(props.coordinate).x - hexWidth / 2}
-                y={getCenterPointFromHex(props.coordinate).y - hexHeight / 10}
+                x={getCenterPointFromHex(coordinate).x - hexWidth / 2}
+                y={getCenterPointFromHex(coordinate).y - hexHeight / 10}
                 fill="yellow"
                 fontSize={hexWidth / 3}
                 style={{ pointerEvents: 'none', fontWeight: 'bold' }}
