@@ -3,7 +3,7 @@ import { getCenterPointFromHex } from '../lib/coordinate';
 import { hexHeight, hexWidth } from '../lib/hexSize';
 import { useCurrentTurnPlayer, useFindFighter, useFindTeam } from '../hooks/usePlayer';
 import { useGameInfo } from '../hooks/useGameInfo';
-import Hex, { HexProps } from './Hex';
+import Hex from './Hex';
 import { HexType } from '../data/map';
 
 export const TreasureHex: FC<{
@@ -46,7 +46,7 @@ export const TreasureHex: FC<{
                 addVictoryPoint({ whichTurn: findPlayerByFighter(fighter) });
             }
         }
-    }, [treasure.count])
+    }, [setTreasureStatus, findFighterByCoordinate, addVictoryPoint, treasure.count])
 
     //内部的にはcountはマイナスになるが、画面上では0で減少は停止するようにする
     const showCount = treasure.count > 0 ? treasure.count : 0;
