@@ -17,7 +17,7 @@ const Status: FC<StatusProps> = ({ iconName, statusValue }) => {
     return (
         <div style={{ marginRight: `15px`, display: `flex`, alignItems: `center` }}>
             <div style={divStyle}>
-                <img src={`/icons/${iconName}.png`} alt={`Icon for ${iconName}`} />
+                <img src={`${process.env.PUBLIC_URL}/icons/${iconName}.png`} alt={`Icon for ${iconName}`} />
             </div><Typography variant="body2">{statusValue}</Typography>
         </div>
     );
