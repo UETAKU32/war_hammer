@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/war_hammer/static/css/main.c5ee3b89.css",
-    "main.js": "/war_hammer/static/js/main.7c9b2e19.js",
+    "main.js": "/war_hammer/static/js/main.a13df395.js",
     "static/js/787.98966371.chunk.js": "/war_hammer/static/js/787.98966371.chunk.js",
     "static/media/JiyunoTsubasa.ttf": "/war_hammer/static/media/JiyunoTsubasa.d65d4873d75e673ced42.ttf",
     "static/media/background.jpg": "/war_hammer/static/media/background.699f225fcbd78555a219.jpg",
     "index.html": "/war_hammer/index.html",
     "main.c5ee3b89.css.map": "/war_hammer/static/css/main.c5ee3b89.css.map",
-    "main.7c9b2e19.js.map": "/war_hammer/static/js/main.7c9b2e19.js.map",
+    "main.a13df395.js.map": "/war_hammer/static/js/main.a13df395.js.map",
     "787.98966371.chunk.js.map": "/war_hammer/static/js/787.98966371.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c5ee3b89.css",
-    "static/js/main.7c9b2e19.js"
+    "static/js/main.a13df395.js"
   ]
 }
