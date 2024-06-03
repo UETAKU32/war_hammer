@@ -179,7 +179,7 @@ export const useFindFighter = () => {
 export const useFindTeam = () => {
   const allPlayers = useAllPlayers();
 
-  const findPlayerByFighter = (findFighter: Fighter): PlayerId => {
+  const findPlayerByFighter = useCallback((findFighter: Fighter): PlayerId => {
     let result: PlayerId | undefined = undefined;
 
     allPlayers.forEach((player) => {
@@ -193,9 +193,9 @@ export const useFindTeam = () => {
       throw new Error(`Fighter with id ${findFighter} not found`);
     }
     return result;
-  }
-
+  }, [allPlayers])
   return { findPlayerByFighter }
+
 }
 
 

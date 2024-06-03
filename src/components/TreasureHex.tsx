@@ -46,7 +46,7 @@ export const TreasureHex: FC<{
                 addVictoryPoint({ whichTurn: findPlayerByFighter(fighter) });
             }
         }
-    }, [setTreasureStatus, findFighterByCoordinate, addVictoryPoint, treasure.count])
+    }, [setTreasureStatus, addVictoryPoint, treasure.count, coordinate])
 
     //内部的にはcountはマイナスになるが、画面上では0で減少は停止するようにする
     const showCount = treasure.count > 0 ? treasure.count : 0;
