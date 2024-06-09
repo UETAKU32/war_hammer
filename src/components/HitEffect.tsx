@@ -20,13 +20,13 @@ const HitEffect: FC<HitEffectProps> = ({ coordinate, hitType }) => {
     const { opacity } = useSpring({
         from: { opacity: 1 },
         to: { opacity: 0 },
-        config: { duration: 10000000 }, // アニメーションの持続時間（1秒）
+        config: { duration: 1000 }, // アニメーションの持続時間（1秒）
     });
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             setHitEffect(undefined);
-        }, 10000000);
+        }, 1000);
         return () => clearTimeout(timeoutId);
     })
 
