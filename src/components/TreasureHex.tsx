@@ -46,6 +46,7 @@ export const TreasureHex: FC<{
                 addVictoryPoint({ whichTurn: findPlayerByFighter(fighter) });
             }
         }
+        //findPlayerByFighterを依存配列に入れると2回点数が入る
     }, [setTreasureStatus, addVictoryPoint, treasure.count, coordinate])
 
     //内部的にはcountはマイナスになるが、画面上では0で減少は停止するようにする
