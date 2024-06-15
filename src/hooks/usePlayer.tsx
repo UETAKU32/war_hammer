@@ -22,12 +22,15 @@ type AttackProps = { attacker: Fighter; receiver: Fighter; coordinate: Coordinat
 type MoveProps = { fighter: Fighter; coordinate: Coordinate };
 type HealProps = { healHP: number; receiver: Fighter };
 type AddVictoryPointProps = { whichTurn: PlayerId };
+type DamagedByPoisonProps = { damagedFighter: Fighter };
 
 type PlayerAction =
   | { type: "ATTACK"; payload: AttackProps }
   | { type: "MOVE"; payload: MoveProps }
   | { type: "HEAL"; payload: HealProps }
-  | { type: "ADD_VICTORY_POINT"; payload: AddVictoryPointProps };
+  | { type: "ADD_VICTORY_POINT"; payload: AddVictoryPointProps }
+  | { type: "DAMAGED_BY_POISON"; payload: DamagedByPoisonProps };
+
 
 
 const reducer = produce((players: Player[], action: PlayerAction) => {
@@ -87,6 +90,16 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       if (!updatedPlayer) throw new Error(`Team${action.payload.whichTurn} was not found.`);
       updatedPlayer.victoryPoint++;
       break;
+    case "DAMAGED_BY_POISON":
+      const damagedFighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.damagedFighter.id)
+      if (!damagedFighter) throw new Error(`Fghter:${action.payload.damagedFighter.name} was not found.`);
+      const enemyPlayer = players.find(player =>
+        !player.fighters.some(fighter => fighter.id === damagedFighter.id)
+      );
+      if (!enemyPlayer) throw new Error(`enemyPlayer was not found.`);
+      reduceHp(damagedFighter, 1, enemyPlayer)
+      break;
+
     default:
       break;
   }
@@ -98,6 +111,7 @@ type PlayerProviderProps = {
   move: (args: MoveProps) => void;
   heal: (args: HealProps) => void;
   addVictoryPoint: (args: AddVictoryPointProps) => void;
+  damagedByPoison: (args: DamagedByPoisonProps) => void;
 };
 
 
@@ -112,25 +126,29 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [switchTurn]);
   const heal = useCallback((args: HealProps) => action({ type: "HEAL", payload: args }), []);
   const addVictoryPoint = useCallback((args: AddVictoryPointProps) => action({ type: "ADD_VICTORY_POINT", payload: args }), []);
+  const damagedByPoison = useCallback((args: DamagedByPoisonProps) => action({ type: "DAMAGED_BY_POISON", payload: args }), [])
   return (
-    <PlayerContext.Provider value={{ players, attack, move, heal, addVictoryPoint }}>
+    <PlayerContext.Provider value={{ players, attack, move, heal, addVictoryPoint, damagedByPoison }}>
       {children}
     </PlayerContext.Provider>
   );
 };
 
-export const usePlayer = (playerId: PlayerId) => {
+export const usePlayerContext = () => {
   const value = useContext(PlayerContext);
   if (!value)
     throw new Error(
       "usePlayer must be called in PlayerInfoProvider."
     );
-  const { players, ...props } = value;
+  return value;
+}
+
+export const usePlayer = (playerId: PlayerId) => {
+  const { players, ...props } = usePlayerContext();
   const selectedPlayer = useMemo(() => players.find((p) => p.id === playerId), [playerId, players]);
   if (!selectedPlayer) throw new Error(`playerId "${playerId}" was not found`);
   return { player: selectedPlayer, ...props }
 }
-
 export const useCurrentTurnPlayer = () => {
   const { whichTurn } = useGameInfo();
   return usePlayer(whichTurn);
@@ -202,13 +220,13 @@ export const useFindTeam = () => {
 const useReduceHp = () => {
 
   const reduceHp = (damagedFighter: Fighter, damage: number, attackPlayer: Player) => {
+    console.log({ damagedFighter })
     damagedFighter.currentHp -= damage;
-    //NOTE: 死んだ場合の処理
+    //NOTE: HPが0になった場合の処理
     if (damagedFighter.currentHp <= 0) {
       damagedFighter.currentHp = 0;
       damagedFighter.coordinate = undefined;
       attackPlayer.victoryPoint += 1;
-      //NOTE: HPが残っていれば押し出しフェーズ
     }
   }
   return reduceHp;

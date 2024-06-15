@@ -74,7 +74,6 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
     const confirmPush = (selectedHex: Coordinate) => {
         setPushedHex(selectedHex);
         setPhase("CONFIRM_PUSH");
-        console.log({ phase })
     }
 
 

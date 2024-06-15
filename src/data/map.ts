@@ -1,6 +1,6 @@
 import { Coordinate } from "../types/Coordinate";
 
-export type HexType = "NORMAL" | "FORBIDDEN" | "POND" | "TREASURE";
+export type HexType = "NORMAL" | "FORBIDDEN" | "POISON" | "TREASURE";
 
 export type MapInfo = {
   data: HexType[][];
@@ -13,9 +13,9 @@ const mapAData: HexType[][] = [
   ["NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "NORMAL", "NORMAL", "TREASURE"],
   ["NORMAL", "NORMAL", "NORMAL", "TREASURE", "NORMAL", "NORMAL", "NORMAL"],
   ["NORMAL", "NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "FORBIDDEN", "NORMAL"],
+  ["NORMAL", "POISON", "NORMAL", "NORMAL", "POISON", "NORMAL", "NORMAL"],
   ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "FORBIDDEN", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
+  ["NORMAL", "FORBIDDEN", "POISON", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
   ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
   ["NORMAL", "NORMAL", "NORMAL", "TREASURE", "FORBIDDEN", "NORMAL", "NORMAL"],
 ];

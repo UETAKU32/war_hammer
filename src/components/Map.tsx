@@ -14,6 +14,7 @@ import HitEffect from './HitEffect';
 import PushConfirm from './PushConfirm';
 import { MapInfo } from '../data/map';
 import { TreasureHex } from './TreasureHex';
+import { PoisonHex } from './PoisonHex';
 
 type MapProps = {
   mapInfo: MapInfo;
@@ -55,6 +56,16 @@ const Map: FC<MapProps> = ({ mapInfo: { data, maxCoordinate } }) => {
         if (data[col][row] === "TREASURE") {
           honeycomb.push(
             <TreasureHex
+              key={`${row}-${col}`}
+              row={row}
+              col={col}
+              isColored={isColored}
+              type={data[col][row]}
+            />
+          )
+        } else if (data[col][row] === "POISON") {
+          honeycomb.push(
+            <PoisonHex
               key={`${row}-${col}`}
               row={row}
               col={col}
