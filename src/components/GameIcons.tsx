@@ -7,7 +7,7 @@ interface StatusProps {
     statusValue: number;
 }
 
-type Icon = "agl" | "atk" | "dmg" | "range" | "def" | "sleep";
+type Icon = "agl" | "atk" | "dmg" | "range" | "def" | "locked";
 
 const Status: FC<StatusProps> = ({ iconName, statusValue }) => {
     const divStyle = {
@@ -43,8 +43,8 @@ export const DefStatus: FC<{ fighter: Pick<Fighter, "def"> }> = ({ fighter: { de
     return <Status iconName='def' statusValue={def} />;
 };
 
-export const SleepStatus: FC<{ fighter: Pick<Fighter, "sleep"> }> = ({ fighter: { sleep } }) => {
-    return <Status iconName='sleep' statusValue={sleep} />;
+export const LockedStatus: FC<{ fighter: Pick<Fighter, "locked"> }> = ({ fighter: { locked } }) => {
+    return <Status iconName='locked' statusValue={locked} />;
 };
 
 export const StatusContainer: FC<PropsWithChildren> = ({ children }) => {

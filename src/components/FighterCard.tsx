@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { Fighter } from '../types/fighter';
-import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, SleepStatus, StatusContainer } from './GameIcons';
+import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, LockedStatus, StatusContainer } from './GameIcons';
 import HpBar from './HpBar';
 import CustomAvatar from './CostomAvatar';
 import { PlayerId } from '../types/Player';
@@ -49,7 +49,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                 <StatusContainer>
                     <AglStatus fighter={fighter} />
                     <DefStatus fighter={fighter} />
-                    <SleepStatus fighter={fighter} />
+                    <LockedStatus fighter={fighter} />
                 </StatusContainer>
                 <Typography variant="body1">攻撃技:{fighter.move.name}</Typography>
                 <StatusContainer>

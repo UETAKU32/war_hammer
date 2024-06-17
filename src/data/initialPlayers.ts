@@ -12,7 +12,7 @@ export const player1: Player = {
       currentHp: 9,
       agl: 5,
       def: 5,
-      sleep: 0,
+      locked: 0,
       move: {
         name: "エクスカリバー",
         atk: 6,
@@ -32,7 +32,7 @@ export const player1: Player = {
       currentHp: 9,
       agl: 5,
       def: 4,
-      sleep: 0,
+      locked: 0,
       move: {
         name: "弓狙撃",
         atk: 4,
@@ -52,7 +52,7 @@ export const player1: Player = {
       currentHp: 9,
       agl: 3,
       def: 5,
-      sleep: 0,
+      locked: 0,
       move: {
         name: "キャットレイピア",
         atk: 9,
@@ -80,7 +80,7 @@ export const player2: Player = {
       currentHp: 9,
       agl: 2,
       def: 0,
-      sleep: 0,
+      locked: 0,
       move: {
         name: "蛇の邪眼",
         atk: 5,
@@ -100,7 +100,7 @@ export const player2: Player = {
       currentHp: 9,
       agl: 2,
       def: 4,
-      sleep: 0,
+      locked: 0,
       move: {
         name: "死の奇術",
         atk: 4,
@@ -120,7 +120,7 @@ export const player2: Player = {
       currentHp: 6,
       agl: 3,
       def: 4,
-      sleep: 0,
+      locked: 0,
       move: {
         name: "引き裂きの爪",
         atk: 4,

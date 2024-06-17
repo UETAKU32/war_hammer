@@ -8,7 +8,7 @@ export type Fighter = {
   currentHp: number;
   agl:number;
   def:number;
-  sleep:number;
+  locked:number;
   move:Move;
   coordinate?:Coordinate;
   image:string;
