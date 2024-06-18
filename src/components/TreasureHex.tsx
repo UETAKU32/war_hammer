@@ -30,7 +30,7 @@ export const TreasureHex: FC<{
         if (findFighterByCoordinate(coordinate)) {
             decreaseTreasureCount(coordinate);
         }
-    }, [decreaseTreasureCount, findFighterByCoordinate, coordinate, whichTurn])
+    }, [coordinate, whichTurn])
 
     useEffect(() => {
         if (treasure.count > 3) {
