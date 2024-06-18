@@ -23,13 +23,15 @@ type MoveProps = { fighter: Fighter; coordinate: Coordinate };
 type HealProps = { healHP: number; receiver: Fighter };
 type AddVictoryPointProps = { whichTurn: PlayerId };
 type DamagedByPoisonProps = { damagedFighter: Fighter };
+type AddLockedCountProps = { fighter: Fighter; count: number }
 
 type PlayerAction =
   | { type: "ATTACK"; payload: AttackProps }
   | { type: "MOVE"; payload: MoveProps }
   | { type: "HEAL"; payload: HealProps }
   | { type: "ADD_VICTORY_POINT"; payload: AddVictoryPointProps }
-  | { type: "DAMAGED_BY_POISON"; payload: DamagedByPoisonProps };
+  | { type: "DAMAGED_BY_POISON"; payload: DamagedByPoisonProps }
+  | { type: "ADD_LOCKED_COUNT"; payload: AddLockedCountProps };
 
 
 
@@ -99,6 +101,11 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       if (!enemyPlayer) throw new Error(`enemyPlayer was not found.`);
       reduceHp(damagedFighter, 1, enemyPlayer)
       break;
+    case "ADD_LOCKED_COUNT":
+      const fighter = players.flatMap((player) => player.fighters).find((f) => f.id === action.payload.fighter.id)
+      if (!fighter) throw new Error(`Fghter:${action.payload.fighter.name} was not found.`);
+      fighter.locked = fighter.locked + action.payload.count;
+      break;
 
     default:
       break;
@@ -112,6 +119,7 @@ type PlayerProviderProps = {
   heal: (args: HealProps) => void;
   addVictoryPoint: (args: AddVictoryPointProps) => void;
   damagedByPoison: (args: DamagedByPoisonProps) => void;
+  addLockedCount: (args: AddLockedCountProps) => void;
 };
 
 
@@ -126,9 +134,10 @@ export const PlayerProvider: FC<PropsWithChildren> = ({ children }) => {
   }, [switchTurn]);
   const heal = useCallback((args: HealProps) => action({ type: "HEAL", payload: args }), []);
   const addVictoryPoint = useCallback((args: AddVictoryPointProps) => action({ type: "ADD_VICTORY_POINT", payload: args }), []);
-  const damagedByPoison = useCallback((args: DamagedByPoisonProps) => action({ type: "DAMAGED_BY_POISON", payload: args }), [])
+  const damagedByPoison = useCallback((args: DamagedByPoisonProps) => action({ type: "DAMAGED_BY_POISON", payload: args }), []);
+  const addLockedCount = useCallback((args: AddLockedCountProps) => action({ type: "ADD_LOCKED_COUNT", payload: args }), []);
   return (
-    <PlayerContext.Provider value={{ players, attack, move, heal, addVictoryPoint, damagedByPoison }}>
+    <PlayerContext.Provider value={{ players, attack, move, heal, addVictoryPoint, damagedByPoison, addLockedCount }}>
       {children}
     </PlayerContext.Provider>
   );
