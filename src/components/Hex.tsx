@@ -27,7 +27,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
 
 
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter, pushedHex, setPushedHex } = useGameInfo();
-    const { attack, move, addLockedCount } = usePlayer(whichTurn);
+    const { attack, move, addLockedCount, reduceLockedCount } = usePlayer(whichTurn);
     const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, confirmPush } = usePhaseChange();
     const enemy = whichTurn === "A" ? "B" : "A";
     const { findFighterByCoordinate, findFighterByTeamAndCoordinate } = useFindFighter();
@@ -74,6 +74,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
             //移動確定
             if (isEqual(selectedHex, clickedCoordinate)) {
                 move({ fighter: selectedFighter, coordinate: clickedCoordinate })
+                reduceLockedCount();
                 addLockedCount({ fighter: selectedFighter, count: 2 })
                 //別の移動候補先を選択
             } else if (!findFighterByCoordinate(clickedCoordinate)) {
@@ -93,7 +94,8 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
                 if (!targetFighter) return;
                 attack({ attacker: selectedFighter, receiver: targetFighter, coordinate: selectedHex });
                 setTargetFighter(targetFighter);
-
+                reduceLockedCount();
+                addLockedCount({ fighter: selectedFighter, count: 4 });
                 //別の攻撃対象を選択
             } else if (clickedFighter) {
                 selectAttack(clickedFighter);
