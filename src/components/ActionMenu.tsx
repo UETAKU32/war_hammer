@@ -12,15 +12,22 @@ interface ActionMenuProps {
 
 const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     const centerPoint: CenterPoint = getCenterPointFromHex(coordinate)
+    const { selectedFighter } = useGameInfo()
+    const isLocked = selectedFighter?.locked ? true : false;
 
     const { setPhase } = useGameInfo()
 
+    //選択されたファイターがlockedだった場合、なんの機能も持たない関数を返す
+    //NOTEこの関数をエラー音を発生させるように改造し、LOCkされたファイターが行動しようとした場合にエラー音を出させたい
+    const incapableOfAction = () => { }
+
     const handleClickMove = () => {
-        setPhase("SELECT_MOVE")
+
+        isLocked ? incapableOfAction() : setPhase("SELECT_MOVE")
     }
 
     const handleClickAttack = () => {
-        setPhase("SELECT_ATTACK")
+        isLocked ? incapableOfAction() : setPhase("SELECT_ATTACK")
     }
 
     return (
@@ -30,13 +37,15 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
                     x: centerPoint.x - hexWidth / 3,
                     y: centerPoint.y
                 }}
-                onClick={handleClickAttack} />
+                onClick={handleClickAttack}
+                isLocked={isLocked} />
             <MoveIcon
                 point={{
                     x: centerPoint.x + hexWidth / 3,
                     y: centerPoint.y
                 }}
-                onClick={handleClickMove} />
+                onClick={handleClickMove}
+                isLocked={isLocked} />
         </>
     )
 }
