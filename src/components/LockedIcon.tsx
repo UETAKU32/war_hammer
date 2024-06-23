@@ -22,7 +22,7 @@ const LockedIcon: FC<LockedIconProps> = ({ lockedCount, row, col }) => {
             <image
                 key={`row:${row},col:${col}`}
                 x={getCenterPointFromHex(coordinate).x + hexWidth * 2 / 11}
-                y={getCenterPointFromHex(coordinate).y - hexHeight / 10 - hexWidth * 2 / 9}
+                y={getCenterPointFromHex(coordinate).y - hexHeight / 10 - hexWidth * 3 / 9}
                 width={hexWidth / 4}
                 height={hexHeight / 4}
                 xlinkHref={`${process.env.PUBLIC_URL}/icons/Lock.png`}
@@ -30,7 +30,7 @@ const LockedIcon: FC<LockedIconProps> = ({ lockedCount, row, col }) => {
             />
             <text
                 x={getCenterPointFromHex(coordinate).x + hexWidth * 2 / 5}
-                y={getCenterPointFromHex(coordinate).y - hexHeight / 10}
+                y={getCenterPointFromHex(coordinate).y - hexHeight * 2 / 10}
                 fill="white"
                 fontSize={hexWidth / 5}
                 style={{ pointerEvents: 'none', fontWeight: 'bold' }}
