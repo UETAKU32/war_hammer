@@ -28,7 +28,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
 
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter, pushedHex, setPushedHex } = useGameInfo();
     const { attack, move, addLockedCount, reduceLockedCount } = usePlayer(whichTurn);
-    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, confirmPush } = usePhaseChange();
+    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, confirmPush, changeSelectedFighter } = usePhaseChange();
     const enemy = whichTurn === "A" ? "B" : "A";
     const { findFighterByCoordinate, findFighterByTeamAndCoordinate } = useFindFighter();
 
@@ -64,7 +64,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
             if (findFighterByTeamAndCoordinate(clickedCoordinate, enemy)) {
                 confirmAttack(clickedCoordinate);
             } else if (clickedFighter) {
-                setSelectedFighter(clickedFighter)
+                changeSelectedFighter(clickedFighter);
             }
             return;
         }
@@ -81,7 +81,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
                 setSelectedHex(clickedCoordinate)
                 //仲間に移動フェーズを渡す
             } else if (clickedFighter) {
-                selectMove(clickedFighter);
+                changeSelectedFighter(clickedFighter);
             }
             return;
         }
@@ -96,10 +96,8 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
                 setTargetFighter(targetFighter);
                 reduceLockedCount();
                 addLockedCount({ fighter: selectedFighter, count: 4 });
-                //別の攻撃対象を選択
             } else if (clickedFighter) {
-                selectAttack(clickedFighter);
-                //仲間に攻撃フェーズを渡す
+                changeSelectedFighter(clickedFighter);
             } else if (findFighterByTeamAndCoordinate(clickedCoordinate, enemy)) {
                 setSelectedHex(clickedCoordinate)
             }
@@ -122,7 +120,6 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
                 //別の移動候補先を選択
             } else if (!findFighterByCoordinate(clickedCoordinate) && isColored) {
                 setPushedHex(clickedCoordinate)
-                //仲間に移動フェーズを渡す
             }
             return;
 
@@ -130,8 +127,9 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
 
         //上記if全てに当てはまらない場合、下記条件式の判定をしたい
         if (clickedFighter) {
-            setSelectedHex(undefined);
-            setSelectedFighter(clickedFighter);
+            changeSelectedFighter(clickedFighter);
+
+
             return;
         }
 
