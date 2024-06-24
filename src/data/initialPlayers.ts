@@ -24,6 +24,7 @@ export const player1: Player = {
         col: 0,
       },
       image: "WomanKnight.png",
+      guard:false,
     },
     {
       id: 2,
@@ -44,6 +45,7 @@ export const player1: Player = {
         col: 1,
       },
       image: "Hunter.png",
+      guard:false,
     },
     {
       id: 3,
@@ -64,6 +66,7 @@ export const player1: Player = {
         col: 2,
       },
       image: "CaitSith.png",
+      guard:false,
     },
   ],
 };
@@ -92,6 +95,7 @@ export const player2: Player = {
         col: 3,
       },
       image: "Naga.png",
+      guard:false,
     },
     {
       id: 5,
@@ -112,6 +116,7 @@ export const player2: Player = {
         col: 4,
       },
       image: "Clown.png",
+      guard:false,
     },
     {
       id: 6,
@@ -132,6 +137,7 @@ export const player2: Player = {
         col: 5,
       },
       image: "WolfMan.png",
+      guard:false,
     },
   ],
 };

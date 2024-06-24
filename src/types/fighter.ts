@@ -12,4 +12,5 @@ export type Fighter = {
   move:Move;
   coordinate?:Coordinate;
   image:string;
+  guard: boolean;
 };
