@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { getCenterPointFromHex } from '../lib/coordinate'
 import { CenterPoint } from '../types/CenterPoint'
-import { AttackIcon, MoveIcon } from './ActionIcon'
+import { AttackIcon, GuardIcon, MoveIcon } from './ActionIcon'
 import { hexWidth } from '../lib/hexSize'
 import { useGameInfo } from '../hooks/useGameInfo'
 import { Coordinate } from '../types/Coordinate'
@@ -22,12 +22,15 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     const incapableOfAction = () => { }
 
     const handleClickMove = () => {
-
         isLocked ? incapableOfAction() : setPhase("SELECT_MOVE")
     }
 
     const handleClickAttack = () => {
         isLocked ? incapableOfAction() : setPhase("SELECT_ATTACK")
+    }
+
+    const handleClickguard = () => {
+
     }
 
     return (
@@ -45,6 +48,13 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
                     y: centerPoint.y
                 }}
                 onClick={handleClickMove}
+                isLocked={isLocked} />
+            <GuardIcon
+                point={{
+                    x: centerPoint.x,
+                    y: centerPoint.y + hexWidth / 3,
+                }}
+                onClick={handleClickguard}
                 isLocked={isLocked} />
         </>
     )

@@ -11,7 +11,7 @@ interface ActionIconProps {
     isLocked: boolean;
 }
 
-type Action = "Attack" | "Move"
+type Action = "Attack" | "Move" | "Guard"
 
 const iconSize: number = hexWidth / 3;
 const lockedIconSize: number = hexWidth / 3;
@@ -29,7 +29,7 @@ const ActionIcon: FC<ActionIconProps> = ({ action, point, selected, onClick, isL
                 onClick={onClick}
                 opacity={selected ? 1 : 0.6}
             />
-            {isLocked && <image
+            {(isLocked && action != "Guard") && <image
                 x={point.x - lockedIconSize / 2}
                 y={point.y - lockedIconSize / 2}
                 width={lockedIconSize}
@@ -53,3 +53,8 @@ export const MoveIcon: FC<Pick<ActionIconProps, "point" | "onClick" | "isLocked"
     return <ActionIcon action={'Move'} point={point} selected={selected} onClick={onClick} isLocked={isLocked} />
 }
 
+export const GuardIcon: FC<Pick<ActionIconProps, "point" | "onClick" | "isLocked">> = ({ point, onClick, isLocked }) => {
+    const { phase } = useGameInfo();
+    const selected = false;
+    return <ActionIcon action={`Guard`} point={point} selected={selected} onClick={onClick} isLocked={isLocked} />
+}
