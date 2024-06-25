@@ -4,6 +4,7 @@ import { useAllPlayers } from '../hooks/usePlayer';
 import { getCenterPointFromHex } from '../lib/coordinate';
 import { Fighter } from '../types/fighter';
 import LockedIcon from './LockedIcon';
+import GuardingIcon from './GuardingIcon';
 
 const FighterDisplay: FC = () => {
     const allPlayers = useAllPlayers();
@@ -30,6 +31,7 @@ const FighterDisplay: FC = () => {
                                 style={{ pointerEvents: "none" }}
                             />
                             {fighter.locked > 0 && <LockedIcon lockedCount={fighter.locked} x={x} y={y} />}
+                            {fighter.guard && <GuardingIcon x={x} y={y} />}
                         </>
                     )
                 } else {
