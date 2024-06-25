@@ -47,11 +47,13 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
     case "ATTACK":
       //0~10の乱数を生成、基準値を5として、(+防御力-攻撃力)分補正をする。乱数が補正後の値を超えているなら攻撃成功
       //クリティカルヒットは基準値を9として補正値の1/5を加算
+      //防御側がガード状態なら2補正
       const randomNumber: number = Math.random() * 10;
-      const attacker = action.payload.attacker
-      const correction: number = action.payload.receiver.def - attacker.move.atk
-      const successBorder: number = correction + 5
-      const criticalBorder: number = correction / 5 + 9
+      const attacker = action.payload.attacker;
+      const guardCorrection: number = action.payload.receiver.guard ? 2 : 0;
+      const correction: number = action.payload.receiver.def - attacker.move.atk;
+      const successBorder: number = correction + 5 + guardCorrection;
+      const criticalBorder: number = correction / 5 + 9;
 
 
       const attackerPlayer = players.find((p) => includes(p.fighters.map((f) => f.id), attacker.id))
@@ -214,7 +216,6 @@ export const usePlayersFighter = (id: PlayerId) => {
 export const useFindFighter = () => {
   const allPlayers = useAllPlayers();
   const allFighters = useMemo(() => allPlayers.flatMap((player) => player.fighters), [allPlayers]);
-
   const findFighterByCoordinate = useCallback((selectedCoordinate: Coordinate) => allFighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate)), [allFighters]);
   const findFighterByTeamAndCoordinate = useCallback((selectedCoordinate: Coordinate, selectedPlayer: PlayerId) => allPlayers.find(p => p.id === selectedPlayer)?.fighters.find((fighter) => isEqual(fighter.coordinate, selectedCoordinate)), [allPlayers]);
   return { findFighterByCoordinate, findFighterByTeamAndCoordinate }
@@ -222,10 +223,8 @@ export const useFindFighter = () => {
 
 export const useFindTeam = () => {
   const allPlayers = useAllPlayers();
-
   const findPlayerByFighter = useCallback((findFighter: Fighter): PlayerId => {
     let result: PlayerId | undefined = undefined;
-
     allPlayers.forEach((player) => {
       player.fighters.forEach(fighter => {
         if (isEqual(fighter, findFighter)) {

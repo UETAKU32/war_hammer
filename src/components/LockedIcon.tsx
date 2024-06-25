@@ -14,7 +14,7 @@ const LockedIcon: FC<LockedIconProps> = ({ lockedCount, x, y }) => {
         <>
 
             <image
-                key={`${x},${y}`}
+                key={`${x},${y},${lockedCount}`}
                 x={x + hexWidth * 2 / 11}
                 y={y - hexHeight / 10 - hexWidth * 2 / 9}
                 width={hexWidth / 5}

@@ -30,7 +30,7 @@ const FighterDisplay: FC = () => {
                                 xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${fighter.image}`}
                                 style={{ pointerEvents: "none" }}
                             />
-                            {fighter.locked > 0 && <LockedIcon lockedCount={fighter.locked} x={x} y={y} />}
+                            {fighter.locked && <LockedIcon lockedCount={fighter.locked} x={x} y={y} />}
                             {fighter.guard && <GuardingIcon x={x} y={y} />}
                         </>
                     )
