@@ -55,6 +55,6 @@ export const MoveIcon: FC<Pick<ActionIconProps, "point" | "onClick" | "isLocked"
 
 export const GuardIcon: FC<Pick<ActionIconProps, "point" | "onClick" | "isLocked">> = ({ point, onClick, isLocked }) => {
     const { phase } = useGameInfo();
-    const selected = false;
+    const selected = (phase === "CONFIRM_GUARD");
     return <ActionIcon action={`Guard`} point={point} selected={selected} onClick={onClick} isLocked={isLocked} />
 }

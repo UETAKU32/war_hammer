@@ -18,6 +18,7 @@ type PhaseChangeProps = {
     confirmMove: (selectedHex: Coordinate) => void;
     confirmAttack: (selectedHex: Coordinate) => void;
     confirmPush: (selectedHex: Coordinate) => void;
+    confirmGuard: () => void;
     changeSelectedFighter: (clickedFighter: Fighter | undefined) => void;
 };
 
@@ -28,7 +29,7 @@ type PhaseChangeProps = {
  * @returns 
  */
 export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
-    const { phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter, setPushedHex } = useGameInfo()
+    const { whichTurn, phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter, setPushedHex } = useGameInfo()
 
     useEffect(() => {
         if (phase === "CONFIRM_ATTACK" && targetFighter && hitEffect && selectedFighter) {
@@ -78,6 +79,14 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         setPhase("CONFIRM_PUSH");
     }
 
+    const confirmGuard = () => {
+        if (!selectedFighter) throw new Error("There is not any selected fighter in this Hex")
+        switchTurn();
+        setSelectedHex(undefined);
+        setSelectedFighter(undefined);
+        setPhase("SELECT_FIGHTER")
+    }
+
     const changeSelectedFighter = (clickedFighter: Fighter | undefined) => {
         if (!clickedFighter) throw new Error("There is not any fighter in this Hex")
         setSelectedHex(undefined);
@@ -93,6 +102,7 @@ export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
         selectFighter,
         selectAttack,
         confirmPush,
+        confirmGuard,
         changeSelectedFighter,
     }
 

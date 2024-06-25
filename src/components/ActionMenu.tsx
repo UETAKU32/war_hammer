@@ -5,6 +5,8 @@ import { AttackIcon, GuardIcon, MoveIcon } from './ActionIcon'
 import { hexWidth } from '../lib/hexSize'
 import { useGameInfo } from '../hooks/useGameInfo'
 import { Coordinate } from '../types/Coordinate'
+import { usePhaseChange } from '../hooks/usePhaseGhange'
+import { usePlayer } from '../hooks/usePlayer'
 
 interface ActionMenuProps {
     coordinate: Coordinate
@@ -15,7 +17,9 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     const { selectedFighter } = useGameInfo()
     const isLocked = selectedFighter?.locked ? true : false;
 
-    const { setPhase } = useGameInfo()
+    const { phase, setPhase, whichTurn } = useGameInfo();
+    const { confirmGuard } = usePhaseChange();
+    const { changeGuard, reduceLockedCount } = usePlayer(whichTurn);
 
     //選択されたファイターがlockedだった場合、なんの機能も持たない関数を返す
     //NOTEこの関数をエラー音を発生させるように改造し、LOCkされたファイターが行動しようとした場合にエラー音を出させたい
@@ -30,7 +34,10 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
     }
 
     const handleClickguard = () => {
-
+        phase === "CONFIRM_GUARD" ? confirmGuard() : setPhase("CONFIRM_GUARD");
+        if (!selectedFighter) throw new Error(`Fighter:${selectedFighter} was not found.`);
+        ((phase === "CONFIRM_GUARD") && changeGuard({ fighter: selectedFighter, activatedOrNot: true }));
+        ((phase === "CONFIRM_GUARD") && reduceLockedCount())
     }
 
     return (
@@ -61,3 +68,7 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
 }
 
 export default ActionMenu
+
+function changeGuard(arg0: { fighter: import("../types/fighter").Fighter | undefined; activatedOrNot: boolean }) {
+    throw new Error('Function not implemented.')
+}

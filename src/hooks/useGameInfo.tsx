@@ -7,8 +7,7 @@ import { MAX_TREASURE_COUNT, treasureCoordinates } from "../data/map";
 import { isEqual } from "lodash";
 
 
-export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK" | "SELECT_PUSH" | "CONFIRM_PUSH";
-//大文字に変えて、gameinfoで定義する
+export type Phase = "SELECT_FIGHTER" | "SELECT_MOVE" | "CONFIRM_MOVE" | "SELECT_ATTACK" | "CONFIRM_ATTACK" | "SELECT_PUSH" | "CONFIRM_PUSH" | "CONFIRM_GUARD";
 export type HitType = "CRITICAL" | "ATTACKED" | "DEFENDED"
 
 type Treasure = {

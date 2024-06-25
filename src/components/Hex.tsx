@@ -28,7 +28,7 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
 
     const { whichTurn, selectedFighter, setSelectedFighter, selectedHex, setSelectedHex, phase, setTargetFighter, targetFighter, pushedHex, setPushedHex } = useGameInfo();
     const { attack, move, addLockedCount, reduceLockedCount } = usePlayer(whichTurn);
-    const { confirmMove, confirmAttack, selectMove, selectFighter, selectAttack, confirmPush, changeSelectedFighter } = usePhaseChange();
+    const { confirmMove, confirmAttack, selectFighter, confirmPush, changeSelectedFighter } = usePhaseChange();
     const enemy = whichTurn === "A" ? "B" : "A";
     const { findFighterByCoordinate, findFighterByTeamAndCoordinate } = useFindFighter();
 
