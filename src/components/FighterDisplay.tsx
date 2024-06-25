@@ -16,18 +16,20 @@ const FighterDisplay: FC = () => {
             {aliveFighters.map((fighter) => {
                 //getCenterPointFromHexが型定義を認識しないためif (fighter.coordinate)でundefinedを回避
                 if (fighter.coordinate) {
+                    const x = getCenterPointFromHex(fighter.coordinate).x;
+                    const y = getCenterPointFromHex(fighter.coordinate).y;
                     return (
                         <>
                             <image
                                 key={fighter.id}
-                                x={getCenterPointFromHex(fighter.coordinate).x - hexWidth / 2 + 2}
-                                y={getCenterPointFromHex(fighter.coordinate).y - hexHeight / 2}
+                                x={x - hexWidth / 2 + 2}
+                                y={y - hexHeight / 2}
                                 width={hexWidth}
                                 height={hexHeight}
                                 xlinkHref={`${process.env.PUBLIC_URL}/fightersImages/${fighter.image}`}
                                 style={{ pointerEvents: "none" }}
                             />
-                            {fighter.locked > 0 && <LockedIcon lockedCount={fighter.locked} row={fighter.coordinate.row} col={fighter.coordinate.col} />}
+                            {fighter.locked > 0 && <LockedIcon lockedCount={fighter.locked} x={x} y={y} />}
                         </>
                     )
                 } else {
