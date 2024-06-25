@@ -110,7 +110,7 @@ const reducer = produce((players: Player[], action: PlayerAction) => {
       lockedFighter.locked += action.payload.count;
       break;
     case "REDUCE_LOCKED_COUNT":
-      const reducedFighter = players.flatMap((player) => player.fighters).filter((f) => f.locked > 0).forEach((fighter) => fighter.locked -= 1);
+      players.flatMap((player) => player.fighters).filter((f) => f.locked > 0).forEach((fighter) => fighter.locked -= 1);
       break;
 
     case "CHANGE_GUARD_STATUS":

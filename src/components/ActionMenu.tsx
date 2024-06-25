@@ -69,6 +69,3 @@ const ActionMenu: FC<ActionMenuProps> = ({ coordinate }) => {
 
 export default ActionMenu
 
-function changeGuard(arg0: { fighter: import("../types/fighter").Fighter | undefined; activatedOrNot: boolean }) {
-    throw new Error('Function not implemented.')
-}

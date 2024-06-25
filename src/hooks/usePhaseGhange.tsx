@@ -29,7 +29,7 @@ type PhaseChangeProps = {
  * @returns 
  */
 export const PhaseChangeProvider: FC<PropsWithChildren> = ({ children }) => {
-    const { whichTurn, phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter, setPushedHex } = useGameInfo()
+    const { phase, setSelectedHex, selectedFighter, setPhase, setSelectedFighter, switchTurn, hitEffect, targetFighter, setPushedHex } = useGameInfo()
 
     useEffect(() => {
         if (phase === "CONFIRM_ATTACK" && targetFighter && hitEffect && selectedFighter) {

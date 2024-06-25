@@ -29,7 +29,7 @@ const ActionIcon: FC<ActionIconProps> = ({ action, point, selected, onClick, isL
                 onClick={onClick}
                 opacity={selected ? 1 : 0.6}
             />
-            {(isLocked && action != "Guard") && <image
+            {(isLocked && action !== "Guard") && <image
                 x={point.x - lockedIconSize / 2}
                 y={point.y - lockedIconSize / 2}
                 width={lockedIconSize}
