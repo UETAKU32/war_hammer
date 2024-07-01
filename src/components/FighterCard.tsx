@@ -6,6 +6,7 @@ import { AglStatus, AtkStatus, DefStatus, DmgStatus, RangeStatus, LockedStatus, 
 import HpBar from './HpBar';
 import CustomAvatar from './CostomAvatar';
 import { PlayerId } from '../types/Player';
+import { useGameInfo } from '../hooks/useGameInfo';
 
 
 type FighterCardProps = {
@@ -16,7 +17,9 @@ type FighterCardProps = {
 
 export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
 
-    const teamColor: string = `linear-gradient(135deg, ${teamName === "A" ? `#FF0000, #8B0000` : `#4287f5, #0a2f6c`})`;
+    const { selectedFighter } = useGameInfo();
+
+    const teamColor: string = (selectedFighter?.id === fighter.id) ? teamName === "A" ? `#FF9999, #CD5C5C` : `#99CCFF, #5C85CD` : teamName === "A" ? `#FF0000, #8B0000` : `#4287f5, #0a2f6c`
     const imageUrl: string = `${process.env.PUBLIC_URL}/icons/${fighter.image}`;
 
     return (
@@ -28,7 +31,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                 borderColor: `rgba(0, 0, 0, 0.7)`,
                 borderRadius: '4px', // 角丸
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.8)', // 影
-                background: teamColor,
+                background: `linear-gradient(135deg,${teamColor})`,
                 opacity: `0.85`,
             }}
         >
