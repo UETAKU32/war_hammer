@@ -36,6 +36,8 @@ type GameInfo = {
   setPushedHex: (coordinate: Coordinate | undefined) => void;
   findTreasureAt: (coordinate: Coordinate) => Treasure | undefined;
   decreaseTreasureCount: (coordinate: Coordinate) => void;
+  gameEnd: boolean;
+  setGameEnd: (end: boolean) => void;
 }
 
 
@@ -54,6 +56,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
   const [hitEffect, setHitEffect] = useState<HitEffectProps | undefined>();
   const [pushedHex, setPushedHex] = useState<Coordinate | undefined>();
   const [treasures, setTreasures] = useState<Treasure[]>(treasureCoordinates.map((coordinate) => ({ count: MAX_TREASURE_COUNT, coordinate })));
+  const [gameEnd, setGameEnd] = useState<boolean>(false);
   const isLastPhase = currentTurnNum === maxTurnNum && whichTurn === "B";
   const switchTurn = useCallback(() => {
     //TODO: ファイターがいる宝箱のみ-1
@@ -70,7 +73,7 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
         setCurrentTurnNum((prevTurnNum) => prevTurnNum + 1);
       }
     } else {
-      setWhichWon("A")
+      setGameEnd(true);
     }
   }, [isLastPhase, whichTurn]);
 
@@ -106,6 +109,8 @@ export const GameInfoProvider: FC<PropsWithChildren> = ({ children }) => {
     setPushedHex,
     findTreasureAt,
     decreaseTreasureCount,
+    gameEnd,
+    setGameEnd
   }
 
   return (<GameInfoContext.Provider value={value}>

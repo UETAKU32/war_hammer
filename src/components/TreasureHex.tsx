@@ -68,7 +68,7 @@ export const TreasureHex: FC<{
             />
             <text
                 x={getCenterPointFromHex(coordinate).x - hexWidth / 2}
-                y={getCenterPointFromHex(coordinate).y - hexHeight / 10}
+                y={getCenterPointFromHex(coordinate).y + hexHeight / 4}
                 fill="yellow"
                 fontSize={hexWidth / 3}
                 style={{ pointerEvents: 'none', fontWeight: 'bold' }}
