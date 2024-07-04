@@ -8,6 +8,7 @@ import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
 import { HexType } from '../data/map';
+import { error } from 'console';
 
 
 export type HexProps = {
@@ -114,10 +115,11 @@ const Hex: FC<HexProps> = ({ coordinate, isColored, type }) => {
             return;
         }
 
-        if (phase === "CONFIRM_PUSH" && pushedHex && targetFighter) {
+        if (phase === "CONFIRM_PUSH") {
 
             //移動確定
             if (isEqual(pushedHex, clickedCoordinate) && isColored) {
+                if (!targetFighter) throw new Error(`Fighter:${targetFighter} was not found.`)
                 move({ fighter: targetFighter, coordinate: clickedCoordinate });
                 //別の移動候補先を選択
             } else if (!findFighterByCoordinate(clickedCoordinate) && isColored) {

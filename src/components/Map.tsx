@@ -101,7 +101,7 @@ const Map: FC<MapProps> = ({ mapInfo: { data, maxCoordinate } }) => {
         >
           {honeycomb}
           <FighterDisplay />
-          {selectedFighter?.coordinate && phase !== "SELECT_PUSH" && phase !== "CONFIRM_PUSH" && (<ActionMenu coordinate={selectedFighter.coordinate} />)}
+          {selectedFighter?.coordinate && (<ActionMenu coordinate={selectedFighter.coordinate} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_MOVE") && (<MoveConfirm selectedFighter={selectedFighter} coordinate={selectedHex} />)}
           {(selectedFighter && selectedHex && phase === "CONFIRM_ATTACK") && (<AttackConfirm coordinate={selectedHex} />)}
           {(targetFighter && pushedHex && phase === "CONFIRM_PUSH") && (<PushConfirm targetFighter={targetFighter} coordinate={pushedHex} />)}
