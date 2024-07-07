@@ -6,7 +6,7 @@ import VictoryPoints from "./VictoryPoints"
 export const GameInfoPanel: FC = () => {
   return (
     <Grid container direction="row" spacing={1}
-      marginBottom={4}
+      marginBottom={1}
       justifyContent="center"
       alignItems="center"
       style={{

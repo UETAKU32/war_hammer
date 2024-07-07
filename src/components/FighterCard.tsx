@@ -32,7 +32,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
     return (
         <Card
             style={{
-                marginBottom: 25,
+                marginBottom: 2,
                 position: 'relative',
                 border: '4px solid transparent', // 境界線スタイル
                 borderColor: `rgba(0, 0, 0, 0.7)`,
@@ -56,14 +56,12 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                     </Box>
                 </Box>
                 <HpBar fighter={fighter} />
-                <Box display="flex" alignItems="center" margin={2}>
-                </Box>
                 <StatusContainer>
                     <AglStatus fighter={fighter} />
                     <DefStatus fighter={fighter} />
                     <LockedStatus fighter={fighter} />
                 </StatusContainer>
-                <Typography variant="body1">攻撃技:{fighter.move.name}</Typography>
+                <Typography variant="body2">攻撃技:{fighter.move.name}</Typography>
                 <StatusContainer>
                     <AtkStatus fighter={fighter} />
                     <RangeStatus fighter={fighter} />
