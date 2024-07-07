@@ -8,7 +8,6 @@ import { useGameInfo } from '../hooks/useGameInfo';
 import { isEqual } from 'lodash';
 import { usePhaseChange } from '../hooks/usePhaseGhange';
 import { HexType } from '../data/map';
-import { error } from 'console';
 
 
 export type HexProps = {

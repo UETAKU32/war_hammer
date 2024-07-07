@@ -7,31 +7,31 @@ export type MapInfo = {
   maxCoordinate: Coordinate;
 };
 
-export const MAX_TREASURE_COUNT = 5;
+export const MAX_TREASURE_COUNT = 10;
 
 const mapAData: HexType[][] = [
-  ["NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "NORMAL", "NORMAL", "TREASURE"],
-  ["NORMAL", "NORMAL", "NORMAL", "TREASURE", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "FORBIDDEN", "NORMAL"],
-  ["NORMAL", "POISON", "NORMAL", "NORMAL", "POISON", "NORMAL", "NORMAL"],
-  ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "FORBIDDEN", "POISON", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
-  ["NORMAL", "NORMAL", "NORMAL", "TREASURE", "FORBIDDEN", "NORMAL", "NORMAL"],
+  ["TREASURE", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL"],
+  ["POISON" , "NORMAL", "NORMAL",  "NORMAL" , "NORMAL", "NORMAL"],
+  ["NORMAL", "NORMAL", "FORBIDDEN", "NORMAL", "NORMAL", "FORBIDDEN", "NORMAL"],
+  ["NORMAL", "NORMAL", "NORMAL", "TREASURE" , "POISON" , "NORMAL", "NORMAL"],
+  ["NORMAL", "NORMAL", "POISON" , "TREASURE", "NORMAL", "NORMAL", "NORMAL"],
+  ["NORMAL", "FORBIDDEN", "NORMAL", "NORMAL" , "FORBIDDEN", "NORMAL", "NORMAL"],
+  ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "POISON" ],
+  ["NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL", "NORMAL","TREASURE"],
 ];
 
 export const defaultMap: MapInfo = {
   data: mapAData,
   maxCoordinate: {
-    row: mapAData[0].length,
-    col: mapAData.length,
+    col: mapAData[0].length,
+    row: mapAData.length,
   },
 };
 
 const getTreasureCoordinates = () => {
   const treasureCoordinates: Coordinate[] = [];
-  mapAData.forEach((col, colIndex) => {
-    col.forEach((type, rowIndex) => {
+  mapAData.forEach((row, rowIndex) => {
+    row.forEach((type, colIndex) => {
       if (type === "TREASURE") {
         treasureCoordinates.push({ row: rowIndex, col: colIndex });
       }

@@ -17,12 +17,12 @@ type FighterCardProps = {
 
 export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
 
-    const { selectedFighter, setSelectedFighter, phase, setPhase, setSelectedHex } = useGameInfo();
+    const { selectedFighter, setSelectedFighter, phase, setPhase, setSelectedHex, whichTurn } = useGameInfo();
 
     const teamColor: string = (selectedFighter?.id === fighter.id) ? teamName === "A" ? `#FF9999, #CD5C5C` : `#99CCFF, #5C85CD` : teamName === "A" ? `#FF0000, #8B0000` : `#4287f5, #0a2f6c`
     const imageUrl: string = `${process.env.PUBLIC_URL}/icons/${fighter.image}`;
     const handleClick = () => {
-        if (phase !== "SELECT_PUSH" && phase !== "CONFIRM_PUSH") {
+        if (teamName === whichTurn && phase !== "SELECT_PUSH" && phase !== "CONFIRM_PUSH") {
             setSelectedFighter(fighter);
             setPhase("SELECT_FIGHTER");
             setSelectedHex(undefined);
