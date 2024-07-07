@@ -61,7 +61,7 @@ export const FighterCard: FC<FighterCardProps> = ({ teamName, fighter }) => {
                     <DefStatus fighter={fighter} />
                     <LockedStatus fighter={fighter} />
                 </StatusContainer>
-                <Typography variant="body2">攻撃技:{fighter.move.name}</Typography>
+                <Typography variant="body2">Attack move:{fighter.move.name}</Typography>
                 <StatusContainer>
                     <AtkStatus fighter={fighter} />
                     <RangeStatus fighter={fighter} />
